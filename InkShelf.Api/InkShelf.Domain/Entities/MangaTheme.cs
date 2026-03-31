@@ -7,6 +7,6 @@
         public string Code { get; set; } = null!;
         public string Name { get; set; } = null!;
 
-        public IList<MangaSerie> Manga { get; set; } = [];
+        public IList<MangaSerie> Mangas { get; set; } = [];
     }
 }

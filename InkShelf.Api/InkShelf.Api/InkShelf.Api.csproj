@@ -18,4 +18,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InkShelf.Infrastructure\InkShelf.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
