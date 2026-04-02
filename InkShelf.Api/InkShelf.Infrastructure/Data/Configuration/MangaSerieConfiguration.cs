@@ -33,7 +33,7 @@ namespace InkShelf.Infrastructure.Data.Configuration
             #region Constraints
             builder.ToTable(table =>
             {
-                table.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "TotalVolumes > -1");
+                table.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "\"TotalVolumes\" > -1");
             });
             #endregion
 
@@ -43,9 +43,9 @@ namespace InkShelf.Infrastructure.Data.Configuration
                 .WithMany()
                 .HasForeignKey(ms => ms.AuthorId);
             builder
-                .HasOne(ms => ms.Author)
+                .HasOne(ms => ms.Drawer)
                 .WithMany()
-                .HasForeignKey(ms => ms.AuthorId);
+                .HasForeignKey(ms => ms.DrawerId);
             builder
                 .HasOne(ms => ms.Translator)
                 .WithMany()

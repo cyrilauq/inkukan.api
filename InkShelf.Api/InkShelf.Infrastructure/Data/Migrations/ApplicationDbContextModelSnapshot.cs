@@ -147,7 +147,7 @@ namespace InkShelf.Infrastructure.Data.Migrations
 
                     b.ToTable("MangaSeries", t =>
                         {
-                            t.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "TotalVolumes > -1");
+                            t.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "\"TotalVolumes\" > -1");
                         });
                 });
 

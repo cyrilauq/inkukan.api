@@ -1,4 +1,5 @@
-﻿using InkShelf.Infrastructure;
+﻿using InkShelf.Application;
+using InkShelf.Infrastructure;
 
 namespace InkShelf.Api
 {
@@ -7,7 +8,9 @@ namespace InkShelf.Api
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddInfrastructure(configuration);
+                .AddInfrastructure(configuration)
+                .AddApplication(configuration)
+                .AddLogging();
 
             return services;
         }

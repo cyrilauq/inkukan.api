@@ -2,6 +2,7 @@
 {
     public class MangaSerie : ITrackableEntity
     {
+        // TODO : add something to "save" the cover
         public Guid Id { get; set; }
         
         public string TitleVF { get; set; } = null!;

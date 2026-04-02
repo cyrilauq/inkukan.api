@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InkShelf.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260331191619_AddMangaSerie")]
+    [Migration("20260402180034_AddMangaSerie")]
     partial class AddMangaSerie
     {
         /// <inheritdoc />
@@ -150,7 +150,7 @@ namespace InkShelf.Infrastructure.Data.Migrations
 
                     b.ToTable("MangaSeries", t =>
                         {
-                            t.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "TotalVolumes > -1");
+                            t.HasCheckConstraint("TotalVolumesShouldNotBeNegative", "\"TotalVolumes\" > -1");
                         });
                 });
 
