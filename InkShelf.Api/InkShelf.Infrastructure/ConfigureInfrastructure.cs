@@ -21,7 +21,8 @@ namespace InkShelf.Infrastructure
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services
-                .AddScoped<IMangaSerieRepository, MangaSerieRepository>();
+                .AddScoped<IMangaSerieRepository, MangaSerieRepository>()
+                .AddScoped<IMangaPeopleRepository, MangaPeopleRepository>();
 
             return services;
         }
