@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using InkShelf.Application.Features.MangaSerie.Create;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace InkShelf.Application
 {
@@ -11,6 +12,8 @@ namespace InkShelf.Application
             services
                 .AddMapper(configuration)
                 .AddMediator(configuration);
+
+            services.AddValidatorsFromAssemblyContaining<CreateMangaSerieValidator>();
 
             return services;
         }
