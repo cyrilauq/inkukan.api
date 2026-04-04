@@ -32,7 +32,10 @@ namespace InkShelf.Application.Features.MangaPeople.Create
         private async Task EnsureNotExists(CreateMangaPeopleCommand command)
         {
             Domain.Entities.MangaPeople? mangaPeople = await mangaPeopleRepository.GetQuery()
-                .Where(mp => mp.Firstname.ToLower().Equals(command.Firstname.ToLower()))
+                .Where(mp => 
+                    mp.Firstname.ToLower().Equals(command.Firstname.ToLower()) &&
+                    mp.Lastname.ToLower().Equals(command.Lastname.ToLower())
+                )
                 .FirstOrDefaultAsync();
             if (mangaPeople != null)
                 throw new ConflictException($"A manga people entity already exists with the lastname [{command.Lastname}] and firstname [{command.Firstname}]");

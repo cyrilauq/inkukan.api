@@ -10,6 +10,9 @@ namespace InkShelf.Infrastructure.Data.Configuration
         {
             builder
                 .HasKey(x => x.Id);
+            builder
+                .HasIndex(x => new { x.Firstname, x.Lastname })
+                .IsUnique();
 
             builder
                 .Property(mp => mp.Lastname)
