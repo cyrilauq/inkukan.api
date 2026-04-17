@@ -16,6 +16,14 @@ namespace InkShelf.Infrastructure.Repositories
             return addResult.Entity;
         }
 
+        public async Task<Editor?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            ApplicationDbContext dbContext = await dbContextFactory.CreateDbContextAsync();
+            return await dbContext.Editors
+                .Where(e => e.Name == name)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
         public IQueryable<Editor> GetQuery()
         {
             ApplicationDbContext dbContext = dbContextFactory.CreateDbContext();

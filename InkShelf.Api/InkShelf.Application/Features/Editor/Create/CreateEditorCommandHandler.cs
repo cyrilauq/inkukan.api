@@ -13,7 +13,10 @@ namespace InkShelf.Application.Features.Editor.Create
     {
         public async Task<bool> EnsureIsValidAsync(CreateEditorCommand value)
         {
-            var validationResult = await validator.ValidateAsync(value);
+            Domain.Entities.Editor? existingEditor = await editorRepository.GetByNameAsync(value.Name);
+            if (existingEditor != null)
+                throw new ConflictException("An editor with the same name already exists");
+            FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
             if (validationResult.IsValid) return true;
             throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
         }

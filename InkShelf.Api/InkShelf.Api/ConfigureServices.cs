@@ -1,4 +1,5 @@
-﻿using InkShelf.Application;
+﻿using InkShelf.Api.Middlewares;
+using InkShelf.Application;
 using InkShelf.Infrastructure;
 
 namespace InkShelf.Api
@@ -10,7 +11,8 @@ namespace InkShelf.Api
             services
                 .AddInfrastructure(configuration)
                 .AddApplication(configuration)
-                .AddLogging();
+                .AddLogging()
+                .AddTransient<ExceptionMiddleware>();
 
             return services;
         }

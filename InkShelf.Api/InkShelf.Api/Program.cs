@@ -1,4 +1,5 @@
 using InkShelf.Api;
+using InkShelf.Api.Middlewares;
 using InkShelf.Infrastructure;
 using InkShelf.Infrastructure.Data;
 
@@ -31,7 +32,9 @@ using (IServiceScope scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app
+    .UseMiddleware<ExceptionMiddleware>()
+    .UseAuthorization();
 
 app.MapControllers();
 
