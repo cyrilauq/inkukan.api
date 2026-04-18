@@ -14,5 +14,6 @@
         public Guid? EditorVOId { get; set; }
         public Guid? CollectionId { get; set; }
         public Guid? TypeId { get; set; }
+        public IList<SerieVolumeDto> Volumes { get; set; } = [];
     }
 }

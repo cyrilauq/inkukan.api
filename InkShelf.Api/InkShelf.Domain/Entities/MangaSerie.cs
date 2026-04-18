@@ -1,9 +1,10 @@
-﻿namespace InkShelf.Domain.Entities
+﻿using InkShelf.Domain.Entities.Interfaces;
+
+namespace InkShelf.Domain.Entities
 {
     public class MangaSerie : ITrackableEntity
     {
         // TODO : add something to "save" the cover
-        public Guid Id { get; set; }
         
         public string TitleVF { get; set; } = null!;
         public string TitleVO { get; set; } = null!;
@@ -33,5 +34,12 @@
         public Guid TypeId { get; set; }
 
         public IList<MangaTheme> Themes { get; set; } = [];
+        public IList<SerieVolume> Volumes { get; set; } = [];
+
+        #region ITrackableEntity
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        #endregion
     }
 }
