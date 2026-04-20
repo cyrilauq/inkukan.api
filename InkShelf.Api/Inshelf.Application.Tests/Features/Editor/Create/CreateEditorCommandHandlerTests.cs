@@ -14,11 +14,11 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
     [TestClass]
     public class CreateEditorCommandHandlerTests
     {
-        private ILoggerFactory _loggerFactory;
-        private Mock<IEditorRepository> _editorRepository;
-        private IMapper _mapper;
-        private CreateEditorValidator _validator;
-        private CreateEditorCommandHandler _handler;
+        private ILoggerFactory _loggerFactory = null!;
+        private Mock<IEditorRepository> _editorRepository = null!;
+        private IMapper _mapper = null!;
+        private CreateEditorValidator _validator = null!;
+        private CreateEditorCommandHandler _handler = null!;
 
         [TestInitialize]
         public void SetUp()
@@ -58,7 +58,7 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
                 .ThrowAsync<EntityValidationException>();
         }
 
-        private static IEnumerable<object[]> DateTimeValues()
+        private static IEnumerable<object?[]> DateTimeValues()
         {
             yield return [null];
             yield return [DateTime.Now];
@@ -87,7 +87,7 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
                 .ThrowAsync<EntityValidationException>();
         }
 
-        private static IEnumerable<object[]> InvalidNameValues()
+        private static IEnumerable<object?[]> InvalidNameValues()
         {
             yield return [""];
             yield return [null];

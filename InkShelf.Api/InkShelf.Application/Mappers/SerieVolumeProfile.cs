@@ -6,9 +6,9 @@ using InkShelf.Domain.Entities;
 
 namespace InkShelf.Application.Mappers
 {
-    public class SerieVolumeMapper : Profile
+    public class SerieVolumeProfile : Profile
     {
-        public SerieVolumeMapper()
+        public SerieVolumeProfile()
         {
             CreateMap<SerieVolume, SerieVolumeDto>()
                 .ForMember(dest => dest.VFCoverPath, opt => opt.Ignore())

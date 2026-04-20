@@ -4,12 +4,10 @@ using InkShelf.Domain.Repositories;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
-using SixLabors.ImageSharp.Processing;
-using System.Net.Http.Headers;
 
 namespace InkShelf.Application.Services.Implementations
 {
-    public class FileUploaderVercelBlob(IFileChecker fileChecker, IBlobStorage blobStorage, IHttpClientFactory httpClientFactory) : IFileUploader
+    public class FileUploaderVercelBlob(IFileChecker fileChecker, IBlobStorage blobStorage) : IFileUploader
     {
         private readonly Dictionary<string, int> _fileSizes = new()
         {
@@ -17,7 +15,7 @@ namespace InkShelf.Application.Services.Implementations
             { "medium", 400 },
             { "large", 600 }
         };
-        private readonly WebpEncoder _webpEncoder = new WebpEncoder { Quality = 80 };
+        private readonly WebpEncoder _webpEncoder = new() { Quality = 80 };
 
 
         public async Task<Guid?> UploadAsync(string fileName, byte[] content, string outPutFileName, params SupportedFileType[] supportedFileTypes)
