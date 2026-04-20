@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
 using InkShelf.Application.Features.MangaSerie.Create;
+using InkShelf.Application.Services;
+using InkShelf.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
 
 namespace InkShelf.Application
 {
@@ -11,9 +14,31 @@ namespace InkShelf.Application
         {
             services
                 .AddMapper(configuration)
-                .AddMediator(configuration);
+                .AddMediator(configuration)
+                .AddServices(configuration);
 
             services.AddValidatorsFromAssemblyContaining<CreateMangaSerieValidator>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            VercelBlobOptions blobOptions = new();
+            configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
+            services
+                .AddSingleton(blobOptions);
+
+            services.AddHttpClient("VercelBlocClient", client =>
+            {
+                client.BaseAddress = new(blobOptions.BlobUrl);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", blobOptions.Token);
+                client.DefaultRequestHeaders.Add("x-add-random-suffix", "true");
+            });
+
+            services
+                .AddScoped<IFileUploader, FileUploaderVercelBlob>()
+                .AddScoped<IFileChecker, FileChecker>();
 
             return services;
         }
@@ -23,9 +48,7 @@ namespace InkShelf.Application
             services.AddAutoMapper(cfg =>
             {
                 cfg.LicenseKey = configuration["LicenseKeys:LuckyPennySoftware"] ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
-
-                cfg.AddMaps(typeof(ConfigureApplication).Assembly);
-            });
+            }, typeof(ConfigureApplication).Assembly);
 
             return services;
         }

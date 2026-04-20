@@ -4,8 +4,8 @@
     {
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = string.Empty;
-        public string VFCoverPath { get; set; } = string.Empty;
-        public string VOCoverPath { get; set; } = string.Empty;
+        public ImageDto VFCoverPath { get; set; } = new();
+        public ImageDto VOCoverPath { get; set; } = new();
         public DateTime VOParutionDate { get; set; }
         public string VOParutionCountry { get; set; } = string.Empty;
         public DateTime VFParutionDate { get; set; }

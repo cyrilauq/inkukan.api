@@ -24,7 +24,8 @@ namespace InkShelf.Infrastructure
                 .AddScoped<IMangaSerieRepository, MangaSerieRepository>()
                 .AddScoped<IMangaPeopleRepository, MangaPeopleRepository>()
                 .AddScoped<IEditorRepository, EditorRepository>()
-                .AddScoped<ISerieVolumeRepository, SerieVolumeRepository>();
+                .AddScoped<ISerieVolumeRepository, SerieVolumeRepository>()
+                .AddScoped<IBlobStorage, VercelBlobStorage>();
 
             return services;
         }

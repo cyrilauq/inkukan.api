@@ -17,21 +17,17 @@ namespace InkShelf.Infrastructure.Data.Configuration
                 .HasMaxLength(255);
             builder
                 .Property(b => b.VFCoverPath)
-                .IsRequired()
                 .HasMaxLength(255);
             builder
                 .Property(b => b.VOCoverPath)
-                .IsRequired()
                 .HasMaxLength(255);
             builder
                 .Property(b => b.VOParutionDate)
                 .IsRequired();
             builder
-                .Property(b => b.VFParutionDate)
-                .IsRequired();
+                .Property(b => b.VFParutionDate);
             builder
                 .Property(b => b.VFParutionCountry)
-                .IsRequired()
                 .HasMaxLength(100);
             builder
                 .Property(b => b.VOParutionCountry)
@@ -46,6 +42,9 @@ namespace InkShelf.Infrastructure.Data.Configuration
             builder
                 .Property(b => b.PriceCode)
                 .HasMaxLength(25);
+            builder
+                .Property(b => b.MangaSerieId)
+                .IsRequired();
 
             builder
                 .HasOne(b => b.MangaSerie)
