@@ -10,7 +10,7 @@ using MediatR;
 
 namespace InkShelf.Application.Features.SerieVolume.Create
 {
-    public class CreateSerieVolumeCommandHandler(ISerieVolumeRepository serieVolumeRepository, IFileUploader fileUploader, IValidator<CreateSerieVolumeCommand> validator, IMapper mapper)
+    public class CreateSerieVolumeCommandHandler(ISerieVolumeRepository serieVolumeRepository, IFileUploader fileUploader, IHashService hashService, IValidator<CreateSerieVolumeCommand> validator, IMapper mapper)
         : IRequestHandler<CreateSerieVolumeCommand, SerieVolumeDto>, IValidatable<CreateSerieVolumeCommand>
     {
         public async Task<bool> EnsureIsValidAsync(CreateSerieVolumeCommand value)
@@ -31,13 +31,15 @@ namespace InkShelf.Application.Features.SerieVolume.Create
             {
                 Guid? vfCoverPath = await fileUploader.UploadAsync(vfCover.Name, vfCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 serieToAdd.VFCoverPath = vfCoverPath.ToString();
+                serieToAdd.VFCoverHash = await hashService.HashBytesAsync(vfCover.Content);
             }
             if (request.VOCoverImage is FileDto voCover)
             {
                 Guid? voCoverPath = await fileUploader.UploadAsync(voCover.Name, voCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 serieToAdd.VOCoverPath = voCoverPath.ToString();
+                serieToAdd.VOCoverPath = await hashService.HashBytesAsync(voCover.Content);
             }
-            Domain.Entities.SerieVolume result = await serieVolumeRepository.CreateAsync(serieToAdd);
+            Domain.Entities.SerieVolume result = await serieVolumeRepository.CreateAsync(serieToAdd, cancellationToken);
             return mapper.Map<SerieVolumeDto>(result);
         }
     }

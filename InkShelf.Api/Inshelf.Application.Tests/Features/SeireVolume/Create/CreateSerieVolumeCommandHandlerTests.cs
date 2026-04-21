@@ -17,6 +17,7 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
     [TestClass]
     public class CreateSerieVolumeCommandHandlerTests
     {
+        private Mock<IHashService> _hashServiceMock = null!;
         private Mock<ISerieVolumeRepository> _repositoryMock = null!;
         private Mock<IFileUploader> _fileUploaderMock = null!;
         private IMapper _mapper = null!;
@@ -26,8 +27,12 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
         [TestInitialize]
         public void SetUp()
         {
+            _hashServiceMock = new();
             _repositoryMock = new Mock<ISerieVolumeRepository>();
             _fileUploaderMock = new Mock<IFileUploader>();
+
+            _hashServiceMock.Setup(hsm => hsm.HashBytesAsync(It.IsAny<byte[]>()))
+                .ReturnsAsync("");
 
             ServiceCollection services = new();
 
@@ -48,6 +53,7 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
             _handler = new CreateSerieVolumeCommandHandler(
                 _repositoryMock.Object,
                 _fileUploaderMock.Object,
+                _hashServiceMock.Object,
                 _validator,
                 _mapper);
         }

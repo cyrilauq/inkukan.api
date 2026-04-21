@@ -10,7 +10,7 @@ namespace InkShelf.Application.Features.Abstractions
     public class BaseUpdateCommandHandler<TCommand, TDto, TEntity>(IBaseRepository<TEntity> repository, IValidator<TCommand> validator, IMapper mapper) 
         : IRequestHandler<TCommand, TDto>, IValidatable<TCommand>
         where TCommand : class, IRequest<TDto>
-        where TEntity : class
+        where TEntity : class, new()
         where TDto : class
     {
         public async Task<bool> EnsureIsValidAsync(TCommand value)
@@ -23,12 +23,17 @@ namespace InkShelf.Application.Features.Abstractions
         public async Task<TDto> Handle(TCommand request, CancellationToken cancellationToken)
         {
             await EnsureIsValidAsync(request);
-            TEntity entity = mapper.Map<TEntity>(request);
+            TEntity entity = await GetByIdAsync(request) ?? throw new EntityValidationException("A validation error occure", ["The asked resource doesn't exists"]);
+            mapper.Map(request, entity);
+            await AfterUpdateAsync(request, entity, cancellationToken);
             TEntity result = await repository.UpdateAsync(entity, cancellationToken);
             return mapper.Map<TDto>(result);
         }
 
-        public virtual Task<bool> IsUniqueAsync(TCommand request, CancellationToken cancellationToken)
-            => Task.FromResult(true);
+        public virtual Task<TEntity?> GetByIdAsync(TCommand request)
+            => Task.FromResult((TEntity?)null);
+
+        public virtual Task AfterUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
+            => Task.CompletedTask;
     }
 }

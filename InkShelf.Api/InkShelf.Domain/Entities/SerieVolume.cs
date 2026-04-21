@@ -7,7 +7,9 @@ namespace InkShelf.Domain.Entities
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = null!;
         public string? VFCoverPath { get; set; }
+        public string? VFCoverHash { get; set; }
         public string? VOCoverPath { get; set; }
+        public string? VOCoverHash { get; set; }
         public DateTime VOParutionDate { get; set; }
         public string VOParutionCountry { get; set; } = null!;
         public DateTime? VFParutionDate { get; set; }

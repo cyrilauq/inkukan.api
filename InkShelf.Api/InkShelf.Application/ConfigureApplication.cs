@@ -38,7 +38,8 @@ namespace InkShelf.Application
 
             services
                 .AddScoped<IFileUploader, FileUploaderVercelBlob>()
-                .AddScoped<IFileChecker, FileChecker>();
+                .AddScoped<IFileChecker, FileChecker>()
+                .AddScoped<IHashService, SHAHashService>();
 
             return services;
         }
