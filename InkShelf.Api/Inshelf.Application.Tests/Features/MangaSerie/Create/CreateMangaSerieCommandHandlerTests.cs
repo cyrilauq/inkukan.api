@@ -104,7 +104,7 @@ namespace Inshelf.Application.Tests.Features.MangaSerie.Create
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Entities.MangaSerie>()), Times.Once);
+            _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Entities.MangaSerie>(), CancellationToken.None), Times.Once);
         }
     }
 }

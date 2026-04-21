@@ -100,7 +100,7 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
             _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(It.IsAny<Guid>(), It.IsAny<int>()))
                 .ReturnsAsync((SerieVolume?)null);
 
-            _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>()))
+            _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None))
                 .ReturnsAsync(entity);
 
             // Act
@@ -108,7 +108,7 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
 
             // Assert
             result.Should().NotBeNull();
-            _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<SerieVolume>()), Times.Once);
+            _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None), Times.Once);
         }
 
         [TestMethod]
@@ -121,7 +121,7 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
             _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(It.IsAny<Guid>(), It.IsAny<int>()))
                 .ReturnsAsync((SerieVolume?)null);
 
-            _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>()))
+            _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None))
                 .ReturnsAsync(new SerieVolume());
 
             _fileUploaderMock.Setup(f => f.UploadAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<SupportedFileType[]>()))

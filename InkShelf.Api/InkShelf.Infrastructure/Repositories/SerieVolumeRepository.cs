@@ -2,20 +2,12 @@
 using InkShelf.Domain.Repositories;
 using InkShelf.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace InkShelf.Infrastructure.Repositories
 {
-    public class SerieVolumeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory) : ISerieVolumeRepository
+    public class SerieVolumeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
+        : BaseRepository<SerieVolume>(dbContextFactory), ISerieVolumeRepository
     {
-        public async Task<SerieVolume> CreateAsync(SerieVolume entity)
-        {
-            ApplicationDbContext context = dbContextFactory.CreateDbContext();
-            EntityEntry<SerieVolume> addResult = context.Add(entity);
-            await context.SaveChangesAsync();
-
-            return addResult.Entity;
-        }
 
         public async Task<SerieVolume?> GetBySerieIdAndVolumeNumber(Guid serieId, int volumeNumber)
         {
@@ -24,12 +16,6 @@ namespace InkShelf.Infrastructure.Repositories
                 .SerieVolumes
                 .Where(sv => sv.MangaSerieId == serieId && sv.VolumeNumber == volumeNumber)
                 .FirstOrDefaultAsync();
-        }
-
-        public IQueryable<SerieVolume> GetQuery()
-        {
-            ApplicationDbContext context = dbContextFactory.CreateDbContext();
-            return context.SerieVolumes;
         }
     }
 }

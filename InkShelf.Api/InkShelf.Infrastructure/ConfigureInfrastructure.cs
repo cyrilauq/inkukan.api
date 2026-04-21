@@ -1,4 +1,5 @@
-﻿using InkShelf.Domain.Repositories;
+﻿using InkShelf.Domain.Entities;
+using InkShelf.Domain.Repositories;
 using InkShelf.Infrastructure.Data;
 using InkShelf.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,10 @@ namespace InkShelf.Infrastructure
                 .AddScoped<IMangaPeopleRepository, MangaPeopleRepository>()
                 .AddScoped<IEditorRepository, EditorRepository>()
                 .AddScoped<ISerieVolumeRepository, SerieVolumeRepository>()
+                .AddScoped<IBaseRepository<MangaSerie>, MangaSerieRepository>()
+                .AddScoped<IBaseRepository<MangaPeople>, MangaPeopleRepository>()
+                .AddScoped<IBaseRepository<Editor>, EditorRepository>()
+                .AddScoped<IBaseRepository<SerieVolume>, SerieVolumeRepository>()
                 .AddScoped<IBlobStorage, VercelBlobStorage>();
 
             return services;

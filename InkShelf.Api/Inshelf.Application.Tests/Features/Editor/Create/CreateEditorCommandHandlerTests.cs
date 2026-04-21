@@ -29,7 +29,7 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
             _editorRepository.Setup(er => er.GetByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((InkShelf.Domain.Entities.Editor?)null);
 
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<MangaSerieProfile>(), _loggerFactory)
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<EditorProfile>(), _loggerFactory)
                 .CreateMapper();
             _validator = new CreateEditorValidator();
             _handler = new CreateEditorCommandHandler(_editorRepository.Object, _validator, _mapper);
@@ -61,7 +61,7 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
         private static IEnumerable<object?[]> DateTimeValues()
         {
             yield return [null];
-            yield return [DateTime.Now];
+            yield return [DateTime.MinValue];
         }
 
         [TestMethod]

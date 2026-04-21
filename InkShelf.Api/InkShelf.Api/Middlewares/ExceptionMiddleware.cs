@@ -1,6 +1,8 @@
 ﻿
 using InkShelf.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace InkShelf.Api.Middlewares
 {
@@ -39,6 +41,14 @@ namespace InkShelf.Api.Middlewares
             if (exceptionType == typeof(ConflictException))
             {
                 return Tuple.Create(StatusCodes.Status409Conflict, "Conflict", exception.Message);
+            }
+            if (exceptionType == typeof(ConflictException))
+            {
+                return Tuple.Create(StatusCodes.Status404NotFound, "Not Found", exception.Message);
+            }
+            if (exception is EntityValidationException validationException)
+            {
+                return Tuple.Create(StatusCodes.Status400BadRequest, "Bad request", JsonSerializer.Serialize(validationException.Errors));
             }
             return Tuple.Create(StatusCodes.Status500InternalServerError, "Internal Server Error", environment.IsDevelopment() ? exception.Message : $"Internal server error occured, traceId : {traceId}");
         }

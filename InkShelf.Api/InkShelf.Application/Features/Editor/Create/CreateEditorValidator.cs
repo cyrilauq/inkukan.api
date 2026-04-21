@@ -18,7 +18,7 @@ namespace InkShelf.Application.Features.Editor.Create
                 .MinimumLength(2).WithMessage("country_min_2_length")
                 .MaximumLength(100).WithMessage("country_max_100_length");
             RuleFor(e => e.ConstitutionDate)
-                .Null().WithMessage("constitution_date_null")
+                .NotNull().WithMessage("constitution_date_null")
                 .NotEmpty().WithMessage("constitution_date_empty")
                 .GreaterThan(DateTime.MinValue).WithMessage("constitution_date_min");
         }

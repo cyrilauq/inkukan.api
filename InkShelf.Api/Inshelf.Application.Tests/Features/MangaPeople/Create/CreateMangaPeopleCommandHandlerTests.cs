@@ -121,7 +121,7 @@ namespace Inshelf.Application.Tests.Features.MangaPeople.Create
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _mangaPeopleRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<InkShelf.Domain.Entities.MangaPeople>()), Times.Once);
+            _mangaPeopleRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<InkShelf.Domain.Entities.MangaPeople>(), CancellationToken.None), Times.Once);
         }
     }
 }
