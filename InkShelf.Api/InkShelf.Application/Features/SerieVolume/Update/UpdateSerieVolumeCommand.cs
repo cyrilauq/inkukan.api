@@ -1,10 +1,11 @@
 ﻿using InkShelf.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.SerieVolume.Create
+namespace InkShelf.Application.Features.SerieVolume.Update
 {
-    public class CreateSerieVolumeCommand : IRequest<SerieVolumeDto>
+    public class UpdateSerieVolumeCommand : IRequest<SerieVolumeDto>
     {
+        public Guid Id { get; set; }
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = string.Empty;
         public FileDto? VFCoverImage { get; set; }

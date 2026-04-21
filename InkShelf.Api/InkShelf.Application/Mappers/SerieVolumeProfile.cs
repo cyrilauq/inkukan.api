@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.SerieVolume.Create;
+using InkShelf.Application.Features.SerieVolume.Update;
 using InkShelf.Application.Services.Implementations;
 using InkShelf.Domain.Entities;
 
@@ -16,6 +17,8 @@ namespace InkShelf.Application.Mappers
                 .AfterMap<SetImageDtoAction>()
                 .ReverseMap();
             CreateMap<CreateSerieVolumeCommand, SerieVolume>()
+                .ReverseMap();
+            CreateMap<UpdateSerieVolumeCommand, SerieVolume>()
                 .ReverseMap();
         }
     }

@@ -1,4 +1,4 @@
-﻿using InkShelf.Application.Features.SerieVolume.Create;
+﻿using InkShelf.Application.Dtos;
 
 namespace InkShelf.Api.Extensions
 {
