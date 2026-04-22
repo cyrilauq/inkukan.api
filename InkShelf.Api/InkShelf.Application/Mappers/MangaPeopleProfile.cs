@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.MangaPeople.Create;
+using InkShelf.Application.Features.MangaPeople.Update;
 using InkShelf.Domain.Entities;
 
 namespace InkShelf.Application.Mappers
@@ -12,6 +13,8 @@ namespace InkShelf.Application.Mappers
             CreateMap<MangaPeople, MangaPeopleDto>()
                 .ReverseMap();
             CreateMap<CreateMangaPeopleCommand, MangaPeople>()
+                .ReverseMap();
+            CreateMap<UpdateMangaPeopleCommand, MangaPeople>()
                 .ReverseMap();
         }
     }

@@ -15,6 +15,7 @@ namespace InkShelf.Application.Features.Abstractions
     {
         public async Task<bool> EnsureIsValidAsync(TCommand value)
         {
+            if (await AlreadyExistsAsync(value)) throw new ConflictException("Another entity with the same value already exists");
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
             if (validationResult.IsValid) return true;
             throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
@@ -25,7 +26,7 @@ namespace InkShelf.Application.Features.Abstractions
             await EnsureIsValidAsync(request);
             TEntity entity = await GetByIdAsync(request) ?? throw new EntityValidationException("A validation error occure", ["The asked resource doesn't exists"]);
             mapper.Map(request, entity);
-            await AfterUpdateAsync(request, entity, cancellationToken);
+            await BeforeUpdateAsync(request, entity, cancellationToken);
             TEntity result = await repository.UpdateAsync(entity, cancellationToken);
             return mapper.Map<TDto>(result);
         }
@@ -33,7 +34,10 @@ namespace InkShelf.Application.Features.Abstractions
         public virtual Task<TEntity?> GetByIdAsync(TCommand request)
             => Task.FromResult((TEntity?)null);
 
-        public virtual Task AfterUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
+        public virtual Task BeforeUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
             => Task.CompletedTask;
+
+        public virtual Task<bool> AlreadyExistsAsync(TCommand request)
+            => Task.FromResult(false);
     }
 }

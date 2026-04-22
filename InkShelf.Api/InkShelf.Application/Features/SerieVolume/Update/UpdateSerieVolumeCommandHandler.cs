@@ -10,7 +10,7 @@ namespace InkShelf.Application.Features.SerieVolume.Update
     public class UpdateSerieVolumeCommandHandler(IFileUploader fileUploader, ISerieVolumeRepository volumeRepostory, IHashService hashService, IValidator<UpdateSerieVolumeCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateSerieVolumeCommand, SerieVolumeDto, Domain.Entities.SerieVolume>(volumeRepostory, validator, mapper)
     {
-        public override async Task AfterUpdateAsync(UpdateSerieVolumeCommand request, Domain.Entities.SerieVolume entity, CancellationToken cancellationToken)
+        public override async Task BeforeUpdateAsync(UpdateSerieVolumeCommand request, Domain.Entities.SerieVolume entity, CancellationToken cancellationToken)
         {
             if (request.VFCoverImage is FileDto vfCover && !await hashService.VerifyHashAsync(entity.VFCoverHash, vfCover.Content))
             {
