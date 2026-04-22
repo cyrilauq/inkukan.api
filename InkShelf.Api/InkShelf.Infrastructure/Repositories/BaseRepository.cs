@@ -7,32 +7,31 @@ namespace InkShelf.Infrastructure.Repositories
 {
     public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IBaseRepository<T> where T : class
     {
+        protected IDbContextFactory<ApplicationDbContext> DbContextFactory = dbContextFactory;
+        protected ApplicationDbContext DbContext { get => DbContextFactory.CreateDbContext(); }
+
         public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            ApplicationDbContext dbContext = dbContextFactory.CreateDbContext();
-            EntityEntry<T> result = dbContext.Set<T>().Add(entity);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            EntityEntry<T> result = DbContext.Set<T>().Add(entity);
+            await DbContext.SaveChangesAsync(cancellationToken);
             return result.Entity;
         }
 
         public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            ApplicationDbContext dbContext = dbContextFactory.CreateDbContext();
-            return await dbContext.Set<T>()
-                .FindAsync(id);
+            return await DbContext.Set<T>()
+                .FindAsync(id, cancellationToken);
         }
 
         public IQueryable<T> GetQuery()
         {
-            ApplicationDbContext dbContext = dbContextFactory.CreateDbContext();
-            return dbContext.Set<T>();
+            return DbContext.Set<T>();
         }
 
         public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            ApplicationDbContext dbContext = dbContextFactory.CreateDbContext();
-            EntityEntry<T> result = dbContext.Set<T>().Update(entity);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            EntityEntry<T> result = DbContext.Set<T>().Update(entity);
+            await DbContext.SaveChangesAsync(cancellationToken);
             return result.Entity;
         }
     }
