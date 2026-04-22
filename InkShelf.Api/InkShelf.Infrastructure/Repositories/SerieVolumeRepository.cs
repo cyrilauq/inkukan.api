@@ -11,8 +11,7 @@ namespace InkShelf.Infrastructure.Repositories
 
         public async Task<SerieVolume?> GetBySerieIdAndVolumeNumber(Guid serieId, int volumeNumber)
         {
-            ApplicationDbContext context = await dbContextFactory.CreateDbContextAsync();
-            return await context
+            return await DbContext
                 .SerieVolumes
                 .Where(sv => sv.MangaSerieId == serieId && sv.VolumeNumber == volumeNumber)
                 .FirstOrDefaultAsync();

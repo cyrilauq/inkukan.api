@@ -9,8 +9,7 @@ namespace InkShelf.Infrastructure.Repositories
     {
         public async Task<Editor?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            ApplicationDbContext dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
-            return await dbContext.Editors
+            return await DbContext.Editors
                 .Where(e => e.Name == name)
                 .FirstOrDefaultAsync(cancellationToken);
         }
