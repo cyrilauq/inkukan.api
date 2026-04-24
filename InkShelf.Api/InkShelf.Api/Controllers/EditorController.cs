@@ -12,8 +12,11 @@ namespace InkShelf.Api.Controllers
         public Task<EditorDto> CreateAsync(CreateEditorCommand command)
             => Mediator.Send(command);
 
-        [HttpPut]
-        public Task<EditorDto> UpdateAsync([FromBody] UpdateEditorCommand command)
-            => Mediator.Send(command);
+        [HttpPut("{editorId:guid}")]
+        public Task<EditorDto> UpdateAsync(Guid editorId, [FromBody] UpdateEditorCommand command)
+        {
+            command.Id = editorId;
+            return Mediator.Send(command);
+        }
     }
 }
