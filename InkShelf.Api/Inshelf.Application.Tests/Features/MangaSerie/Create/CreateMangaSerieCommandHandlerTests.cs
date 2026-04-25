@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using InkShelf.Application.Features.MangaSerie.Create;
+using InkShelf.Application.Features.MangaSerie.Command.Create;
 using InkShelf.Application.Mappers;
 using InkShelf.Domain.Exceptions;
 using InkShelf.Domain.Repositories;

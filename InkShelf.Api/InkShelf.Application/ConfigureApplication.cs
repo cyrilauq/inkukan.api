@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using InkShelf.Application.Features.MangaSerie.Create;
+using InkShelf.Application.Features.MangaSerie.Command.Create;
 using InkShelf.Application.Services;
 using InkShelf.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;

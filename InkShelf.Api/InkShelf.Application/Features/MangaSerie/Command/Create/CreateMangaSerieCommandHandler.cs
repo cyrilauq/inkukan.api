@@ -7,7 +7,7 @@ using InkShelf.Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace InkShelf.Application.Features.MangaSerie.Create
+namespace InkShelf.Application.Features.MangaSerie.Command.Create
 {
     public class CreateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<CreateMangaSerieCommand> validator, IMapper mapper) 
         : IRequestHandler<CreateMangaSerieCommand, MangaSerieDto>, IValidatable<CreateMangaSerieCommand>

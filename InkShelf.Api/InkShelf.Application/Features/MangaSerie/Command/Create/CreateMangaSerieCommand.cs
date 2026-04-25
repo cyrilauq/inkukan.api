@@ -1,9 +1,9 @@
 ﻿using InkShelf.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.MangaSerie.Update
+namespace InkShelf.Application.Features.MangaSerie.Command.Create
 {
-    public class UpdateMangaSerieCommand : IRequest<MangaSerieDto>
+    public class CreateMangaSerieCommand : IRequest<MangaSerieDto>
     {
         public Guid Id { get; set; }
         public string TitleVF { get; set; } = string.Empty;

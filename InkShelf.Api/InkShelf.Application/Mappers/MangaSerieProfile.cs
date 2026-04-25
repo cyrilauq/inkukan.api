@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaSerie.Create;
-using InkShelf.Application.Features.MangaSerie.Update;
+using InkShelf.Application.Features.MangaSerie.Command.Create;
+using InkShelf.Application.Features.MangaSerie.Command.Update;
 using InkShelf.Domain.Entities;
 
 namespace InkShelf.Application.Mappers

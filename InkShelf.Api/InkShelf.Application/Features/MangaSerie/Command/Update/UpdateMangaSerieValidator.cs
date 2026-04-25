@@ -1,11 +1,15 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.MangaSerie.Create
+namespace InkShelf.Application.Features.MangaSerie.Command.Update
 {
-    public class CreateMangaSerieValidator : AbstractValidator<CreateMangaSerieCommand>
+    public class UpdateMangaSerieValidator : AbstractValidator<UpdateMangaSerieCommand>
     {
-        public CreateMangaSerieValidator()
+        public UpdateMangaSerieValidator()
         {
+            RuleFor(m => m.Id)
+                .NotEmpty().WithMessage("id_empty")
+                .NotNull().WithMessage("id_empty")
+                .NotEqual(Guid.Empty).WithMessage("id_empty");
             RuleFor(m => m.TitleVF)
                 .NotEmpty().WithMessage("titlevf_empty")
                 .NotNull().WithMessage("titlevf_null")

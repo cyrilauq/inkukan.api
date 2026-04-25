@@ -1,6 +1,7 @@
 ﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaSerie.Create;
-using InkShelf.Application.Features.MangaSerie.Update;
+using InkShelf.Application.Features.MangaSerie.Command.Create;
+using InkShelf.Application.Features.MangaSerie.Command.Update;
+using InkShelf.Application.Features.MangaSerie.Query.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,12 @@ namespace InkShelf.Api.Controllers
         {
             command.Id = mangaId;
             return Mediator.Send(command);
+        }
+
+        [HttpGet]
+        public Task<IList<MangaSerieDto>> GetAllAsync([FromQuery] GetAllSerieQuery query)
+        {
+            return Mediator.Send(query);
         }
     }
 }
