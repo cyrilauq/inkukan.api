@@ -2,6 +2,8 @@
 {
     public class SerieVolumeDto
     {
+        public Guid Id { get; set; }
+
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = string.Empty;
         public ImageDto VFCoverPath { get; set; } = new();

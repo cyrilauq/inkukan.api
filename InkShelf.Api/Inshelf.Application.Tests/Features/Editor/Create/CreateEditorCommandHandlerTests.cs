@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using InkShelf.Application.Features.Editor.Create;
-using InkShelf.Application.Features.MangaSerie.Create;
 using InkShelf.Application.Mappers;
-using InkShelf.Domain.Entities;
 using InkShelf.Domain.Exceptions;
 using InkShelf.Domain.Repositories;
 using Microsoft.Extensions.Logging;

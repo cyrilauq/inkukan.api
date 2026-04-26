@@ -10,8 +10,10 @@ namespace InkShelf.Application.Mappers
     {
         public MangaSerieProfile()
         {
-            CreateMap<MangaSerieDto, MangaSerie>()
-                .ReverseMap();
+            CreateMap<MangaSerie, MangaSerieDto>()
+                            .ForMember(dest => dest.Volumes, opt => opt.ExplicitExpansion());
+
+            CreateMap<MangaSerieDto, MangaSerie>();
 
             CreateMap<CreateMangaSerieCommand, MangaSerie>()
                 .ReverseMap();

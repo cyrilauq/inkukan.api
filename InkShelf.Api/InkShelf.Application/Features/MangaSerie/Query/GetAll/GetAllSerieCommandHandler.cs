@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.Abstractions;
 using InkShelf.Domain.Repositories;

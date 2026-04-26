@@ -7,6 +7,7 @@ using InkShelf.Domain.Entities;
 using InkShelf.Domain.Exceptions;
 using InkShelf.Domain.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InkShelf.Application.Features.SerieVolume.Create
 {
@@ -27,14 +28,22 @@ namespace InkShelf.Application.Features.SerieVolume.Create
         {
             await EnsureIsValidAsync(request);
             Domain.Entities.SerieVolume serieToAdd = mapper.Map<Domain.Entities.SerieVolume>(request);
-            if (request.VFCoverImage is FileDto vfCover)
+            if (request.VFCover != null)
             {
+                using MemoryStream stream = new();
+                await request.VFCover.CopyToAsync(stream, cancellationToken);
+                var vfCoverbytes = stream.ToArray();
+                var vfCover = new FileDto(request.VFCover.FileName, vfCoverbytes);
                 Guid? vfCoverPath = await fileUploader.UploadAsync(vfCover.Name, vfCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 serieToAdd.VFCoverPath = vfCoverPath.ToString();
                 serieToAdd.VFCoverHash = await hashService.HashBytesAsync(vfCover.Content);
             }
-            if (request.VOCoverImage is FileDto voCover)
+            if (request.VOCover != null)
             {
+                using MemoryStream stream = new();
+                await request.VOCover.CopyToAsync(stream, cancellationToken);
+                var vOCoverbytes = stream.ToArray();
+                var voCover = new FileDto(request.VOCover.FileName, vOCoverbytes);
                 Guid? voCoverPath = await fileUploader.UploadAsync(voCover.Name, voCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 serieToAdd.VOCoverPath = voCoverPath.ToString();
                 serieToAdd.VOCoverPath = await hashService.HashBytesAsync(voCover.Content);

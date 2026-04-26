@@ -12,26 +12,30 @@ namespace InkShelf.Infrastructure.Repositories
 
         public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            EntityEntry<T> result = DbContext.Set<T>().Add(entity);
-            await DbContext.SaveChangesAsync(cancellationToken);
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            EntityEntry<T> result = dbContext.Set<T>().Add(entity);
+            await dbContext.SaveChangesAsync(cancellationToken);
             return result.Entity;
         }
 
         public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<T>()
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            return await dbContext.Set<T>()
                 .FindAsync(id, cancellationToken);
         }
 
         public IQueryable<T> GetQuery()
         {
-            return DbContext.Set<T>();
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            return dbContext.Set<T>();
         }
 
         public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            EntityEntry<T> result = DbContext.Set<T>().Update(entity);
-            await DbContext.SaveChangesAsync(cancellationToken);
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            EntityEntry<T> result = dbContext.Set<T>().Update(entity);
+            await dbContext.SaveChangesAsync(cancellationToken);
             return result.Entity;
         }
     }

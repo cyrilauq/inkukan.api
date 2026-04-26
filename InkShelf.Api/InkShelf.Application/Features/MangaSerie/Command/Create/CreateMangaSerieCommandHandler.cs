@@ -31,7 +31,7 @@ namespace InkShelf.Application.Features.MangaSerie.Command.Create
         {
             Domain.Entities.MangaSerie? foundMangaSerie = await mangaSerieRepository.GetQuery()
                 .Where(ms => 
-                    ms.TitleVF.ToLower().Equals(command.TitleVF.ToLower()) &&
+                    ms.TitleVF.ToLower().Equals(command.TitleVF.ToLower()) ||
                     ms.TitleVO.ToLower().Equals(command.TitleVO.ToLower())
                 )
                 .FirstOrDefaultAsync();

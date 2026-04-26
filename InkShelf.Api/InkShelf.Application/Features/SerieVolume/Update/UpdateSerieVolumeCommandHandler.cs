@@ -12,14 +12,24 @@ namespace InkShelf.Application.Features.SerieVolume.Update
     {
         public override async Task BeforeUpdateAsync(UpdateSerieVolumeCommand request, Domain.Entities.SerieVolume entity, CancellationToken cancellationToken)
         {
-            if (request.VFCoverImage is FileDto vfCover && !await hashService.VerifyHashAsync(entity.VFCoverHash, vfCover.Content))
+            if (request.VFCover != null)
             {
+                using MemoryStream stream = new();
+                await request.VFCover.CopyToAsync(stream, cancellationToken);
+                var vfCoverbytes = stream.ToArray();
+                if (await hashService.VerifyHashAsync(entity.VFCoverHash, vfCoverbytes)) return;
+                var vfCover = new FileDto(request.VFCover.FileName, vfCoverbytes);
                 Guid? vfCoverPath = await fileUploader.UploadAsync(vfCover.Name, vfCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 entity.VFCoverPath = vfCoverPath.ToString();
                 entity.VFCoverHash = await hashService.HashBytesAsync(vfCover.Content);
             }
-            if (request.VOCoverImage is FileDto voCover && !await hashService.VerifyHashAsync(entity.VOCoverHash, voCover.Content))
+            if (request.VOCover != null)
             {
+                using MemoryStream stream = new();
+                await request.VOCover.CopyToAsync(stream, cancellationToken);
+                var vOCoverbytes = stream.ToArray();
+                if (await hashService.VerifyHashAsync(entity.VOCoverHash, vOCoverbytes)) return;
+                var voCover = new FileDto(request.VOCover.FileName, vOCoverbytes);
                 Guid? voCoverPath = await fileUploader.UploadAsync(voCover.Name, voCover.Content, "", SupportedFileType.PNG, SupportedFileType.JPG, SupportedFileType.JPEG);
                 entity.VOCoverPath = voCoverPath.ToString();
                 entity.VOCoverPath = await hashService.HashBytesAsync(voCover.Content);
