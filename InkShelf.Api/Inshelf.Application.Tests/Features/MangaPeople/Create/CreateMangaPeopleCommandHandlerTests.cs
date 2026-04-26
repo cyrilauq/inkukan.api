@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
+using InkShelf.Application.Features.MangaPeople.Commands.Create;
 using InkShelf.Application.Features.MangaPeople.Create;
 using InkShelf.Application.Mappers;
 using InkShelf.Domain.Exceptions;

@@ -5,7 +5,7 @@ using InkShelf.Application.Features.Abstractions;
 using InkShelf.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace InkShelf.Application.Features.MangaPeople.Update
+namespace InkShelf.Application.Features.MangaPeople.Commands.Update
 {
     public class UpdateMangaPeopleCommandHandler(IMangaPeopleRepository mangaPeopleRepository, IValidator<UpdateMangaPeopleCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateMangaPeopleCommand, MangaPeopleDto, Domain.Entities.MangaPeople>(mangaPeopleRepository, validator, mapper)

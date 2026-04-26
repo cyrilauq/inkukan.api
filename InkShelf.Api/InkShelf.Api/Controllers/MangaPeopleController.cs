@@ -1,6 +1,7 @@
 ﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaPeople.Create;
-using InkShelf.Application.Features.MangaPeople.Update;
+using InkShelf.Application.Features.MangaPeople.Commands.Create;
+using InkShelf.Application.Features.MangaPeople.Commands.Update;
+using InkShelf.Application.Features.MangaPeople.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,10 @@ namespace InkShelf.Api.Controllers
         [HttpPost]
         public Task<MangaPeopleDto> CreateAsync([FromBody] CreateMangaPeopleCommand command)
             => Mediator.Send(command);
+
+        [HttpGet]
+        public Task<IList<MangaPeopleDto>> GetAllAsync([FromQuery] GetAllMangaPeopleQuery query)
+            => Mediator.Send(query);
 
         [HttpPut("{peppolId:guid}")]
         public Task<MangaPeopleDto> UpdateAsync(Guid peppolId, [FromBody] UpdateMangaPeopleCommand command)

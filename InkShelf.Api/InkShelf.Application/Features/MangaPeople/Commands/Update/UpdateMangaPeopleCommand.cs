@@ -1,10 +1,11 @@
 ﻿using InkShelf.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.MangaPeople.Create
+namespace InkShelf.Application.Features.MangaPeople.Commands.Update
 {
-    public class CreateMangaPeopleCommand : IRequest<MangaPeopleDto>
+    public class UpdateMangaPeopleCommand : IRequest<MangaPeopleDto>
     {
+        public Guid Id { get; set; }
         public string Lastname { get; set; } = string.Empty;
         public string Firstname { get; set; } = string.Empty;
     }
