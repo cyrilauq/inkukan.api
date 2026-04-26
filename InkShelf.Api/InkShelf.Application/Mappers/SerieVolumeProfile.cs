@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.SerieVolume.Create;
-using InkShelf.Application.Features.SerieVolume.Update;
+using InkShelf.Application.Features.SerieVolume.Commands.Create;
+using InkShelf.Application.Features.SerieVolume.Commands.Update;
 using InkShelf.Application.Services.Implementations;
 using InkShelf.Domain.Entities;
 

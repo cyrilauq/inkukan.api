@@ -5,7 +5,7 @@ using InkShelf.Application.Features.Abstractions;
 using InkShelf.Application.Services;
 using InkShelf.Domain.Repositories;
 
-namespace InkShelf.Application.Features.SerieVolume.Update
+namespace InkShelf.Application.Features.SerieVolume.Commands.Update
 {
     public class UpdateSerieVolumeCommandHandler(IFileUploader fileUploader, ISerieVolumeRepository volumeRepostory, IHashService hashService, IValidator<UpdateSerieVolumeCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateSerieVolumeCommand, SerieVolumeDto, Domain.Entities.SerieVolume>(volumeRepostory, validator, mapper)

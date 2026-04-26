@@ -2,11 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace InkShelf.Application.Features.SerieVolume.Update
+namespace InkShelf.Application.Features.SerieVolume.Commands.Create
 {
-    public class UpdateSerieVolumeCommand : IRequest<SerieVolumeDto>
+    public class CreateSerieVolumeCommand : IRequest<SerieVolumeDto>
     {
-        public Guid Id { get; set; }
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = string.Empty;
         public IFormFile? VFCover { get; set; }

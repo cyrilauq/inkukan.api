@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.SerieVolume.Create;
+using InkShelf.Application.Features.SerieVolume.Commands.Create;
 using InkShelf.Application.Mappers;
 using InkShelf.Application.Services;
 using InkShelf.Application.Services.Implementations;

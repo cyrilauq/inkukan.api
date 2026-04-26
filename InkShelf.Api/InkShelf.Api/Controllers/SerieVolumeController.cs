@@ -1,7 +1,8 @@
 ﻿using InkShelf.Api.Extensions;
 using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.SerieVolume.Create;
-using InkShelf.Application.Features.SerieVolume.Update;
+using InkShelf.Application.Features.SerieVolume.Commands.Create;
+using InkShelf.Application.Features.SerieVolume.Commands.Update;
+using InkShelf.Application.Features.SerieVolume.Queries.GetAllBySerie;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,13 @@ namespace InkShelf.Api.Controllers
             command.MangaSerieId = serieId;
 
             return await Mediator.Send(command);
+        }
+
+        [HttpGet]
+        public async Task<IList<SerieVolumeDto>> GetAllAsync(Guid serieId, [FromQuery] GetAllBySerieQuery query)
+        {
+            query.SerieId = serieId;
+            return await Mediator.Send(query);
         }
 
         [HttpPut("{volumeId:guid}")]

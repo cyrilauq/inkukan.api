@@ -17,7 +17,7 @@ namespace InkShelf.Application.Features.Abstractions
     {
         public async Task<IList<TDto>> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            IQueryable<TDto> query = GetQuery()
+            IQueryable<TDto> query = GetQuery(request)
                 .Skip(request.PageNumber * request.PageSize)
                 .Take(request.PageSize);
 
@@ -127,7 +127,7 @@ namespace InkShelf.Application.Features.Abstractions
             return query;
         }
 
-        public virtual IQueryable<TDto> GetQuery()
+        public virtual IQueryable<TDto> GetQuery(TCommand query)
         {
             return repository.GetQuery()
                 .ProjectTo<TDto>(mapper.ConfigurationProvider);

@@ -1,15 +1,11 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.SerieVolume.Update
+namespace InkShelf.Application.Features.SerieVolume.Commands.Create
 {
-    public class UpdateSerieVolumeCommandValidator : AbstractValidator<UpdateSerieVolumeCommand>
+    public class CreateSerieVolumeCommandValidator : AbstractValidator<CreateSerieVolumeCommand>
     {
-        public UpdateSerieVolumeCommandValidator()
+        public CreateSerieVolumeCommandValidator() 
         {
-            RuleFor(m => m.Id)
-                .NotEmpty().WithMessage("id_empty")
-                .NotNull().WithMessage("id_empty")
-                .NotEqual(Guid.Empty).WithMessage("id_empty");
             RuleFor(c => c.VolumeNumber)
                 .GreaterThanOrEqualTo(0).WithMessage("volumenumber_positif");
             RuleFor(c => c.Synopsis)
