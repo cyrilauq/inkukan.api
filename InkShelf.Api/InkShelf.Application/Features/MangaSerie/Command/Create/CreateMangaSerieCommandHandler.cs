@@ -23,7 +23,7 @@ namespace InkShelf.Application.Features.MangaSerie.Command.Create
         {
             await EnsureIsValidAsync(command);
             await EnsureTitlesAreFree(command);
-            Domain.Entities.MangaSerie addedManga = await mangaSerieRepository.CreateAsync(mapper.Map<Domain.Entities.MangaSerie>(command));
+            Domain.Entities.MangaSerie addedManga = await mangaSerieRepository.CreateAsync(mapper.Map<Domain.Entities.MangaSerie>(command), cancellationToken);
             return mapper.Map<MangaSerieDto>(addedManga);
         }
 

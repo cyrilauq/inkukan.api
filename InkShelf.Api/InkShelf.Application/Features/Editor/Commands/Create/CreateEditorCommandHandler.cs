@@ -6,7 +6,7 @@ using InkShelf.Domain.Exceptions;
 using InkShelf.Domain.Repositories;
 using MediatR;
 
-namespace InkShelf.Application.Features.Editor.Create
+namespace InkShelf.Application.Features.Editor.Commands.Create
 {
     public class CreateEditorCommandHandler(IEditorRepository editorRepository, IValidator<CreateEditorCommand> validator, IMapper mapper)
         : IRequestHandler<CreateEditorCommand, EditorDto>, IValidatable<CreateEditorCommand>

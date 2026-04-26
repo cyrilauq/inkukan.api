@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.Editor.Create
+namespace InkShelf.Application.Features.Editor.Commands.Create
 {
     public class CreateEditorValidator : AbstractValidator<CreateEditorCommand>
     {

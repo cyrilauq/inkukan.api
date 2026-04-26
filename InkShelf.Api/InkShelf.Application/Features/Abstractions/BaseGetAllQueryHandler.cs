@@ -85,20 +85,27 @@ namespace InkShelf.Application.Features.Abstractions
                         equal = Expression.LessThanOrEqual(prop, value);
                         break;
                     case "contains":
-                        // 1. On récup!re les informations de la méthode "contains" de l'objet
-                        System.Reflection.MethodInfo? containsMethod = propertyInfo.PropertyType.GetMethod("Contains", [typeof(string)]);
-                        if (containsMethod == null) continue;
+                        // 1. On récupère la méthode "Contains" classique
+                        MethodInfo? containsMethod = typeof(string).GetMethod("Contains", [typeof(string)]);
+                        // On récupère aussi la méthode "ToLower" pour les chaînes
+                        MethodInfo? toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
 
-                        // 2. On récupérer la propriété "propertyName" de l'élément "item"
+                        if (containsMethod == null || toLowerMethod == null) continue;
+
+                        // 2. Accès à la propriété
                         MemberExpression propertyAccess = Expression.Property(item, propertyName);
 
-                        // 3. On défini la valeur qu'on recherche en lui spécifiant un type
-                        value = Expression.Constant(searchQuery.ToLower(System.Globalization.CultureInfo.CurrentCulture), typeof(string));
+                        // 3. Transformation de la PROPRIÉTÉ en minuscules : x.Title.ToLower()
+                        // On s'assure que c'est bien un string avant d'appeler ToLower
+                        MethodCallExpression propertyToLower = Expression.Call(propertyAccess, toLowerMethod);
 
-                        // 4. On appelle la méthode "contains" sur la propriété de notre "item" et on lui passe le paramètre "value"
-                        MethodCallExpression containsCall = Expression.Call(propertyAccess, containsMethod, value);
+                        // 4. Transformation de la VALEUR RECHERCHÉE en minuscules
+                        value = Expression.Constant(searchQuery.ToLower(), typeof(string));
 
-                        // 5. Création de la Lambda : on vérifie que la "propertyAccess" n'est pas null et qu'elle contient la valeur recherché
+                        // 5. Appel de .Contains sur la version en minuscules : x.Title.ToLower().Contains("valeur_en_minuscules")
+                        MethodCallExpression containsCall = Expression.Call(propertyToLower, containsMethod, value);
+
+                        // 6. Création de la Lambda avec vérification de nullité
                         Expression<Func<TDto, bool>> containsLambdaExpression = Expression.Lambda<Func<TDto, bool>>(
                             Expression.AndAlso(
                                 Expression.NotEqual(propertyAccess, Expression.Constant(null)),

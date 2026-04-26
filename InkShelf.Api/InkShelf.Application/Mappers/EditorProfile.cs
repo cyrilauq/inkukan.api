@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Editor.Create;
-using InkShelf.Application.Features.Editor.Update;
+using InkShelf.Application.Features.Editor.Commands.Create;
+using InkShelf.Application.Features.Editor.Commands.Update;
 using InkShelf.Domain.Entities;
 
 namespace InkShelf.Application.Mappers

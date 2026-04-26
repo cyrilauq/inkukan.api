@@ -1,7 +1,7 @@
 ﻿using InkShelf.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.Editor.Create
+namespace InkShelf.Application.Features.Editor.Commands.Create
 {
     public class CreateEditorCommand : IRequest<EditorDto>
     {

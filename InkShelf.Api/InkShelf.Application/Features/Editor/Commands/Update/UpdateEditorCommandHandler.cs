@@ -4,7 +4,7 @@ using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.Abstractions;
 using InkShelf.Domain.Repositories;
 
-namespace InkShelf.Application.Features.Editor.Update
+namespace InkShelf.Application.Features.Editor.Commands.Update
 {
     public class UpdateEditorCommanddHandler(IEditorRepository editorRepository, IValidator<UpdateEditorCommand> validator, IMapper mapper)
         : BaseUpdateCommandHandler<UpdateEditorCommand, EditorDto, Domain.Entities.Editor>(editorRepository, validator, mapper)

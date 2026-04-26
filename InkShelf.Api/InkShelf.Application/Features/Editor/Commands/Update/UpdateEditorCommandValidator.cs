@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.Editor.Update
+namespace InkShelf.Application.Features.Editor.Commands.Update
 {
     public class UpdateEditorCommandValidator : AbstractValidator<UpdateEditorCommand>
     {
