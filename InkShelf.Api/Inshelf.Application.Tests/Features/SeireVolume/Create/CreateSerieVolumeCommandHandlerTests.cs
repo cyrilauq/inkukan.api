@@ -8,6 +8,7 @@ using InkShelf.Application.Services.Implementations;
 using InkShelf.Domain.Entities;
 using InkShelf.Domain.Exceptions;
 using InkShelf.Domain.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -122,7 +123,12 @@ namespace Inshelf.Application.Tests.Features.SeireVolume.Create
         {
             // Arrange
             CreateSerieVolumeCommand command = CreateValidCommand();
-            command.VFCoverImage = new FileDto("test.png", [0x0]);
+            using var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write("content");
+            stream.Flush();
+            stream.Position = 0;
+            command.VFCover = new FormFile(stream, 0, stream.Length, "", "test.png");
 
             _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(It.IsAny<Guid>(), It.IsAny<int>()))
                 .ReturnsAsync((SerieVolume?)null);
