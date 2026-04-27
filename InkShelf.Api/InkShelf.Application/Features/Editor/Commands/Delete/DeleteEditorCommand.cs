@@ -2,7 +2,7 @@
 
 namespace InkShelf.Application.Features.Editor.Commands.Delete
 {
-    public class DeleteMangaPeopleCommand : BaseDeleteCommand
+    public class DeleteEditorCommand : BaseDeleteCommand
     {
     }
 }

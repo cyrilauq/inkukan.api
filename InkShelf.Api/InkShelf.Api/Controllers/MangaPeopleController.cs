@@ -1,5 +1,5 @@
 ﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Editor.Commands.Delete;
+using InkShelf.Application.Features.MangaPeople.Commands.Delete;
 using InkShelf.Application.Features.MangaPeople.Commands.Create;
 using InkShelf.Application.Features.MangaPeople.Commands.Update;
 using InkShelf.Application.Features.MangaPeople.Queries.GetAll;
