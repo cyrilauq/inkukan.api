@@ -1,5 +1,6 @@
 ﻿using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.MangaSerie.Command.Create;
+using InkShelf.Application.Features.MangaSerie.Command.DeleteSerie;
 using InkShelf.Application.Features.MangaSerie.Command.Update;
 using InkShelf.Application.Features.MangaSerie.Query.GetAll;
 using MediatR;
@@ -12,6 +13,10 @@ namespace InkShelf.Api.Controllers
         [HttpPost]
         public Task<MangaSerieDto> CreateAsync([FromBody] CreateMangaSerieCommand command)
             => Mediator.Send(command);
+
+        [HttpDelete("{serieId:guid}")]
+        public Task DeleteAsync(Guid serieId)
+            => Mediator.Send(new DeleteSerieCommand() { Id = serieId });
 
         [HttpPut("{mangaId:guid}")]
         public Task<MangaSerieDto> UpdateAsync(Guid mangaId, [FromBody] UpdateMangaSerieCommand command)

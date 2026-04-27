@@ -18,6 +18,13 @@ namespace InkShelf.Infrastructure.Repositories
             return result.Entity;
         }
 
+        public async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        {
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            dbContext.Set<T>().Remove(entity);
+            return await dbContext.SaveChangesAsync(cancellationToken) == 1;
+        }
+
         public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
