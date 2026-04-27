@@ -1,6 +1,7 @@
 ﻿using InkShelf.Api.Extensions;
 using InkShelf.Application.Dtos;
 using InkShelf.Application.Features.SerieVolume.Commands.Create;
+using InkShelf.Application.Features.SerieVolume.Commands.Delete;
 using InkShelf.Application.Features.SerieVolume.Commands.Update;
 using InkShelf.Application.Features.SerieVolume.Queries.GetAllBySerie;
 using MediatR;
@@ -18,6 +19,10 @@ namespace InkShelf.Api.Controllers
 
             return await Mediator.Send(command);
         }
+
+        [HttpDelete("{volumeId:guid}")]
+        public Task DeleteAsync(Guid volumeId) 
+            => Mediator.Send(new DeleteSerieVolumeCommand() { Id = volumeId });
 
         [HttpGet]
         public async Task<IList<SerieVolumeDto>> GetAllAsync(Guid serieId, [FromQuery] GetAllBySerieQuery query)

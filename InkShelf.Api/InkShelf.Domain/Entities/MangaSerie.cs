@@ -2,7 +2,7 @@
 
 namespace InkShelf.Domain.Entities
 {
-    public class MangaSerie : ITrackableEntity
+    public class MangaSerie : ITrackableEntity, ILogicalDelete
     {
         // TODO : add something to "save" the cover
         
@@ -40,6 +40,11 @@ namespace InkShelf.Domain.Entities
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        #endregion
+
+        #region ILogicalDelete
+        public DateTime? DeletedAt { get; set; }
+        public bool IsDeleted { get; }
         #endregion
     }
 }

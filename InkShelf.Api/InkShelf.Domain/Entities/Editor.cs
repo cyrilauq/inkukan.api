@@ -2,7 +2,7 @@
 
 namespace InkShelf.Domain.Entities
 {
-    public class Editor : ITrackableEntity
+    public class Editor : ITrackableEntity, ILogicalDelete
     {
         public string Name { get; set; } = null!;
         public DateTime ConstitutionDate { get; set; }
@@ -15,6 +15,11 @@ namespace InkShelf.Domain.Entities
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        #endregion
+
+        #region ILogicalDelete
+        public DateTime? DeletedAt { get; set; }
+        public bool IsDeleted { get; }
         #endregion
     }
 }

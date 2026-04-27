@@ -31,7 +31,6 @@ namespace InkShelf.Domain.Entities
         #endregion
 
         #region ILogicalDelete
-
         public DateTime? DeletedAt { get; set; }
         public bool IsDeleted { get; }
         #endregion
