@@ -2,9 +2,12 @@
 using InkShelf.Domain.Repositories;
 using InkShelf.Infrastructure.Data;
 using InkShelf.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace InkShelf.Infrastructure
 {
@@ -37,7 +40,29 @@ namespace InkShelf.Infrastructure
 
         private static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContextFactory<ApplicationDbContext>(options =>
+                options.UseNpgsql(connectionString),
+                ServiceLifetime.Scoped); // <--- THIS IS CRITICAL
+
+            // 2. This satisfies Identity's need for a standard DbContext in the DI container
+            services.AddScoped(p =>
+                p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
+
+            // 3. Fix the 'IDataProtectionProvider' error
+            services.AddDataProtection();
+
+            // 4. Identity Configuration
+            services.AddIdentityCore<User>(cfg =>
+            {
+                cfg.SignIn.RequireConfirmedEmail = false;
+                cfg.Password.RequiredLength = 10;
+            })
+                .AddRoles<Role>()
+                .AddRoleManager<RoleManager<Role>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }
@@ -55,6 +80,27 @@ namespace InkShelf.Infrastructure
             await dbContext.SaveChangesAsync();
 
             return services;
+        }
+    }
+
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "..", "InkShelf.Api");
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(path)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.Development.json", optional: true)
+                .Build();
+
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            builder.UseNpgsql(connectionString);
+
+            return new ApplicationDbContext(builder.Options);
         }
     }
 }

@@ -7,15 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.25">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
   </ItemGroup>

@@ -8,12 +8,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace InkShelf.Infrastructure.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : IdentityDbContext(options)
+        : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>, UserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>(options)
     {
         public DbSet<Editor> Editors { get; set; }
         public DbSet<MangaSerie> MangaSeries { get; set; }
@@ -60,9 +59,9 @@ namespace InkShelf.Infrastructure.Data
                 {
                     // modify expression to handle correct child type
                     Expression<Func<ILogicalDelete, bool>> filterExpr = bm => !bm.IsDeleted;
-                    var parameter = Expression.Parameter(entityType.ClrType);
-                    var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
-                    var lambdaExpression = Expression.Lambda(body, parameter);
+                    ParameterExpression parameter = Expression.Parameter(entityType.ClrType);
+                    Expression body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+                    LambdaExpression lambdaExpression = Expression.Lambda(body, parameter);
 
                     // set filter
                     entityType.SetQueryFilter(lambdaExpression);
