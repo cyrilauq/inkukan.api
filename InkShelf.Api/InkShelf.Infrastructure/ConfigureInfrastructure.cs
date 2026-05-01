@@ -29,6 +29,7 @@ namespace InkShelf.Infrastructure
                 .AddScoped<IMangaPeopleRepository, MangaPeopleRepository>()
                 .AddScoped<IEditorRepository, EditorRepository>()
                 .AddScoped<ISerieVolumeRepository, SerieVolumeRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IBaseRepository<MangaSerie>, MangaSerieRepository>()
                 .AddScoped<IBaseRepository<MangaPeople>, MangaPeopleRepository>()
                 .AddScoped<IBaseRepository<Editor>, EditorRepository>()
@@ -70,12 +71,16 @@ namespace InkShelf.Infrastructure
         public static async Task<IServiceProvider> ExecuteMigrationsAsync(this IServiceProvider services)
         {
             ApplicationDbContext dbContext = services.GetRequiredService<ApplicationDbContext>();
+            RoleManager<Role> roleManager = services.GetRequiredService<RoleManager<Role>>();
             await dbContext.Database.MigrateAsync();
 
             if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen") == 0)
                 dbContext.MangaTypes.Add(new() { Code = "seinen", Name = "Seinen" });
             if (await dbContext.MangaCollections.CountAsync(mt => mt.Code == "seinen") == 0)
                 dbContext.MangaCollections.Add(new() { Code = "seinen", Name = "Seinen" });
+
+            if (await roleManager.Roles.CountAsync() == 0)
+                await roleManager.CreateAsync(new Role { Name = "User" });
 
             await dbContext.SaveChangesAsync();
 
