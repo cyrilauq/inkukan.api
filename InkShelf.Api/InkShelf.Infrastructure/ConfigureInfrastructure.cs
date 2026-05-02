@@ -73,6 +73,7 @@ namespace InkShelf.Infrastructure
         {
             ApplicationDbContext dbContext = services.GetRequiredService<ApplicationDbContext>();
             RoleManager<Role> roleManager = services.GetRequiredService<RoleManager<Role>>();
+            UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
             await dbContext.Database.MigrateAsync();
 
             if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen") == 0)
@@ -81,7 +82,21 @@ namespace InkShelf.Infrastructure
                 dbContext.MangaCollections.Add(new() { Code = "seinen", Name = "Seinen" });
 
             if (await roleManager.Roles.CountAsync() == 0)
+            {
                 await roleManager.CreateAsync(new Role { Name = "User" });
+                await roleManager.CreateAsync(new Role { Name = "Admin" });
+
+                await userManager.CreateAsync(
+                    new User
+                    {
+                        Email = "cyrilauqier@hotmail.fr",
+                        Firstname = "Cyril",
+                        Lastname = "Auquier",
+                        UserName = "admin"
+                    }, 
+                    "Password123$"
+                );
+            }
 
             await dbContext.SaveChangesAsync();
 
