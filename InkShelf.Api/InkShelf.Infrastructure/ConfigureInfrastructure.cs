@@ -30,6 +30,7 @@ namespace InkShelf.Infrastructure
                 .AddScoped<IEditorRepository, EditorRepository>()
                 .AddScoped<ISerieVolumeRepository, SerieVolumeRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IRoleRepository, RoleRepository>()
                 .AddScoped<IBaseRepository<MangaSerie>, MangaSerieRepository>()
                 .AddScoped<IBaseRepository<MangaPeople>, MangaPeopleRepository>()
                 .AddScoped<IBaseRepository<Editor>, EditorRepository>()

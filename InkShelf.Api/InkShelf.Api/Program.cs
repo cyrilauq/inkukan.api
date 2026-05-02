@@ -1,7 +1,6 @@
 using InkShelf.Api;
 using InkShelf.Api.Middlewares;
 using InkShelf.Infrastructure;
-using InkShelf.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +33,7 @@ app.UseHttpsRedirection();
 
 app
     .UseMiddleware<ExceptionMiddleware>()
+    .UseAuthentication()
     .UseAuthorization();
 
 app.MapControllers();

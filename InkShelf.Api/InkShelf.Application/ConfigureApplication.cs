@@ -27,6 +27,7 @@ namespace InkShelf.Application
             VercelBlobOptions blobOptions = new();
             configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
             services
+                .Configure<TokenConfiguration>(configuration.GetSection(nameof(TokenConfiguration)))
                 .AddSingleton(blobOptions);
 
             services.AddHttpClient("VercelBlocClient", client =>
@@ -39,6 +40,7 @@ namespace InkShelf.Application
             services
                 .AddScoped<IFileUploader, FileUploaderVercelBlob>()
                 .AddScoped<IFileChecker, FileChecker>()
+                .AddScoped<ITokenService, TokenService>()
                 .AddScoped<IHashService, SHAHashService>();
 
             return services;

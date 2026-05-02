@@ -42,6 +42,10 @@ namespace InkShelf.Api.Middlewares
             {
                 return Tuple.Create(StatusCodes.Status409Conflict, "Conflict", exception.Message);
             }
+            if (exceptionType == typeof(WrongCredentialsException))
+            {
+                return Tuple.Create(StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message);
+            }
             if (exceptionType == typeof(ConflictException))
             {
                 return Tuple.Create(StatusCodes.Status404NotFound, "Not Found", exception.Message);

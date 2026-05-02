@@ -19,6 +19,18 @@ namespace InkShelf.Infrastructure.Repositories
             return (await userManager.FindByEmailAsync(user.Email!))!;
         }
 
+        public async Task<User?> FindByCredentials(string login, string password, CancellationToken token = default)
+        {
+            User? foundUser = await GetByUsernameAsync(login) ?? await GetByEmailAsync(login);
+            if (foundUser == null)
+                return null;
+
+            bool checkIdentityResult = await userManager.CheckPasswordAsync(foundUser, password);
+
+            return checkIdentityResult ? foundUser : null;
+        }
+
+
         public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
         {
             return await userManager.FindByNameAsync(username);
