@@ -1,5 +1,5 @@
 <template>
-  <footer class="px-2 py-4 flex flex-row justify-between bg-gray-200">
+  <footer class="px-2 py-4 flex flex-row justify-between bg-blue-400 text-white">
     <div>
       <RouterLink :to="{ name: 'home' }">InkShelf</RouterLink>
     </div>

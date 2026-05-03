@@ -1,24 +1,15 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-3 bg-blue-100 py-4 px-2 text-justify rounded-lg">
     <section>
       <h2>Bienvenue sur <span class="font-bold">InkShelf</span>!</h2>
-      <p>Ici vous pourrez gérer en toute tranquillité votre collection de mangas.</p>
+      <p>Grâce à nous tu pourras gérer en toute tranquillité votre collection de mangas.</p>
     </section>
     <section>
-      <h2>Fonctionnalité</h2>
-      <p>Grâce à notre application vous pourrez:</p>
-      <ul>
-        <li>Gérer votre collection de manga</li>
-        <li>Avoir une vue sur les mangas qui sortiront</li>
-        <li>Avoir une suggestion personnalisée de mangas</li>
-        <li>Et bien d'autre</li>
-      </ul>
-    </section>
-    <section>
-      <h2>Envie d'en savoir plus?</h2>
+      <p>Tu veux garder un oeil sur ta collection de manga?</p>
+      <p>Tu veux arrêter d'acheter des mangas en doubles?</p>
       <p>Viens nous rejoindre en t'inscrivant</p>
-      <button>S'inscrire</button>
+      <button class="bg-blue-600 rounded-lg text-white px-2 py-1">==> S'inscrire</button>
     </section>
     <section>
       <h2>Newsletter</h2>

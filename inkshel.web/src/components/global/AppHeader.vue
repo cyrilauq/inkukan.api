@@ -1,5 +1,5 @@
 <template>
-  <header class="py-4 px-2 bg-gray-200 flex flex-col gap-4">
+  <header class="py-4 px-2 bg-blue-400 flex flex-col gap-4 text-white font-bold">
     <div>
       <h1>Inkshelf</h1>
     </div>
