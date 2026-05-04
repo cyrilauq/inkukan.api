@@ -14,6 +14,7 @@ namespace InkShelf.Api
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .AddApplicationCors(configuration)
                 .AddInfrastructure(configuration)
                 .AddApplication(configuration)
                 .AddLogging()
@@ -44,6 +45,23 @@ namespace InkShelf.Api
                 });
             services.AddAuthorization();
             return services;
+        }
+
+        private static IServiceCollection AddApplicationCors(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CORS", policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
+
+            return services;
+        }
+
+        public static IApplicationBuilder UseApplicationCors(this IApplicationBuilder builder, IConfiguration configuration)
+        {
+            builder.UseCors("CORS");
+
+            return builder;
         }
     }
 }
