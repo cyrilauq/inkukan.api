@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="w-full">
+    <div class="flex flex-col md:flex-row">
       <label :for="inputIdentifier">{{ inputLabel }}</label>
       <input
         type="email"
