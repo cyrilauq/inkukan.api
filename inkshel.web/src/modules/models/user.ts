@@ -1,7 +1,7 @@
 export type User = {
-  id: string,
+  id?: string,
   lastname: string,
   firstname: string,
   email: string,
-  accessToken: string,
+  accessToken?: string,
 }

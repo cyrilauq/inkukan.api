@@ -23,6 +23,10 @@ export const useAuthentication = () => {
     }
   }
 
+  const register = async (user: User, password: string) => {
+
+  }
+
   const loadFromLocalStorage = () => {
     try {
       const user = get<User>("connectedUser")
@@ -39,5 +43,5 @@ export const useAuthentication = () => {
     }
   }
 
-  return { login, loadFromLocalStorage }
+  return { login, register, loadFromLocalStorage }
 }

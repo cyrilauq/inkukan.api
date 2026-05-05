@@ -27,6 +27,7 @@
     >
       <div ref="formWrapperRef" class="flex w-4/5 md:w-auto">
         <LoginForm v-if="formShowed === 'login'" @cancel="closeForm" />
+        <RegisterForm v-if="formShowed === 'register'" @cancel="closeForm" />
       </div>
     </div>
   </header>
@@ -36,6 +37,7 @@ import { ref, useTemplateRef } from 'vue'
 import ActionButton from '../buttons/ActionButton.vue'
 import LoginForm from '../forms/LoginForm.vue'
 import { useAuthenticationStore } from '@/stores/authStore'
+import RegisterForm from '../forms/RegisterForm.vue'
 
 const authenticationStore = useAuthenticationStore()
 
