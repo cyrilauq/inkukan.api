@@ -20,9 +20,9 @@ export const useToaster = () => {
     setTimeout(() => toasterStore.remove(toast), defaultTimeout);
   }
 
-  const showError = (toastPayload: ToastPayload) => showToast({ ...toastPayload, timeout: 10000 }, "error")
-  const showWarning = (toastPayload: ToastPayload) => showToast({ ...toastPayload, timeout: 5000 }, "warning")
-  const showSuccess = (toastPayload: ToastPayload) => showToast({ ...toastPayload, timeout: 2000 }, "success")
+  const showError = (toastPayload: ToastPayload) => showToast({ ...toastPayload, title: 'Erreur', timeout: 10000 }, "error")
+  const showWarning = (toastPayload: ToastPayload) => showToast({ ...toastPayload, title: 'Avertissement', timeout: 5000 }, "warning")
+  const showSuccess = (toastPayload: ToastPayload) => showToast({ ...toastPayload, title: 'Succès', timeout: 2000 }, "success")
 
   return { createToast, showToast, showError, showWarning, showSuccess }
 }
