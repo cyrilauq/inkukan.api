@@ -17,7 +17,7 @@ export const useToaster = () => {
 
     toasterStore.push(toast)
 
-    setTimeout(() => toasterStore.remove(toast), defaultTimeout);
+    setTimeout(() => toasterStore.remove(toast), toastPayload.timeout || defaultTimeout);
   }
 
   const showError = (toastPayload: ToastPayload) => showToast({ ...toastPayload, title: 'Erreur', timeout: 10000 }, "error")
