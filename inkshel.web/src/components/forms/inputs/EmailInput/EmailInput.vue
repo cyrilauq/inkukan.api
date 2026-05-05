@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="flex flex-col md:flex-row">
-      <label :for="inputIdentifier">{{ inputLabel }}</label>
+      <label :for="inputIdentifier" class="w-full md:w-30">{{ inputLabel }}</label>
       <input
         type="email"
         :id="inputIdentifier"
@@ -9,6 +9,7 @@
         :placeholder="placeholder"
         v-model="value"
         :disabled="disabled"
+        class="bg-white"
       />
     </div>
     <div v-if="errors?.length > 0" class="error-info">
