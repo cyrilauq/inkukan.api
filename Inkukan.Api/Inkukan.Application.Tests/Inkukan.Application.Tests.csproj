@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InkShelf.Application\InkShelf.Application.csproj" />
+    <ProjectReference Include="..\Inkukan.Application\Inkukan.Application.csproj" />
   </ItemGroup>
 
 </Project>

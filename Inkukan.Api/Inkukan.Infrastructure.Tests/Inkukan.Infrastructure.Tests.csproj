@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InkShelf.Infrastructure\InkShelf.Infrastructure.csproj" />
+    <ProjectReference Include="..\Inkukan.Infrastructure\Inkukan.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
