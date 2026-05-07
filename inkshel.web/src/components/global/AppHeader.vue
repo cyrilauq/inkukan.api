@@ -25,7 +25,7 @@
       v-if="formShowed !== undefined"
       @click="onOutsideFormClicked"
     >
-      <div ref="formWrapperRef" class="flex w-4/5 md:w-auto">
+      <div ref="formWrapperRef" class="flex w-4/5 md:w-1/5 justify-center">
         <LoginForm v-if="formShowed === 'login'" @cancel="closeForm" />
         <RegisterForm v-if="formShowed === 'register'" @cancel="closeForm" />
       </div>

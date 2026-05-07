@@ -4,4 +4,5 @@ export type PasswordInputProps = {
   inputIdentifier: string
   placeholder?: string | undefined
   disabled?: boolean | undefined
+  mustMatch?: string | undefined
 }

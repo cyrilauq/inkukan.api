@@ -23,8 +23,17 @@ export const useAuthentication = () => {
     }
   }
 
-  const register = async (user: User, password: string) => {
-
+  const register = async (user: User, password: string): Promise<boolean> => {
+    try {
+      const createdUser = await post<User>('auth/register', { ...user, username: user.pseudo, password })
+      setUser(createdUser)
+      store("connectedUser", createdUser)
+      toaster.showSuccess({ text: "Tu t'es inscrit avec succès" })
+      return true;
+    } catch (err) {
+      toaster.showError({ text: "An unexpected error occured" })
+      return false;
+    }
   }
 
   const loadFromLocalStorage = () => {

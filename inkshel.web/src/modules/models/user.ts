@@ -3,5 +3,6 @@ export type User = {
   lastname: string,
   firstname: string,
   email: string,
+  pseudo: string,
   accessToken?: string,
 }
