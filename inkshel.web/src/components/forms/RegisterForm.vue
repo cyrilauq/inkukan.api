@@ -58,7 +58,9 @@ type RegisterFormSchema = {
 const { errors, values, validate } = useForm<RegisterFormSchema>()
 
 const formErrors = computed(() => {
-  const formFields = Object.entries(errors.value).map((e) => e[0])
+  const formFields = Object.entries(errors.value).map((e) => e[0]) as Array<
+    keyof typeof errors.value
+  >
   if (formFields.filter((f) => errors.value[f] !== undefined).length > 0)
     return ['Le formulaire contient des erreurs']
   else return []
