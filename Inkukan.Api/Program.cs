@@ -31,6 +31,8 @@ using (IServiceScope scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
+app.UseSession();
+
 app
     .UseApplicationCors(builder.Configuration)
     .UseMiddleware<ExceptionMiddleware>()
