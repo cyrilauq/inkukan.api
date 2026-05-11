@@ -17,6 +17,8 @@ namespace InkShelf.Application.Features.Abstractions
     {
         public async Task<IList<TDto>> Handle(TCommand request, CancellationToken cancellationToken)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             IQueryable<TDto> query = GetQuery(request)
                 .Skip(request.PageNumber * request.PageSize)
                 .Take(request.PageSize);
@@ -63,12 +65,38 @@ namespace InkShelf.Application.Features.Abstractions
 
                 if (propertyInfo == null) continue;
 
-                ConstantExpression value = Expression.Constant(string.Empty);
-                try
+                ConstantExpression value;
+                object convertedValue;
+                Type targetType = propertyInfo.PropertyType;
+                Type underlyingType = Nullable.GetUnderlyingType(targetType) ?? targetType;
+
+                if (underlyingType == typeof(DateTime))
                 {
-                    value = Expression.Constant(Convert.ChangeType(searchQuery, propertyInfo.PropertyType));
-                } 
-                catch(InvalidCastException) { }
+                    // 2. On parse en forçant l'ajustement UTC
+                    if (!DateTime.TryParse(searchQuery, System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.AdjustToUniversal | System.Globalization.DateTimeStyles.AssumeUniversal,
+                        out DateTime parsedDate))
+                    {
+                        continue;
+                    }
+
+                    // 3. On s'assure que le Kind est bien UTC
+                    convertedValue = DateTime.SpecifyKind(parsedDate, DateTimeKind.Utc);
+                }
+                else
+                {
+                    convertedValue = Convert.ChangeType(searchQuery, targetType);
+                }
+
+                // 4. CRUCIAL : On passe targetType (DateTime?) explicitement à la constante
+                // Cela évite que EF Core ne refasse un cast implicite qui perdrait le Kind UTC
+                value = Expression.Constant(convertedValue, targetType);
+
+                //try
+                //{
+                //    value = Expression.Constant(Convert.ChangeType(searchQuery, propertyInfo.PropertyType));
+                //} 
+                //catch(InvalidCastException) { }
                 BinaryExpression equal;
                 switch (filterMethod)
                 {
