@@ -4,6 +4,7 @@ using InkShelf.Application.Features.SerieVolume.Commands.Create;
 using InkShelf.Application.Features.SerieVolume.Commands.Update;
 using InkShelf.Application.Services.Implementations;
 using InkShelf.Domain.Entities;
+using System.Data;
 
 namespace InkShelf.Application.Mappers
 {
@@ -12,8 +13,10 @@ namespace InkShelf.Application.Mappers
         public SerieVolumeProfile()
         {
             CreateMap<SerieVolume, SerieVolumeDto>()
-                .ForMember(dest => dest.VFCoverPath, opt => opt.Ignore())
-                .ForMember(dest => dest.VOCoverPath, opt => opt.Ignore())
+                .ForMember(dest => dest.VFCoverUrls, opt => opt.Ignore())
+                .ForMember(dest => dest.VOCoverUrls, opt => opt.Ignore())
+                .ForMember(dest => dest.VFCoverPathId, opt => opt.MapFrom(src => src.VFCoverPath))
+                .ForMember(dest => dest.VOCoverPathId, opt => opt.MapFrom(src => src.VOCoverPath))
                 .AfterMap<SetImageDtoAction>()
                 .ReverseMap();
             CreateMap<CreateSerieVolumeCommand, SerieVolume>()
@@ -27,12 +30,12 @@ namespace InkShelf.Application.Mappers
     {
         public void Process(SerieVolume source, SerieVolumeDto destination, ResolutionContext context)
         {
-            destination.VFCoverPath.LargeUrl = $"{vercelBlobOptions.BlobUrl}/large/{source.VFCoverPath}.webp";
-            destination.VFCoverPath.MediumUrl = $"{vercelBlobOptions.BlobUrl}/medium/{source.VFCoverPath}.webp";
-            destination.VFCoverPath.SmallUrl = $"{vercelBlobOptions.BlobUrl}/small/{source.VFCoverPath}.webp";
-            destination.VOCoverPath.LargeUrl = $"{vercelBlobOptions.BlobUrl}/large/{source.VOCoverPath}.webp";
-            destination.VOCoverPath.MediumUrl = $"{vercelBlobOptions.BlobUrl}/medium/{source.VOCoverPath}.webp";
-            destination.VOCoverPath.SmallUrl = $"{vercelBlobOptions.BlobUrl}/small/{source.VOCoverPath}.webp";
+            destination.VFCoverUrls.LargeUrl = $"{vercelBlobOptions.BlobUrl}/large/{source.VFCoverPath}.webp";
+            destination.VFCoverUrls.MediumUrl = $"{vercelBlobOptions.BlobUrl}/medium/{source.VFCoverPath}.webp";
+            destination.VFCoverUrls.SmallUrl = $"{vercelBlobOptions.BlobUrl}/small/{source.VFCoverPath}.webp";
+            destination.VOCoverUrls.LargeUrl = $"{vercelBlobOptions.BlobUrl}/large/{source.VOCoverPath}.webp";
+            destination.VOCoverUrls.MediumUrl = $"{vercelBlobOptions.BlobUrl}/medium/{source.VOCoverPath}.webp";
+            destination.VOCoverUrls.SmallUrl = $"{vercelBlobOptions.BlobUrl}/small/{source.VOCoverPath}.webp";
         }
     }
 }

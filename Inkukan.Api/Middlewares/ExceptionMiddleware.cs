@@ -2,7 +2,6 @@
 using InkShelf.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace InkShelf.Api.Middlewares
 {
@@ -16,7 +15,7 @@ namespace InkShelf.Api.Middlewares
             }
             catch (Exception ex)
             {
-                var traceId = Guid.NewGuid();
+            var traceId = Guid.NewGuid();
                 logger.LogError($"{DateTime.Now} | Error occure while processing the request, TraceId : ${traceId}, Message : ${ex.Message}, StackTrace: ${ex.StackTrace}");
 
                 var httpError = GetHttpErrorFromException(ex, traceId);

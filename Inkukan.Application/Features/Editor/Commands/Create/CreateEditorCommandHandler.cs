@@ -25,6 +25,7 @@ namespace InkShelf.Application.Features.Editor.Commands.Create
         {
             await EnsureIsValidAsync(request);
             Domain.Entities.Editor editorToAdd = mapper.Map<Domain.Entities.Editor>(request);
+            editorToAdd.ConstitutionDate = DateTime.SpecifyKind(editorToAdd.ConstitutionDate, DateTimeKind.Utc);
             Domain.Entities.Editor addedEditor = await editorRepository.CreateAsync(editorToAdd);
             return mapper.Map<EditorDto>(addedEditor);
         }

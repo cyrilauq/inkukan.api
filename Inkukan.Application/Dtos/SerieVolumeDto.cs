@@ -6,8 +6,10 @@
 
         public int VolumeNumber { get; set; }
         public string Synopsis { get; set; } = string.Empty;
-        public ImageDto VFCoverPath { get; set; } = new();
-        public ImageDto VOCoverPath { get; set; } = new();
+        public ImageDto VFCoverUrls { get; set; } = new();
+        public string VFCoverPathId { get; set; } = string.Empty;
+        public ImageDto VOCoverUrls { get; set; } = new();
+        public string VOCoverPathId { get; set; } = string.Empty;
         public DateTime VOParutionDate { get; set; }
         public string VOParutionCountry { get; set; } = string.Empty;
         public DateTime? VFParutionDate { get; set; }
