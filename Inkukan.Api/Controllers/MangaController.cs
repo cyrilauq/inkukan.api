@@ -3,6 +3,7 @@ using InkShelf.Application.Features.MangaSerie.Command.Create;
 using InkShelf.Application.Features.MangaSerie.Command.DeleteSerie;
 using InkShelf.Application.Features.MangaSerie.Command.Update;
 using InkShelf.Application.Features.MangaSerie.Query.GetAll;
+using Inkukan.Application.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace InkShelf.Api.Controllers
         }
 
         [HttpGet]
-        public Task<IList<MangaSerieDto>> GetAllAsync([FromQuery] GetAllSerieQuery query)
+        public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([FromQuery] GetAllSerieQuery query)
         {
             return Mediator.Send(query);
         }

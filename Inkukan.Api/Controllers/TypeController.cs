@@ -10,7 +10,7 @@ namespace Inkukan.Api.Controllers
     public class TypeController(IMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<IList<TypeDto>> GetAllAsync([FromQuery] GetAllTypeQuery query)
+        public Task<PaginatedDto<TypeDto>> GetAllAsync([FromQuery] GetAllTypeQuery query)
             => Mediator.Send(query);
 
         [HttpPost]

@@ -10,7 +10,7 @@ namespace Inkukan.Api.Controllers
     public class CollectionController(IMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<IList<CollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)
+        public Task<PaginatedDto<CollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)
             => Mediator.Send(query);
 
         [HttpPost]

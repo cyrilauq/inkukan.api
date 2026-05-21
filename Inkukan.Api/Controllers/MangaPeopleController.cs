@@ -1,8 +1,9 @@
 ﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaPeople.Commands.Delete;
 using InkShelf.Application.Features.MangaPeople.Commands.Create;
+using InkShelf.Application.Features.MangaPeople.Commands.Delete;
 using InkShelf.Application.Features.MangaPeople.Commands.Update;
 using InkShelf.Application.Features.MangaPeople.Queries.GetAll;
+using Inkukan.Application.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace InkShelf.Api.Controllers
             => Mediator.Send(new DeleteMangaPeopleCommand { Id = peopleId });
 
         [HttpGet]
-        public Task<IList<MangaPeopleDto>> GetAllAsync([FromQuery] GetAllMangaPeopleQuery query)
+        public Task<PaginatedDto<MangaPeopleDto>> GetAllAsync([FromQuery] GetAllMangaPeopleQuery query)
             => Mediator.Send(query);
 
         [HttpPut("{peppolId:guid}")]

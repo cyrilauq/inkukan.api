@@ -1,33 +1,42 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace InkShelf.Application.Features.Abstractions
 {
     public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEntity> repository, IMapper mapper)
-        : IRequestHandler<TCommand, IList<TDto>>
+        : IRequestHandler<TCommand, PaginatedDto<TDto>>
         where TEntity : class
         where TDto : class
         where TCommand : BaseGetAllQuery<TDto>
     {
-        public async Task<IList<TDto>> Handle(TCommand request, CancellationToken cancellationToken)
+        // TODO : returns a paginated result
+        public async Task<PaginatedDto<TDto>> Handle(TCommand request, CancellationToken cancellationToken)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            IQueryable<TDto> query = GetQuery(request)
-                .Skip(request.PageNumber * request.PageSize)
-                .Take(request.PageSize);
+            IQueryable<TDto> query = GetQuery(request);
 
             query = ApplyFilters(query, request.Filters);
             query = SortQuery(query, request.Order, request.OrderBy);
 
+            PaginatedDto<TDto> result = new()
+            {
+                TotalCount = await query.CountAsync(cancellationToken: cancellationToken),
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                Items = await query
+                    .Skip(request.PageNumber * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync(cancellationToken)
+            };
 
-            return await query.ToListAsync(cancellationToken);
+            return result;
         }
 
         private IQueryable<TDto> SortQuery(IQueryable<TDto> baseQuery, string? order, string? orderBy)
@@ -162,7 +171,9 @@ namespace InkShelf.Application.Features.Abstractions
         }
     }
 
-    public class BaseGetAllQuery<TDto> : IRequest<IList<TDto>>
+    public class BaseGetAllQuery<TDto>
+        : IRequest<PaginatedDto<TDto>>
+        where TDto : class
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

@@ -3,6 +3,7 @@ using InkShelf.Application.Features.Editor.Commands.Create;
 using InkShelf.Application.Features.Editor.Commands.Delete;
 using InkShelf.Application.Features.Editor.Commands.Update;
 using InkShelf.Application.Features.Editor.Queries.GetAll;
+using Inkukan.Application.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace InkShelf.Api.Controllers
             => Mediator.Send(new DeleteEditorCommand { Id = editorId });
 
         [HttpGet]
-        public Task<IList<EditorDto>> GetAllAsync([FromQuery] GetAllEditorsQuery command)
+        public Task<PaginatedDto<EditorDto>> GetAllAsync([FromQuery] GetAllEditorsQuery command)
             => Mediator.Send(command);
 
         [HttpPut("{editorId:guid}")]
