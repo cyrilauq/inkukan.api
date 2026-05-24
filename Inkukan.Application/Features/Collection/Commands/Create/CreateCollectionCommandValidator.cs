@@ -3,7 +3,7 @@ using Inkukan.Application.Features.Collection.Commands.Create;
 
 namespace Inkukan.Application.Features.Type.Commands.Create
 {
-    public class CreateCollectionCommandValidator : AbstractValidator<CreateCollectionCommand>
+    public class CreateCollectionCommandValidator : AbstractValidator<CreateMangaCollectionCommand>
     {
         public CreateCollectionCommandValidator() 
         {

@@ -7,11 +7,11 @@ using Inkukan.Domain.Repositories;
 namespace Inkukan.Application.Features.Type.Queries.GetAll
 {
     public class GetAllCollectionQueryHandler(ICollectionRepository collectionRepository, IMapper mapper)
-        : BaseGetAllQueryHandler<MangaCollection, CollectionDto, GetAllCollectionQuery>(collectionRepository, mapper)
+        : BaseGetAllQueryHandler<MangaCollection, MangaCollectionDto, GetAllCollectionQuery>(collectionRepository, mapper)
     {
     }
 
-    public class GetAllCollectionQuery : BaseGetAllQuery<CollectionDto>
+    public class GetAllCollectionQuery : BaseGetAllQuery<MangaCollectionDto>
     {
 
     }

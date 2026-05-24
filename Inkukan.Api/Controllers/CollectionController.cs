@@ -1,6 +1,7 @@
 ﻿using InkShelf.Api.Controllers;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Collection.Commands.Create;
+using Inkukan.Application.Features.Collection.Commands.Update;
 using Inkukan.Application.Features.Type.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,18 @@ namespace Inkukan.Api.Controllers
     public class CollectionController(IMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<PaginatedDto<CollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)
+        public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)
             => Mediator.Send(query);
 
         [HttpPost]
-        public Task<CollectionDto> CreateAsync([FromBody] CreateCollectionCommand command)
+        public Task<MangaCollectionDto> CreateAsync([FromBody] CreateMangaCollectionCommand command)
             => Mediator.Send(command);
+
+        [HttpPut("{id:guid}")]
+        public Task<MangaCollectionDto> UpdateAsync(Guid id, [FromBody] UpdateMangaCollectionCommand command)
+        {
+            command.Id = id;
+            return Mediator.Send(command);
+        }
     }
 }
