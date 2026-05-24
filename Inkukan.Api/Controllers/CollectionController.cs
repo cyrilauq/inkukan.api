@@ -1,5 +1,6 @@
 ﻿using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.MangaCollection.Commands.Create;
+using Inkukan.Application.Features.MangaCollection.Commands.Delete;
 using Inkukan.Application.Features.MangaCollection.Commands.Update;
 using Inkukan.Application.Features.MangaCollection.Queries.GetAll;
 using MediatR;
@@ -23,5 +24,9 @@ namespace Inkukan.Api.Controllers
             command.Id = id;
             return Mediator.Send(command);
         }
+
+        [HttpDelete("{id:guid}")]
+        public Task DeleteAsync(Guid id)
+            => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id });
     }
 }
