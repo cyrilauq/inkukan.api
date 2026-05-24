@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Repositories;
 
-namespace InkShelf.Application.Features.MangaSerie.Query.GetAll
+namespace Inkukan.Application.Features.MangaSerie.Query.GetAll
 {
     public class GetAllSerieQueryHandler(IMangaSerieRepository mangaSerieRepository, IMapper mapper) 
         : BaseGetAllQueryHandler<Domain.Entities.MangaSerie, MangaSerieDto, GetAllSerieQuery>(mangaSerieRepository, mapper)

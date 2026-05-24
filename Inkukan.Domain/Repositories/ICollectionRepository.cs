@@ -1,5 +1,4 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Domain.Entities;
 
 namespace Inkukan.Domain.Repositories
 {

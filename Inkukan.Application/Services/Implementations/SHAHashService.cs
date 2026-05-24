@@ -1,7 +1,7 @@
-﻿
+﻿using Inkukan.Application.Services;
 using System.Security.Cryptography;
 
-namespace InkShelf.Application.Services.Implementations
+namespace Inkukan.Application.Services.Implementations
 {
     public class SHAHashService : IHashService
     {

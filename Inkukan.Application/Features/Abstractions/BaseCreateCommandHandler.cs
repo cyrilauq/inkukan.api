@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Interface;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Interface;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 
 namespace Inkukan.Application.Features.Abstractions

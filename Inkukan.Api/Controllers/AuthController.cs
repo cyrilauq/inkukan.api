@@ -1,10 +1,10 @@
-﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Auth.Commands.Login;
-using InkShelf.Application.Features.Auth.Commands.Register;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Auth.Commands.Login;
+using Inkukan.Application.Features.Auth.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InkShelf.Api.Controllers
+namespace Inkukan.Api.Controllers
 {
     public class AuthController(IMediator mediator) : ApplicationBaseController(mediator)
     {

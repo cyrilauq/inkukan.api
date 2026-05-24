@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Inkukan.Application.Dtos;
-using Inkukan.Application.Features.Collection.Commands.Create;
+using Inkukan.Application.Features.MangaCollection.Commands.Create;
+using Inkukan.Domain.Entities;
 
 namespace Inkukan.Application.Mappers
 {
@@ -8,9 +9,9 @@ namespace Inkukan.Application.Mappers
     {
         public MangaCollectionProfile()
         {
-            CreateMap<InkShelf.Domain.Entities.MangaCollection, MangaCollectionDto>()
+            CreateMap<MangaCollection, MangaCollectionDto>()
                 .ReverseMap();
-            CreateMap<InkShelf.Domain.Entities.MangaCollection, CreateMangaCollectionCommand>()
+            CreateMap<MangaCollection, CreateMangaCollectionCommand>()
                 .ReverseMap();
         }
     }

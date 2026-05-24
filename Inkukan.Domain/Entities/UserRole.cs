@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace InkShelf.Domain.Entities
+namespace Inkukan.Domain.Entities
 {
     public class UserRole : IdentityUserRole<Guid>
     {

@@ -1,6 +1,6 @@
-﻿using InkShelf.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
 
-namespace InkShelf.Api.Extensions
+namespace Inkukan.Api.Extensions
 {
     public static class IFormFileExtensions
     {

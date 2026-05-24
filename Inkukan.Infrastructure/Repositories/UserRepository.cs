@@ -1,9 +1,9 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Domain.Entities;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace InkShelf.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories
 {
     public class UserRepository(UserManager<User> userManager, RoleManager<Role> roleManager) : IUserRepository
     {

@@ -1,8 +1,8 @@
-﻿using InkShelf.Domain.Entities;
+﻿using Inkukan.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InkShelf.Infrastructure.Data.Configuration
+namespace Inkukan.Infrastructure.Data.Configuration
 {
     public class MangaPeopleConfiguration : IEntityTypeConfiguration<MangaPeople>
     {

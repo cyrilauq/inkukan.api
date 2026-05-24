@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Interface;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Interface;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 
-namespace InkShelf.Application.Features.Abstractions
+namespace Inkukan.Application.Features.Abstractions
 {
     public class BaseUpdateCommandHandler<TCommand, TDto, TEntity>(IBaseRepository<TEntity> repository, IValidator<TCommand> validator, IMapper mapper) 
         : IRequestHandler<TCommand, TDto>, IValidatable<TCommand>

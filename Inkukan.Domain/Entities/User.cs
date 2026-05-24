@@ -1,7 +1,6 @@
-﻿using InkShelf.Domain.Entities.Interfaces;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace InkShelf.Domain.Entities
+namespace Inkukan.Domain.Entities
 {
     public class User : IdentityUser<Guid>
     {

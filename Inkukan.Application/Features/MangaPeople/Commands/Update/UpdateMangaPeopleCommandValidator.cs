@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.MangaPeople.Commands.Update
+namespace Inkukan.Application.Features.MangaPeople.Commands.Update
 {
     public class UpdateMangaPeopleCommandValidator : AbstractValidator<UpdateMangaPeopleCommand>
     {

@@ -1,8 +1,8 @@
-﻿using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 
-namespace InkShelf.Application.Features.Abstractions
+namespace Inkukan.Application.Features.Abstractions
 {
     public class BaseDeleteCommand : IRequest
     {

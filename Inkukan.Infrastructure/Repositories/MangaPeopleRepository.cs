@@ -1,9 +1,9 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
-using InkShelf.Infrastructure.Data;
+﻿using Inkukan.Domain.Entities;
+using Inkukan.Domain.Repositories;
+using Inkukan.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace InkShelf.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories
 {
     public class MangaPeopleRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
         : BaseRepository<MangaPeople>(dbContextFactory), IMangaPeopleRepository

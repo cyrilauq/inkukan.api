@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Repositories;
 
-namespace InkShelf.Application.Features.Editor.Commands.Update
+namespace Inkukan.Application.Features.Editor.Commands.Update
 {
     public class UpdateEditorCommanddHandler(IEditorRepository editorRepository, IValidator<UpdateEditorCommand> validator, IMapper mapper)
         : BaseUpdateCommandHandler<UpdateEditorCommand, EditorDto, Domain.Entities.Editor>(editorRepository, validator, mapper)

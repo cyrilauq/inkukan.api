@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Repositories;
 
-namespace InkShelf.Application.Features.SerieVolume.Queries.GetAllBySerie
+namespace Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie
 {
     public class GetAllBySerieQueryHandler(ISerieVolumeRepository serieVolumeRepository, IMapper mapper)
         : BaseGetAllQueryHandler<Domain.Entities.SerieVolume, SerieVolumeDto, GetAllBySerieQuery>(serieVolumeRepository, mapper)

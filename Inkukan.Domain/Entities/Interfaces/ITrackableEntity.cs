@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Domain.Entities.Interfaces
+﻿namespace Inkukan.Domain.Entities.Interfaces
 {
     public interface ITrackableEntity
     {

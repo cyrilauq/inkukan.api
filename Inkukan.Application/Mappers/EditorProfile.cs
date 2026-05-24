@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Editor.Commands.Create;
-using InkShelf.Application.Features.Editor.Commands.Update;
-using InkShelf.Domain.Entities;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Editor.Commands.Create;
+using Inkukan.Application.Features.Editor.Commands.Update;
+using Inkukan.Domain.Entities;
 
-namespace InkShelf.Application.Mappers
+namespace Inkukan.Application.Mappers
 {
     public class EditorProfile : Profile
     {

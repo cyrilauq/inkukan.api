@@ -1,5 +1,6 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Application.Services;
+using Inkukan.Domain.Entities;
+using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace InkShelf.Application.Services.Implementations
+namespace Inkukan.Application.Services.Implementations
 {
     public class TokenConfiguration
     {

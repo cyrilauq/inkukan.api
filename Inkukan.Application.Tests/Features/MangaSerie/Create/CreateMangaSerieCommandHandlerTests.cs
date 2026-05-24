@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using InkShelf.Application.Features.MangaSerie.Command.Create;
-using InkShelf.Application.Mappers;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Features.MangaSerie.Command.Create;
+using Inkukan.Application.Mappers;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
-using Entities = InkShelf.Domain.Entities;
 
-namespace Inshelf.Application.Tests.Features.MangaSerie.Create
+namespace Inkukan.Application.Tests.Features.MangaSerie.Create
 {
     [TestClass]
     public class CreateMangaSerieCommandHandlerTests
@@ -57,7 +56,7 @@ namespace Inshelf.Application.Tests.Features.MangaSerie.Create
         public async Task When_TitleIsAlreadyTaken_Then_ThrowsException()
         {
             // Arrange
-            List<Entities.MangaSerie> mangas =
+            List<Domain.Entities.MangaSerie> mangas =
             [
                 new()
                 {
@@ -88,7 +87,7 @@ namespace Inshelf.Application.Tests.Features.MangaSerie.Create
         public async Task When_TitleIsNotTaken_Then_CallRepository_CreateAsyncMethod()
         {
             // Arrange
-            List<Entities.MangaSerie> mangas = [];
+            List<Domain.Entities.MangaSerie> mangas = [];
             _mangaSerieRepoMock.Setup(msrm => msrm.GetQuery())
                 .Returns(mangas.BuildMock());
 
@@ -104,7 +103,7 @@ namespace Inshelf.Application.Tests.Features.MangaSerie.Create
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Entities.MangaSerie>(), CancellationToken.None), Times.Once);
+            _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Domain.Entities.MangaSerie>(), CancellationToken.None), Times.Once);
         }
     }
 }

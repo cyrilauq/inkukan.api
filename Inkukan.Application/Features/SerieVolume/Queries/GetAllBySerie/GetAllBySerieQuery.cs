@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
 
-namespace InkShelf.Application.Features.SerieVolume.Queries.GetAllBySerie
+namespace Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie
 {
     public class GetAllBySerieQuery : BaseGetAllQuery<SerieVolumeDto>
     {

@@ -1,7 +1,7 @@
 ﻿using Inkukan.Application.Dtos;
 using MediatR;
 
-namespace Inkukan.Application.Features.Collection.Commands.Update
+namespace Inkukan.Application.Features.MangaCollection.Commands.Update
 {
     public class UpdateMangaCollectionCommand : IRequest<MangaCollectionDto>
     {

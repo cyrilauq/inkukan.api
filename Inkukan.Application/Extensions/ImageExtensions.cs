@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Processing;
 
-namespace InkShelf.Application.Extensions
+namespace Inkukan.Application.Extensions
 {
     public static class ImageExtensions
     {

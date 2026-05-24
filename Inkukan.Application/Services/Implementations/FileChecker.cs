@@ -1,4 +1,6 @@
-﻿namespace InkShelf.Application.Services.Implementations
+﻿using Inkukan.Application.Services;
+
+namespace Inkukan.Application.Services.Implementations
 {
     public class FileChecker : IFileChecker
     {

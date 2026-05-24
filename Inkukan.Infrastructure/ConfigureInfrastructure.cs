@@ -1,8 +1,6 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
-using InkShelf.Infrastructure.Data;
-using InkShelf.Infrastructure.Repositories;
+﻿using Inkukan.Domain.Entities;
 using Inkukan.Domain.Repositories;
+using Inkukan.Infrastructure.Data;
 using Inkukan.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace InkShelf.Infrastructure
+namespace Inkukan.Infrastructure
 {
     public static class ConfigureInfrastructure
     {

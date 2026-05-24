@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.MangaPeople.Commands.Create
+namespace Inkukan.Application.Features.MangaPeople.Commands.Create
 {
     public class CreateMangaPeopleCommand : IRequest<MangaPeopleDto>
     {

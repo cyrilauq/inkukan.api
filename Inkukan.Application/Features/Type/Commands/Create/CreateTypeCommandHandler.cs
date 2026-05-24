@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Domain.Entities;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Extensions;
 using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Entities;
 using Inkukan.Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Inkukan.Application.Features.Type.Commands.Create
     }
 
     public class CreateTypeCommandHandler(ITypeRepository typeRepository, IMapper mapper, IValidator<CreateTypeCommand> validator)
-        : BaseCreateCommandHandler<CreateTypeCommand, TypeDto, InkShelf.Domain.Entities.MangaType>(typeRepository, validator, mapper)
+        : BaseCreateCommandHandler<CreateTypeCommand, TypeDto, MangaType>(typeRepository, validator, mapper)
     {
         public override async Task<bool> AlreadyExistsAsync(CreateTypeCommand request)
         {

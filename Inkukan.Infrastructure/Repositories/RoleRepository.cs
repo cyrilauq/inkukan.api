@@ -1,8 +1,8 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Domain.Entities;
+using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace InkShelf.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories
 {
     public class RoleRepository(UserManager<User> userManager) : IRoleRepository
     {

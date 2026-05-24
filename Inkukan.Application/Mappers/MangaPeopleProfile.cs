@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaPeople.Commands.Create;
-using InkShelf.Application.Features.MangaPeople.Commands.Update;
-using InkShelf.Domain.Entities;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.MangaPeople.Commands.Create;
+using Inkukan.Application.Features.MangaPeople.Commands.Update;
+using Inkukan.Domain.Entities;
 
-namespace InkShelf.Application.Mappers
+namespace Inkukan.Application.Mappers
 {
     public class MangaPeopleProfile : Profile
     {

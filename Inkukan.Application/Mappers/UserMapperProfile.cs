@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Auth.Commands.Register;
-using InkShelf.Domain.Entities;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Auth.Commands.Register;
+using Inkukan.Domain.Entities;
 
-namespace InkShelf.Application.Mappers
+namespace Inkukan.Application.Mappers
 {
     public class UserMapperProfile : Profile
     {

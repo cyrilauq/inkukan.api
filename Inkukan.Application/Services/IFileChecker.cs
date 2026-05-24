@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Application.Services
+﻿namespace Inkukan.Application.Services
 {
     public interface IFileChecker
     {

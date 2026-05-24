@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.SerieVolume.Commands.Create;
-using InkShelf.Application.Features.SerieVolume.Commands.Update;
-using InkShelf.Application.Services.Implementations;
-using InkShelf.Domain.Entities;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.SerieVolume.Commands.Create;
+using Inkukan.Application.Features.SerieVolume.Commands.Update;
+using Inkukan.Application.Services.Implementations;
+using Inkukan.Domain.Entities;
 using System.Data;
 
-namespace InkShelf.Application.Mappers
+namespace Inkukan.Application.Mappers
 {
     public class SerieVolumeProfile : Profile
     {

@@ -1,6 +1,6 @@
-using InkShelf.Api;
-using InkShelf.Api.Middlewares;
-using InkShelf.Infrastructure;
+using Inkukan.Api;
+using Inkukan.Api.Middlewares;
+using Inkukan.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

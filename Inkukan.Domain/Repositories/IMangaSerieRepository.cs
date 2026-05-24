@@ -1,6 +1,6 @@
-﻿using InkShelf.Domain.Entities;
+﻿using Inkukan.Domain.Entities;
 
-namespace InkShelf.Domain.Repositories
+namespace Inkukan.Domain.Repositories
 {
     public interface IMangaSerieRepository : IBaseRepository<MangaSerie>
     {

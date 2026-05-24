@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.Auth.Commands.Login
+namespace Inkukan.Application.Features.Auth.Commands.Login
 {
     public class LoginCommand : IRequest<UserDto>
     {

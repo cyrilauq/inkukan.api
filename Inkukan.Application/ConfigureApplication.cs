@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using InkShelf.Application.Features.MangaSerie.Command.Create;
-using InkShelf.Application.Services;
-using InkShelf.Application.Services.Implementations;
+using Inkukan.Application.Features.MangaSerie.Command.Create;
+using Inkukan.Application.Services;
+using Inkukan.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
-namespace InkShelf.Application
+namespace Inkukan.Application
 {
     public static class ConfigureApplication
     {

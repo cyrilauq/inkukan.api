@@ -2,6 +2,7 @@
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Type.Commands.Create;
 using Inkukan.Application.Features.Type.Commands.Udpate;
+using Inkukan.Domain.Entities;
 
 namespace Inkukan.Application.Mappers
 {
@@ -9,11 +10,11 @@ namespace Inkukan.Application.Mappers
     {
         public TypeProfile()
         {
-            CreateMap<InkShelf.Domain.Entities.MangaType, TypeDto>()
+            CreateMap<MangaType, TypeDto>()
                 .ReverseMap();
-            CreateMap<InkShelf.Domain.Entities.MangaType, CreateTypeCommand>()
+            CreateMap<MangaType, CreateTypeCommand>()
                 .ReverseMap();
-            CreateMap<InkShelf.Domain.Entities.MangaType, UpdateTypeCommand>()
+            CreateMap<MangaType, UpdateTypeCommand>()
                 .ReverseMap();
         }
     }

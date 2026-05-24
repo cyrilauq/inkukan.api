@@ -1,13 +1,12 @@
-﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaSerie.Command.Create;
-using InkShelf.Application.Features.MangaSerie.Command.DeleteSerie;
-using InkShelf.Application.Features.MangaSerie.Command.Update;
-using InkShelf.Application.Features.MangaSerie.Query.GetAll;
-using Inkukan.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.MangaSerie.Command.Create;
+using Inkukan.Application.Features.MangaSerie.Command.DeleteSerie;
+using Inkukan.Application.Features.MangaSerie.Command.Update;
+using Inkukan.Application.Features.MangaSerie.Query.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InkShelf.Api.Controllers
+namespace Inkukan.Api.Controllers
 {
     public class MangaController(IMediator mediator) : ApplicationBaseController(mediator)
     {

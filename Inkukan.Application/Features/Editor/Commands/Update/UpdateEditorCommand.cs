@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
 using MediatR;
 
-namespace InkShelf.Application.Features.Editor.Commands.Update
+namespace Inkukan.Application.Features.Editor.Commands.Update
 {
     public class UpdateEditorCommand : IRequest<EditorDto>
     {

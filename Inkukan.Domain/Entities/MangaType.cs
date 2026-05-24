@@ -1,7 +1,6 @@
-﻿
-using InkShelf.Domain.Entities.Interfaces;
+﻿using Inkukan.Domain.Entities.Interfaces;
 
-namespace InkShelf.Domain.Entities
+namespace Inkukan.Domain.Entities
 {
     public class MangaType : ITrackableEntity, ILogicalDelete
     {

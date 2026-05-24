@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Interface;
-using InkShelf.Application.Services;
-using InkShelf.Domain.Entities;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Interface;
+using Inkukan.Application.Services;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
-namespace InkShelf.Application.Features.SerieVolume.Commands.Create
+namespace Inkukan.Application.Features.SerieVolume.Commands.Create
 {
     public class CreateSerieVolumeCommandHandler(ISerieVolumeRepository serieVolumeRepository, IFileUploader fileUploader, IHashService hashService, IValidator<CreateSerieVolumeCommand> validator, IMapper mapper)
         : IRequestHandler<CreateSerieVolumeCommand, SerieVolumeDto>, IValidatable<CreateSerieVolumeCommand>

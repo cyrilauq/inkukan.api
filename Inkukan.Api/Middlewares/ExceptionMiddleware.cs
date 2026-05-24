@@ -1,9 +1,8 @@
-﻿
-using InkShelf.Domain.Exceptions;
+﻿using Inkukan.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace InkShelf.Api.Middlewares
+namespace Inkukan.Api.Middlewares
 {
     public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvironment environment) : IMiddleware
     {

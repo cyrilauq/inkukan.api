@@ -1,8 +1,7 @@
-﻿using InkShelf.Api.Controllers;
-using Inkukan.Application.Dtos;
-using Inkukan.Application.Features.Collection.Commands.Create;
-using Inkukan.Application.Features.Collection.Commands.Update;
-using Inkukan.Application.Features.Type.Queries.GetAll;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.MangaCollection.Commands.Create;
+using Inkukan.Application.Features.MangaCollection.Commands.Update;
+using Inkukan.Application.Features.MangaCollection.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

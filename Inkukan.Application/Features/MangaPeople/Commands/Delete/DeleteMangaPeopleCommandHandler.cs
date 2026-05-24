@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Repositories;
 
-namespace InkShelf.Application.Features.MangaPeople.Commands.Delete
+namespace Inkukan.Application.Features.MangaPeople.Commands.Delete
 {
     public class DeleteMangaPeopleCommandHandler(IMangaPeopleRepository mangaPeopleRepository)
         : BaseDeleteCommandHandler<Domain.Entities.MangaPeople, DeleteMangaPeopleCommand>(mangaPeopleRepository)

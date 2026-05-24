@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InkShelf.Api.Controllers
+namespace Inkukan.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

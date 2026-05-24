@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
-using InkShelf.Application.Features.MangaPeople.Commands.Create;
-using InkShelf.Application.Mappers;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Features.MangaPeople.Commands.Create;
+using Inkukan.Application.Mappers;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
 
-namespace Inshelf.Application.Tests.Features.MangaPeople.Create
+namespace Inkukan.Application.Tests.Features.MangaPeople.Create
 {
     [TestClass]
     public class CreateMangaPeopleCommandHandlerTests
@@ -79,7 +79,7 @@ namespace Inshelf.Application.Tests.Features.MangaPeople.Create
         public async Task When_AuthorWithNameAndFirstnameAlreadyExists_Then_ThrowsException()
         {
             // Arrange
-            List<InkShelf.Domain.Entities.MangaPeople> mangaPeople =
+            List<Domain.Entities.MangaPeople> mangaPeople =
             [
                 new()
                 {
@@ -107,7 +107,7 @@ namespace Inshelf.Application.Tests.Features.MangaPeople.Create
         public async Task When_AddValidAuthor_Then_CallCreateAsyncMethod()
         {
             // Arrange
-            List<InkShelf.Domain.Entities.MangaPeople> mangaPeople = [];
+            List<Domain.Entities.MangaPeople> mangaPeople = [];
             _mangaPeopleRepoMock.Setup(msrm => msrm.GetQuery())
                 .Returns(mangaPeople.BuildMock());
             CreateMangaPeopleCommand command = new()
@@ -120,7 +120,7 @@ namespace Inshelf.Application.Tests.Features.MangaPeople.Create
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _mangaPeopleRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<InkShelf.Domain.Entities.MangaPeople>(), CancellationToken.None), Times.Once);
+            _mangaPeopleRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Domain.Entities.MangaPeople>(), CancellationToken.None), Times.Once);
         }
     }
 }

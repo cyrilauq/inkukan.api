@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Domain.Repositories
+﻿namespace Inkukan.Domain.Repositories
 {
     public interface IBlobStorage
     {

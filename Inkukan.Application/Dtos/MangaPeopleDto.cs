@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Application.Dtos
+﻿namespace Inkukan.Application.Dtos
 {
     public class MangaPeopleDto
     {

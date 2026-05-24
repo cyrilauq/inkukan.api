@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using InkShelf.Application.Features.Editor.Commands.Create;
-using InkShelf.Application.Mappers;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Features.Editor.Commands.Create;
+using Inkukan.Application.Mappers;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Inshelf.Application.Tests.Features.Editor.Create
+namespace Inkukan.Application.Tests.Features.Editor.Create
 {
     [TestClass]
     public class CreateEditorCommandHandlerTests
@@ -25,7 +25,7 @@ namespace Inshelf.Application.Tests.Features.Editor.Create
             _editorRepository = new Mock<IEditorRepository>();
 
             _editorRepository.Setup(er => er.GetByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((InkShelf.Domain.Entities.Editor?)null);
+                .ReturnsAsync((Domain.Entities.Editor?)null);
 
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile<EditorProfile>(), _loggerFactory)
                 .CreateMapper();

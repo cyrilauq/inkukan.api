@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.Auth.Commands.Register
+namespace Inkukan.Application.Features.Auth.Commands.Register
 {
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {

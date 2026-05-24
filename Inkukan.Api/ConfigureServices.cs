@@ -1,13 +1,11 @@
-﻿using InkShelf.Api.Middlewares;
-using InkShelf.Application;
-using InkShelf.Application.Services.Implementations;
-using InkShelf.Infrastructure;
+﻿using Inkukan.Api.Middlewares;
+using Inkukan.Application;
+using Inkukan.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace InkShelf.Api
+namespace Inkukan.Api
 {
     public static class ConfigureServices
     {

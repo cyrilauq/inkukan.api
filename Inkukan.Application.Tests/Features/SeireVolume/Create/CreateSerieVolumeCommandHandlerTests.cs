@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.SerieVolume.Commands.Create;
-using InkShelf.Application.Mappers;
-using InkShelf.Application.Services;
-using InkShelf.Application.Services.Implementations;
-using InkShelf.Domain.Entities;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.SerieVolume.Commands.Create;
+using Inkukan.Application.Mappers;
+using Inkukan.Application.Services;
+using Inkukan.Application.Services.Implementations;
+using Inkukan.Domain.Entities;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Inshelf.Application.Tests.Features.SeireVolume.Create
+namespace Inkukan.Application.Tests.Features.SeireVolume.Create
 {
     [TestClass]
     public class CreateSerieVolumeCommandHandlerTests

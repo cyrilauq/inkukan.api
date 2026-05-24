@@ -1,11 +1,11 @@
-﻿using InkShelf.Application.Extensions;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+﻿using Inkukan.Application.Extensions;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 
-namespace InkShelf.Application.Services.Implementations
+namespace Inkukan.Application.Services.Implementations
 {
     public class FileUploaderVercelBlob(IFileChecker fileChecker, IBlobStorage blobStorage) : IFileUploader
     {

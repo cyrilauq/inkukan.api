@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using InkShelf.Application.Services;
-using InkShelf.Application.Services.Implementations;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Services;
+using Inkukan.Application.Services.Implementations;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using Moq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Inshelf.Application.Tests.Services.Implementations
+namespace Inkukan.Application.Tests.Services.Implementations
 {
     [TestClass]
     public class FileUploaderVercelBlobTests

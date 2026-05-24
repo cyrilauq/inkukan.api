@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace InkShelf.Application.Features.MangaSerie.Command.Update
+namespace Inkukan.Application.Features.MangaSerie.Command.Update
 {
     public class UpdateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<UpdateMangaSerieCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateMangaSerieCommand, MangaSerieDto, Domain.Entities.MangaSerie>(mangaSerieRepository, validator, mapper)

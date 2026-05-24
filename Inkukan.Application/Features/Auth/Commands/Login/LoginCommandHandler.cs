@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Interface;
-using InkShelf.Application.Services;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Interface;
+using Inkukan.Application.Services;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 
-namespace InkShelf.Application.Features.Auth.Commands.Login
+namespace Inkukan.Application.Features.Auth.Commands.Login
 {
     public class LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IMapper mapper, IValidator<LoginCommand> validator)
         : IRequestHandler<LoginCommand, UserDto>, IValidatable<LoginCommand>

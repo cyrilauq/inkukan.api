@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.SerieVolume.Commands.Create
+namespace Inkukan.Application.Features.SerieVolume.Commands.Create
 {
     public class CreateSerieVolumeCommandValidator : AbstractValidator<CreateSerieVolumeCommand>
     {

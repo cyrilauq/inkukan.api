@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Inkukan.Application.Features.Collection.Commands.Create;
 
-namespace Inkukan.Application.Features.Type.Commands.Create
+namespace Inkukan.Application.Features.MangaCollection.Commands.Create
 {
     public class CreateCollectionCommandValidator : AbstractValidator<CreateMangaCollectionCommand>
     {

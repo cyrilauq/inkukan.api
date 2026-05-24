@@ -1,9 +1,9 @@
-﻿using InkShelf.Domain.Repositories;
-using InkShelf.Infrastructure.Data;
+﻿using Inkukan.Domain.Repositories;
+using Inkukan.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace InkShelf.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories
 {
     public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContextFactory) : IBaseRepository<T> where T : class
     {

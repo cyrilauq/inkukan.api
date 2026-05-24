@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Domain.Entities;
-using InkShelf.Domain.Repositories;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Extensions;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Entities;
 using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 

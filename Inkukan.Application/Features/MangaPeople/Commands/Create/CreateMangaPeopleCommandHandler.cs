@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Extensions;
-using InkShelf.Application.Interface;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Extensions;
+using Inkukan.Application.Interface;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace InkShelf.Application.Features.MangaPeople.Commands.Create
+namespace Inkukan.Application.Features.MangaPeople.Commands.Create
 {
     public class CreateMangaPeopleCommandHandler(IMangaPeopleRepository mangaPeopleRepository, IValidator<CreateMangaPeopleCommand> validator, IMapper mapper) 
         : IRequestHandler<CreateMangaPeopleCommand, MangaPeopleDto>, IValidatable<CreateMangaPeopleCommand>

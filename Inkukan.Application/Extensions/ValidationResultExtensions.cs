@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace InkShelf.Application.Extensions
+namespace Inkukan.Application.Extensions
 {
     public static class ValidationResultExtensions
     {

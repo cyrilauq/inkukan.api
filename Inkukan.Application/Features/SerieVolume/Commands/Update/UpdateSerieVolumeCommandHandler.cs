@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
-using InkShelf.Application.Services;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
+using Inkukan.Application.Services;
+using Inkukan.Domain.Repositories;
 
-namespace InkShelf.Application.Features.SerieVolume.Commands.Update
+namespace Inkukan.Application.Features.SerieVolume.Commands.Update
 {
     public class UpdateSerieVolumeCommandHandler(IFileUploader fileUploader, ISerieVolumeRepository volumeRepostory, IHashService hashService, IValidator<UpdateSerieVolumeCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateSerieVolumeCommand, SerieVolumeDto, Domain.Entities.SerieVolume>(volumeRepostory, validator, mapper)

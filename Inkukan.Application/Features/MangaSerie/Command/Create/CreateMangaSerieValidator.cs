@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace InkShelf.Application.Features.MangaSerie.Command.Create
+namespace Inkukan.Application.Features.MangaSerie.Command.Create
 {
     public class CreateMangaSerieValidator : AbstractValidator<CreateMangaSerieCommand>
     {

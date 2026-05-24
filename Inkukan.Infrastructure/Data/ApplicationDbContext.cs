@@ -1,5 +1,5 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Domain.Entities.Interfaces;
+﻿using Inkukan.Domain.Entities;
+using Inkukan.Domain.Entities.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace InkShelf.Infrastructure.Data
+namespace Inkukan.Infrastructure.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>, UserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>(options)

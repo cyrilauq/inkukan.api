@@ -1,7 +1,7 @@
-﻿using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.Abstractions;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.Abstractions;
 
-namespace InkShelf.Application.Features.MangaPeople.Queries.GetAll
+namespace Inkukan.Application.Features.MangaPeople.Queries.GetAll
 {
     public class GetAllMangaPeopleQuery : BaseGetAllQuery<MangaPeopleDto>
     {

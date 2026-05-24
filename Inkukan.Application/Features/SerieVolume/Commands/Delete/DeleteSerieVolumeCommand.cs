@@ -1,6 +1,6 @@
-﻿using InkShelf.Application.Features.Abstractions;
+﻿using Inkukan.Application.Features.Abstractions;
 
-namespace InkShelf.Application.Features.SerieVolume.Commands.Delete
+namespace Inkukan.Application.Features.SerieVolume.Commands.Delete
 {
     public class DeleteSerieVolumeCommand : BaseDeleteCommand
     {

@@ -1,8 +1,8 @@
-﻿using InkShelf.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace InkShelf.Application.Features.SerieVolume.Commands.Update
+namespace Inkukan.Application.Features.SerieVolume.Commands.Update
 {
     public class UpdateSerieVolumeCommand : IRequest<SerieVolumeDto>
     {

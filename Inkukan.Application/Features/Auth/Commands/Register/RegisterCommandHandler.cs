@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Interface;
-using InkShelf.Domain.Exceptions;
-using InkShelf.Domain.Repositories;
+using Inkukan.Application.Dtos;
+using Inkukan.Application.Interface;
+using Inkukan.Domain.Exceptions;
+using Inkukan.Domain.Repositories;
 using MediatR;
 
-namespace InkShelf.Application.Features.Auth.Commands.Register
+namespace Inkukan.Application.Features.Auth.Commands.Register
 {
     public class RegisterCommandHandler(IUserRepository userRepository, IMapper mapper, IValidator<RegisterCommand> validator)
         : IRequestHandler<RegisterCommand, UserDto>, IValidatable<RegisterCommand>

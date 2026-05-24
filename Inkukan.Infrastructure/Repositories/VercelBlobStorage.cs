@@ -1,8 +1,8 @@
-﻿using InkShelf.Domain.Repositories;
+﻿using Inkukan.Domain.Repositories;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace InkShelf.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories
 {
     public class VercelBlobStorage(IHttpClientFactory httpClientFactory) : IBlobStorage
     {

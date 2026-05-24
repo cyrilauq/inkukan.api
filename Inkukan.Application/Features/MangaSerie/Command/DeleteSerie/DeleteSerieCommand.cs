@@ -1,6 +1,6 @@
-﻿using InkShelf.Application.Features.Abstractions;
+﻿using Inkukan.Application.Features.Abstractions;
 
-namespace InkShelf.Application.Features.MangaSerie.Command.DeleteSerie
+namespace Inkukan.Application.Features.MangaSerie.Command.DeleteSerie
 {
     public class DeleteSerieCommand : BaseDeleteCommand
     {

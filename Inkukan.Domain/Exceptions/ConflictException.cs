@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Domain.Exceptions
+﻿namespace Inkukan.Domain.Exceptions
 {
     public class ConflictException(string message) : CustomException(message)
     {

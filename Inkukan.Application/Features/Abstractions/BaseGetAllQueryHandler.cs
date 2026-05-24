@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using InkShelf.Domain.Repositories;
 using Inkukan.Application.Dtos;
+using Inkukan.Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace InkShelf.Application.Features.Abstractions
+namespace Inkukan.Application.Features.Abstractions
 {
     public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEntity> repository, IMapper mapper)
         : IRequestHandler<TCommand, PaginatedDto<TDto>>
@@ -49,7 +49,7 @@ namespace InkShelf.Application.Features.Abstractions
                 var orderByProp = Expression.Property(orderByParam, orderBy);
                 var exp = Expression.Lambda(orderByProp, orderByParam);
                 string method = order == "asc" ? "OrderBy" : "OrderByDescending";
-                Type[] types = new Type[] { query.ElementType, exp.Body.Type };
+                System.Type[] types = { query.ElementType, exp.Body.Type };
                 var mce = Expression.Call(typeof(Queryable), method, types, query.Expression, exp);
 
                 query = query.Provider.CreateQuery<TDto>(mce);
@@ -76,8 +76,8 @@ namespace InkShelf.Application.Features.Abstractions
 
                 ConstantExpression value;
                 object convertedValue;
-                Type targetType = propertyInfo.PropertyType;
-                Type underlyingType = Nullable.GetUnderlyingType(targetType) ?? targetType;
+                System.Type targetType = propertyInfo.PropertyType;
+                System.Type underlyingType = Nullable.GetUnderlyingType(targetType) ?? targetType;
 
                 if (underlyingType == typeof(DateTime))
                 {
@@ -125,7 +125,7 @@ namespace InkShelf.Application.Features.Abstractions
                         // 1. On récupère la méthode "Contains" classique
                         MethodInfo? containsMethod = typeof(string).GetMethod("Contains", [typeof(string)]);
                         // On récupère aussi la méthode "ToLower" pour les chaînes
-                        MethodInfo? toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                        MethodInfo? toLowerMethod = typeof(string).GetMethod("ToLower", System.Type.EmptyTypes);
 
                         if (containsMethod == null || toLowerMethod == null) continue;
 

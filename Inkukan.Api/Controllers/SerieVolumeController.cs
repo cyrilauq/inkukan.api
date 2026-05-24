@@ -1,16 +1,13 @@
-﻿using InkShelf.Api.Extensions;
-using InkShelf.Application.Dtos;
-using InkShelf.Application.Features.MangaSerie.Query.GetAll;
-using InkShelf.Application.Features.SerieVolume.Commands.Create;
-using InkShelf.Application.Features.SerieVolume.Commands.Delete;
-using InkShelf.Application.Features.SerieVolume.Commands.Update;
-using InkShelf.Application.Features.SerieVolume.Queries.GetAll;
-using InkShelf.Application.Features.SerieVolume.Queries.GetAllBySerie;
-using Inkukan.Application.Dtos;
+﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Features.SerieVolume.Commands.Create;
+using Inkukan.Application.Features.SerieVolume.Commands.Delete;
+using Inkukan.Application.Features.SerieVolume.Commands.Update;
+using Inkukan.Application.Features.SerieVolume.Queries.GetAll;
+using Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InkShelf.Api.Controllers
+namespace Inkukan.Api.Controllers
 {
     [Route("/api/series/{serieId:guid}/volumes")]
     public class SerieVolumeController(IMediator mediator) : ApplicationBaseController(mediator)

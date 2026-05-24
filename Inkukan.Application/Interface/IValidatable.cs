@@ -1,4 +1,4 @@
-﻿namespace InkShelf.Application.Interface
+﻿namespace Inkukan.Application.Interface
 {
     public interface IValidatable<T> where T : class
     {

@@ -1,7 +1,6 @@
-﻿using InkShelf.Domain.Entities;
-using InkShelf.Infrastructure.Data;
-using InkShelf.Infrastructure.Repositories;
+﻿using Inkukan.Domain.Entities;
 using Inkukan.Domain.Repositories;
+using Inkukan.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Infrastructure.Repositories
