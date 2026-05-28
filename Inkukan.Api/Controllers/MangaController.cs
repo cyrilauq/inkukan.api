@@ -3,6 +3,7 @@ using Inkukan.Application.Features.MangaSerie.Command.Create;
 using Inkukan.Application.Features.MangaSerie.Command.DeleteSerie;
 using Inkukan.Application.Features.MangaSerie.Command.Update;
 using Inkukan.Application.Features.MangaSerie.Query.GetAll;
+using Inkukan.Application.Features.MangaSerie.Query.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,13 @@ namespace Inkukan.Api.Controllers
         {
             command.Id = mangaId;
             return Mediator.Send(command);
+        }
+
+        [HttpGet("{mangaId:guid}")]
+        public Task<MangaSerieDto> GetByIdAsync(Guid mangaId)
+        {
+            GetSerieByIdQuery query = new() { Id = mangaId };
+            return Mediator.Send(query);
         }
 
         [HttpGet]
