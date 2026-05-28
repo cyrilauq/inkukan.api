@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Abstractions;
 using Inkukan.Domain.Repositories;

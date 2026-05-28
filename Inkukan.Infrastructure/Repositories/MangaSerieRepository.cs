@@ -8,5 +8,17 @@ namespace Inkukan.Infrastructure.Repositories
     public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
         :  BaseRepository<MangaSerie>(contextFactory), IMangaSerieRepository
     {
+
+        public new async Task<MangaSerie?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+            return await dbContext.MangaSeries
+                .Include(s => s.Author)
+                .Include(s => s.Translator)
+                .Include(s => s.Drawer)
+                .Include(s => s.EditorVF)
+                .Include(s => s.EditorVO)
+                .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+        }
     }
 }
