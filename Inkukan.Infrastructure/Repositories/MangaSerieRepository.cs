@@ -18,6 +18,9 @@ namespace Inkukan.Infrastructure.Repositories
                 .Include(s => s.Drawer)
                 .Include(s => s.EditorVF)
                 .Include(s => s.EditorVO)
+                .Include(s => s.Collection)
+                .Include(s => s.Type)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
     }
