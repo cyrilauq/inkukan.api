@@ -4,13 +4,13 @@ using Inkukan.Application.Features.SerieVolume.Commands.Delete;
 using Inkukan.Application.Features.SerieVolume.Commands.Update;
 using Inkukan.Application.Features.SerieVolume.Queries.GetAll;
 using Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
     [Route("/api/series/{serieId:guid}/volumes")]
-    public class SerieVolumeController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
         public async Task<SerieVolumeDto> CreateAsync(Guid serieId, [FromForm] CreateSerieVolumeCommand command)

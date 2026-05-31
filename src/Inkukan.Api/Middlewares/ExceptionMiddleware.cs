@@ -14,14 +14,15 @@ namespace Inkukan.Api.Middlewares
             }
             catch (Exception ex)
             {
-            var traceId = Guid.NewGuid();
-                logger.LogError($"{DateTime.Now} | Error occure while processing the request, TraceId : ${traceId}, Message : ${ex.Message}, StackTrace: ${ex.StackTrace}");
-
-                var httpError = GetHttpErrorFromException(ex, traceId);
+                Guid traceId = Guid.NewGuid();
+                logger.LogError("{now} | Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
+                    DateTime.Now, traceId, ex.Message, ex.StackTrace, JsonSerializer.Serialize(ex.Data));
+                
+                Tuple<int, string, string> httpError = GetHttpErrorFromException(ex, traceId);
 
                 context.Response.StatusCode = httpError.Item1;
 
-                var problemDetails = new ProblemDetails
+                ProblemDetails problemDetails = new()
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
                     Title = httpError.Item2,
@@ -35,7 +36,7 @@ namespace Inkukan.Api.Middlewares
 
         public Tuple<int, string, string> GetHttpErrorFromException(Exception exception, Guid traceId)
         {
-            var exceptionType = exception.GetType();
+            Type exceptionType = exception.GetType();
             if (exceptionType == typeof(ConflictException))
             {
                 return Tuple.Create(StatusCodes.Status409Conflict, "Conflict", exception.Message);
@@ -44,7 +45,7 @@ namespace Inkukan.Api.Middlewares
             {
                 return Tuple.Create(StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message);
             }
-            if (exceptionType == typeof(ConflictException))
+            if (exceptionType == typeof(EntityNotFoundException))
             {
                 return Tuple.Create(StatusCodes.Status404NotFound, "Not Found", exception.Message);
             }

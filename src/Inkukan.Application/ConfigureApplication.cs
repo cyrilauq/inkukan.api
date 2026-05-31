@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Inkukan.Application.Features.MangaSerie.Command.Create;
+using Inkukan.Application.Mediator.Extensions;
 using Inkukan.Application.Services;
 using Inkukan.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ namespace Inkukan.Application
         {
             services
                 .AddMapper(configuration)
-                .AddMediator(configuration)
+                .AddMediator(typeof(ConfigureApplication).Assembly)
                 .AddServices(configuration);
 
             services.AddValidatorsFromAssemblyContaining<CreateMangaSerieValidator>();
@@ -52,18 +53,6 @@ namespace Inkukan.Application
             {
                 cfg.LicenseKey = configuration["LicenseKeys:LuckyPennySoftware"] ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
             }, typeof(ConfigureApplication).Assembly);
-
-            return services;
-        }
-
-        private static IServiceCollection AddMediator(this IServiceCollection services, IConfiguration configuration)
-        {
-            services
-                .AddMediatR(cfg => 
-                {
-                    cfg.LicenseKey = configuration["LicenseKeys:LuckyPennySoftware"] ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified"); ;
-                    cfg.RegisterServicesFromAssembly(typeof(ConfigureApplication).Assembly);
-                });
 
             return services;
         }

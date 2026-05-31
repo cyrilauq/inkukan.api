@@ -1,5 +1,5 @@
 ﻿using Inkukan.Application.Dtos;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 
 namespace Inkukan.Application.Features.MangaSerie.Command.Update
 {

@@ -3,8 +3,8 @@ using FluentValidation;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Extensions;
 using Inkukan.Application.Features.Abstractions;
+using Inkukan.Application.Mediator.Abstractions;
 using Inkukan.Domain.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Application.Features.MangaCollection.Commands.Create

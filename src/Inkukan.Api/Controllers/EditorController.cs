@@ -3,12 +3,12 @@ using Inkukan.Application.Features.Editor.Commands.Create;
 using Inkukan.Application.Features.Editor.Commands.Delete;
 using Inkukan.Application.Features.Editor.Commands.Update;
 using Inkukan.Application.Features.Editor.Queries.GetAll;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class EditorController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class EditorController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
         public Task<EditorDto> CreateAsync(CreateEditorCommand command)

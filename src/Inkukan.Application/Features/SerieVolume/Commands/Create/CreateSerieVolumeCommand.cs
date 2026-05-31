@@ -1,5 +1,5 @@
 ﻿using Inkukan.Application.Dtos;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Http;
 
 namespace Inkukan.Application.Features.SerieVolume.Commands.Create

@@ -2,10 +2,10 @@
 using FluentValidation;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Interface;
+using Inkukan.Application.Mediator.Abstractions;
 using Inkukan.Application.Services;
 using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
-using MediatR;
 
 namespace Inkukan.Application.Features.Auth.Commands.Login
 {

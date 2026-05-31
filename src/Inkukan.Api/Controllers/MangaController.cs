@@ -4,12 +4,12 @@ using Inkukan.Application.Features.MangaSerie.Command.DeleteSerie;
 using Inkukan.Application.Features.MangaSerie.Command.Update;
 using Inkukan.Application.Features.MangaSerie.Query.GetAll;
 using Inkukan.Application.Features.MangaSerie.Query.GetById;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class MangaController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class MangaController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
         public Task<MangaSerieDto> CreateAsync([FromBody] CreateMangaSerieCommand command)

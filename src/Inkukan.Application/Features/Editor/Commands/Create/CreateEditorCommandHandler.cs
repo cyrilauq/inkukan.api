@@ -2,9 +2,9 @@
 using FluentValidation;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Interface;
+using Inkukan.Application.Mediator.Abstractions;
 using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
-using MediatR;
 
 namespace Inkukan.Application.Features.Editor.Commands.Create
 {

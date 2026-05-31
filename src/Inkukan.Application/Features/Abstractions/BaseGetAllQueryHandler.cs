@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Inkukan.Application.Dtos;
+using Inkukan.Application.Mediator.Abstractions;
 using Inkukan.Domain.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,7 +15,6 @@ namespace Inkukan.Application.Features.Abstractions
         where TDto : class
         where TCommand : BaseGetAllQuery<TDto>
     {
-        // TODO : returns a paginated result
         public async Task<PaginatedDto<TDto>> Handle(TCommand request, CancellationToken cancellationToken)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

@@ -3,12 +3,12 @@ using Inkukan.Application.Features.MangaPeople.Commands.Create;
 using Inkukan.Application.Features.MangaPeople.Commands.Delete;
 using Inkukan.Application.Features.MangaPeople.Commands.Update;
 using Inkukan.Application.Features.MangaPeople.Queries.GetAll;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class MangaPeopleController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class MangaPeopleController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
         public Task<MangaPeopleDto> CreateAsync([FromBody] CreateMangaPeopleCommand command)

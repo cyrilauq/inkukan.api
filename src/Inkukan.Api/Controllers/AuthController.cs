@@ -1,12 +1,12 @@
 ﻿using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Auth.Commands.Login;
 using Inkukan.Application.Features.Auth.Commands.Register;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class AuthController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class AuthController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost("register")]
         public async Task<UserDto> RegisterAsync([FromBody] RegisterCommand command)

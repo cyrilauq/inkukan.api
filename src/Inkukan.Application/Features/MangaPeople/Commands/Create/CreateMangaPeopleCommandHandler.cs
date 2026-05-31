@@ -4,9 +4,9 @@ using FluentValidation.Results;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Extensions;
 using Inkukan.Application.Interface;
+using Inkukan.Application.Mediator.Abstractions;
 using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Application.Features.MangaPeople.Commands.Create

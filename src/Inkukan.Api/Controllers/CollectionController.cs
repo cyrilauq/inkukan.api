@@ -3,12 +3,12 @@ using Inkukan.Application.Features.MangaCollection.Commands.Create;
 using Inkukan.Application.Features.MangaCollection.Commands.Delete;
 using Inkukan.Application.Features.MangaCollection.Commands.Update;
 using Inkukan.Application.Features.MangaCollection.Queries.GetAll;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class CollectionController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class CollectionController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
         public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)

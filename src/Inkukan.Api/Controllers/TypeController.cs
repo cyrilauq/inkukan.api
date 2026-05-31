@@ -3,12 +3,12 @@ using Inkukan.Application.Features.Type.Commands.Create;
 using Inkukan.Application.Features.Type.Commands.Delete;
 using Inkukan.Application.Features.Type.Commands.Udpate;
 using Inkukan.Application.Features.Type.Queries.GetAll;
-using MediatR;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
 {
-    public class TypeController(IMediator mediator) : ApplicationBaseController(mediator)
+    public class TypeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
         public Task<PaginatedDto<TypeDto>> GetAllAsync([FromQuery] GetAllTypeQuery query)
