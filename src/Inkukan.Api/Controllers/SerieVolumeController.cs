@@ -6,6 +6,7 @@ using Inkukan.Application.Features.SerieVolume.Queries.GetAll;
 using Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie;
 using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkukan.Api.Controllers
 {
@@ -13,7 +14,7 @@ namespace Inkukan.Api.Controllers
     public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
-        public async Task<SerieVolumeDto> CreateAsync(Guid serieId, [FromForm] CreateSerieVolumeCommand command)
+        public async Task<SerieVolumeDto> CreateAsync([Required] Guid serieId, [Required][FromForm] CreateSerieVolumeCommand command)
         {
             command.MangaSerieId = serieId;
 
@@ -21,18 +22,18 @@ namespace Inkukan.Api.Controllers
         }
 
         [HttpDelete("{volumeId:guid}")]
-        public Task DeleteAsync(Guid volumeId) 
+        public Task DeleteAsync([Required] Guid volumeId) 
             => Mediator.Send(new DeleteSerieVolumeCommand() { Id = volumeId });
 
         [HttpGet]
-        public async Task<PaginatedDto<SerieVolumeDto>> GetAllAsync(Guid serieId, [FromQuery] GetAllBySerieQuery query)
+        public async Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required] Guid serieId, [Required][FromQuery] GetAllBySerieQuery query)
         {
             query.SerieId = serieId;
             return await Mediator.Send(query);
         }
 
         [HttpPut("{volumeId:guid}")]
-        public async Task<SerieVolumeDto> UpdateAsync(Guid serieId, Guid volumeId, [FromForm] UpdateSerieVolumeCommand command)
+        public async Task<SerieVolumeDto> UpdateAsync([Required] Guid serieId, [Required] Guid volumeId, [Required][FromForm] UpdateSerieVolumeCommand command)
         {
             command.MangaSerieId = serieId;
             command.Id = volumeId;
@@ -41,7 +42,7 @@ namespace Inkukan.Api.Controllers
         }
 
         [HttpGet("/api/volumes")]
-        public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([FromQuery] GetAllSerieVolumeQuery query)
+        public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query)
         {
             return Mediator.Send(query);
         }

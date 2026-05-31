@@ -5,28 +5,29 @@ using Inkukan.Application.Features.MangaCollection.Commands.Update;
 using Inkukan.Application.Features.MangaCollection.Queries.GetAll;
 using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inkukan.Api.Controllers
 {
     public class CollectionController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([FromQuery] GetAllCollectionQuery query)
+        public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([Required][FromQuery] GetAllCollectionQuery query)
             => Mediator.Send(query);
 
         [HttpPost]
-        public Task<MangaCollectionDto> CreateAsync([FromBody] CreateMangaCollectionCommand command)
+        public Task<MangaCollectionDto> CreateAsync([Required][FromBody] CreateMangaCollectionCommand command)
             => Mediator.Send(command);
 
         [HttpPut("{id:guid}")]
-        public Task<MangaCollectionDto> UpdateAsync(Guid id, [FromBody] UpdateMangaCollectionCommand command)
+        public Task<MangaCollectionDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command)
         {
             command.Id = id;
             return Mediator.Send(command);
         }
 
         [HttpDelete("{id:guid}")]
-        public Task DeleteAsync(Guid id)
+        public Task DeleteAsync([Required] Guid id)
             => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id });
     }
 }
