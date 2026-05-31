@@ -1,10 +1,8 @@
-﻿using Inkukan.Application.Services;
-using Inkukan.Domain.Entities;
+﻿using Inkukan.Domain.Entities;
 using Inkukan.Domain.Repositories;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -21,11 +19,11 @@ namespace Inkukan.Application.Services.Implementations
     {
         public async Task<string> GetTokenForUserAsync(User user)
         {
-            JwtSecurityTokenHandler handler = new();
+            JsonWebTokenHandler handler = new();
             byte[] key = Encoding.ASCII.GetBytes(tokenOptions.Value.SecretKey);
             SigningCredentials credentials = new(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature);
+                SecurityAlgorithms.HmacSha256);
 
             SecurityTokenDescriptor tokenDescriptor = new()
             {
@@ -36,8 +34,7 @@ namespace Inkukan.Application.Services.Implementations
                 IssuedAt = DateTime.UtcNow,
             };
 
-            SecurityToken token = handler.CreateToken(tokenDescriptor);
-            return handler.WriteToken(token);
+            return handler.CreateToken(tokenDescriptor);
         }
 
         private async Task<ClaimsIdentity> GenerateClaims(User user)

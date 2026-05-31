@@ -9,6 +9,7 @@ using Inkukan.Domain.Entities;
 using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
