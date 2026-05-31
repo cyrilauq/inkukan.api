@@ -6,10 +6,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
 # 1. On copie les fichiers projets
-COPY ./Inkukan.Api/*.csproj Inkukan.Api/
-COPY ./Inkukan.Application/*.csproj Inkukan.Application/
-COPY ./Inkukan.Domain/*.csproj Inkukan.Domain/
-COPY ./Inkukan.Infrastructure/*.csproj Inkukan.Infrastructure/
+COPY ./src/Inkukan.Api/*.csproj Inkukan.Api/
+COPY ./src/Inkukan.Application/*.csproj Inkukan.Application/
+COPY ./src/Inkukan.Domain/*.csproj Inkukan.Domain/
+COPY ./src/Inkukan.Infrastructure/*.csproj Inkukan.Infrastructure/
 
 # 2. On restore
 RUN dotnet restore "Inkukan.Api/Inkukan.Api.csproj"
