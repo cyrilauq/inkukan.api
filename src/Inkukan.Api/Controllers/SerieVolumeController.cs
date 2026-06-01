@@ -4,6 +4,7 @@ using Inkukan.Application.Features.SerieVolume.Commands.Delete;
 using Inkukan.Application.Features.SerieVolume.Commands.Update;
 using Inkukan.Application.Features.SerieVolume.Queries.GetAll;
 using Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie;
+using Inkukan.Application.Features.SerieVolume.Queries.GetSerieVolumeById;
 using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,12 @@ namespace Inkukan.Api.Controllers
         public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query)
         {
             return Mediator.Send(query);
+        }
+
+        [HttpGet("/api/volumes/{volumeId:guid}")]
+        public Task<SerieVolumeDto> GetAllAsync([Required] Guid volumeId)
+        {
+            return Mediator.Send(new GetSerieVolumeByIdQuery() { Id = volumeId });
         }
     }
 }
