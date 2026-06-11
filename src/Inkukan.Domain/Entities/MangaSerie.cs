@@ -4,10 +4,11 @@ namespace Inkukan.Domain.Entities
 {
     public class MangaSerie : ITrackableEntity, ILogicalDelete
     {
-        // TODO : add something to "save" the cover
-        
         public string TitleVF { get; set; } = null!;
         public string TitleVO { get; set; } = null!;
+
+        public string? VFParutionCountry { get; set; }
+        public string VOParutionCountry { get; set; } = null!;
 
         public int TotalVolumes { get; set; }
         public string Synopsis { get; set; } = null!;

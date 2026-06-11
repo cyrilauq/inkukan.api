@@ -17,14 +17,14 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
                 .GreaterThan(DateTime.MinValue);
             RuleFor(c => c.VFParutionDate)
                 .GreaterThan(DateTime.MinValue);
-            RuleFor(c => c.VOParutionCountry)
-                .NotEmpty().WithMessage("voparutioncountry_required")
-                .NotNull().WithMessage("voparutioncountry_required")
-                .MinimumLength(2).WithMessage("voparutioncountry_min_length_2")
-                .MaximumLength(100).WithMessage("voparutioncountry_max_length_100");
-            RuleFor(c => c.VFParutionCountry)
-                .MinimumLength(2).WithMessage("vfparutioncountry_min_length_2")
-                .MaximumLength(100).WithMessage("vfparutioncountry_max_length_100");
+            //RuleFor(c => c.VOParutionCountry)
+            //    .NotEmpty().WithMessage("voparutioncountry_required")
+            //    .NotNull().WithMessage("voparutioncountry_required")
+            //    .MinimumLength(2).WithMessage("voparutioncountry_min_length_2")
+            //    .MaximumLength(100).WithMessage("voparutioncountry_max_length_100");
+            //RuleFor(c => c.VFParutionCountry)
+            //    .MinimumLength(2).WithMessage("vfparutioncountry_min_length_2")
+            //    .MaximumLength(100).WithMessage("vfparutioncountry_max_length_100");
             RuleFor(c => c.EANCode)
                 .MaximumLength(25).WithMessage("eancode_max_length_25");
             RuleFor(c => c.PriceCode)

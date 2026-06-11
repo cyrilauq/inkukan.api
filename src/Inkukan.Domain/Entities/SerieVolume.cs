@@ -11,9 +11,7 @@ namespace Inkukan.Domain.Entities
         public string? VOCoverPath { get; set; }
         public string? VOCoverHash { get; set; }
         public DateTime VOParutionDate { get; set; }
-        public string VOParutionCountry { get; set; } = null!;
         public DateTime? VFParutionDate { get; set; }
-        public string? VFParutionCountry { get; set; }
         public int RecommendedAge { get; set; }
         public string? EANCode { get; set; }
         public string? PriceCode { get; set; }

@@ -11,9 +11,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
         public IFormFile? VFCover { get; set; }
         public IFormFile? VOCover { get; set; }
         public DateTime VOParutionDate { get; set; }
-        public string VOParutionCountry { get; set; } = string.Empty;
         public DateTime VFParutionDate { get; set; }
-        public string VFParutionCountry { get; set; } = string.Empty;
         public int RecommendedAge { get; set; }
         public string? EANCode { get; set; }
         public string? PriceCode { get; set; }

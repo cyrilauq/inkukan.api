@@ -156,8 +156,6 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
                 Synopsis = "Ceci est un synopsis de plus de quinze caractères pour passer la validation.",
                 VOParutionDate = DateTime.Now,
                 VFParutionDate = DateTime.Now,
-                VOParutionCountry = "Japan",
-                VFParutionCountry = "France",
                 MangaSerieId = Guid.NewGuid(),
                 EANCode = "123456789",
                 PriceCode = "FR01"

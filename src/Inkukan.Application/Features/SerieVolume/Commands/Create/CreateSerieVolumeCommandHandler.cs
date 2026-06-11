@@ -46,6 +46,12 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
                 serieToAdd.VOCoverPath = voCoverPath.ToString();
                 serieToAdd.VOCoverPath = await hashService.HashBytesAsync(voCover.Content);
             }
+            if(serieToAdd.VFParutionDate != null)
+                serieToAdd.VFParutionDate = DateTime.SpecifyKind(serieToAdd.VFParutionDate.Value, DateTimeKind.Utc);
+            serieToAdd.VOParutionDate = DateTime.SpecifyKind(serieToAdd.VOParutionDate, DateTimeKind.Utc);
+            
+            // TODO : check to add the manga serie inside the dto return
+
             Domain.Entities.SerieVolume result = await serieVolumeRepository.CreateAsync(serieToAdd, cancellationToken);
             return mapper.Map<SerieVolumeDto>(result);
         }

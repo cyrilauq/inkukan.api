@@ -26,13 +26,13 @@ namespace Inkukan.Infrastructure.Data.Configuration
                 .IsRequired();
             builder
                 .Property(b => b.VFParutionDate);
-            builder
-                .Property(b => b.VFParutionCountry)
-                .HasMaxLength(100);
-            builder
-                .Property(b => b.VOParutionCountry)
-                .IsRequired()
-                .HasMaxLength(100);
+            //builder
+            //    .Property(b => b.VFParutionCountry)
+            //    .HasMaxLength(100);
+            //builder
+            //    .Property(b => b.VOParutionCountry)
+            //    .IsRequired()
+            //    .HasMaxLength(100);
             builder
                 .Property(b => b.RecommendedAge)
                 .IsRequired();

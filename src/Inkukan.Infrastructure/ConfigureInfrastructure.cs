@@ -112,7 +112,7 @@ namespace Inkukan.Infrastructure
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "..", "InkShelf.Api");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "..", "Inkukan.Api");
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(path)
