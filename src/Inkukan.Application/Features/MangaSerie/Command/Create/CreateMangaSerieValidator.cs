@@ -16,6 +16,9 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Create
                 .MaximumLength(120).WithMessage("titlevo_120_length");
             RuleFor(m => m.TotalVolumes)
                 .GreaterThanOrEqualTo(0);
+            RuleFor(m => m.VOParutionCountry)
+                .NotEmpty().WithMessage("vopaurtion_country_empty")
+                .NotNull().WithMessage("vopaurtion_country_empty");
         }
     }
 }

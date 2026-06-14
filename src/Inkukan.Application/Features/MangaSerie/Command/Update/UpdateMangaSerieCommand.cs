@@ -8,6 +8,10 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
         public Guid Id { get; set; }
         public string TitleVF { get; set; } = string.Empty;
         public string TitleVO { get; set; } = string.Empty;
+
+        public string? VFParutionCountry { get; set; }
+        public string VOParutionCountry { get; set; } = string.Empty;
+
         public int TotalVolumes { get; set; }
         public string Synopsis { get; set; } = string.Empty;
         public Guid? AuthorId { get; set; }
