@@ -19,6 +19,8 @@ namespace Inkukan.Domain.Entities
         public Guid MangaSerieId { get; set; }
         public MangaSerie MangaSerie { get; set; } = null!;
 
+        public ICollection<UserListItem> UserLists { get; set; } = [];
+
         #region ITrackableEntity
 
         public Guid Id { get; set; }
