@@ -72,7 +72,8 @@ namespace Inkukan.Application.Tests.Features.MangaSerie.Create
                 Synopsis = "Test",
                 TitleVO = "Test",
                 TitleVF = "Test",
-                TotalVolumes = 1
+                TotalVolumes = 1,
+                VOParutionCountry = "Japan"
             };
 
             // Act
@@ -96,7 +97,8 @@ namespace Inkukan.Application.Tests.Features.MangaSerie.Create
                 Synopsis = "Test",
                 TitleVO = "Test",
                 TitleVF = "Test",
-                TotalVolumes = 1
+                TotalVolumes = 1,
+                VOParutionCountry = "Japan"
             };
 
             // Act
