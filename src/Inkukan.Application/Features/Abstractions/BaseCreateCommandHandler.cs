@@ -13,7 +13,7 @@ namespace Inkukan.Application.Features.Abstractions
         where TEntity : class, new()
         where TDto : class
     {
-        public async Task<bool> EnsureIsValidAsync(TCommand value)
+        public virtual async Task<bool> EnsureIsValidAsync(TCommand value)
         {
             if (await AlreadyExistsAsync(value)) throw new ConflictException("Another entity with the same value already exists");
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
