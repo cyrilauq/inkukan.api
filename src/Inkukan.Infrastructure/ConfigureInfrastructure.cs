@@ -40,6 +40,7 @@ namespace Inkukan.Infrastructure
                 .AddScoped<IBaseRepository<MangaType>, TypeRepository>()
                 .AddScoped<IBaseRepository<MangaCollection>, CollectionRepository>()
                 .AddScoped<IBaseRepository<UserListItem>, BaseRepository<UserListItem>>()
+                .AddScoped<IBaseRepository<User>, BaseRepository<User>>()
                 .AddScoped<IBlobStorage, VercelBlobStorage>();
 
             return services;
