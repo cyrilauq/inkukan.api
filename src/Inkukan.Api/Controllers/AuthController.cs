@@ -10,17 +10,17 @@ namespace Inkukan.Api.Controllers
     public class AuthController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost("register")]
-        public async Task<UserDto> RegisterAsync([Required][FromBody] RegisterCommand command)
+        public async Task<UserDto> RegisterAsync([Required][FromBody] RegisterCommand command, CancellationToken cancellationToken)
         {
-            UserDto registerResult = await Mediator.Send(command);
+            UserDto registerResult = await Mediator.Send(command, cancellationToken);
 
             return registerResult;
         }
 
         [HttpPost("login")]
-        public async Task<UserDto> LoginAsync([Required][FromBody] LoginCommand command)
+        public async Task<UserDto> LoginAsync([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
         {
-            UserDto loginResult = await Mediator.Send(command);
+            UserDto loginResult = await Mediator.Send(command, cancellationToken);
 
             return loginResult;
         }

@@ -12,22 +12,22 @@ namespace Inkukan.Api.Controllers
     public class CollectionController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([Required][FromQuery] GetAllCollectionQuery query)
-            => Mediator.Send(query);
+        public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([Required][FromQuery] GetAllCollectionQuery query, CancellationToken cancellationToken)
+            => Mediator.Send(query, cancellationToken);
 
         [HttpPost]
-        public Task<MangaCollectionDto> CreateAsync([Required][FromBody] CreateMangaCollectionCommand command)
-            => Mediator.Send(command);
+        public Task<MangaCollectionDto> CreateAsync([Required][FromBody] CreateMangaCollectionCommand command, CancellationToken cancellationToken)
+            => Mediator.Send(command, cancellationToken);
 
         [HttpPut("{id:guid}")]
-        public Task<MangaCollectionDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command)
+        public Task<MangaCollectionDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command, CancellationToken cancellationToken)
         {
             command.Id = id;
-            return Mediator.Send(command);
+            return Mediator.Send(command, cancellationToken);
         }
 
         [HttpDelete("{id:guid}")]
-        public Task DeleteAsync([Required] Guid id)
-            => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id });
+        public Task DeleteAsync([Required] Guid id, CancellationToken cancellationToken)
+            => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id }, cancellationToken);
     }
 }

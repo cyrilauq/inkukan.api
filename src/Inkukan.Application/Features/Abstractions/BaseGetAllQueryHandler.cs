@@ -40,16 +40,16 @@ namespace Inkukan.Application.Features.Abstractions
 
         private IQueryable<TDto> SortQuery(IQueryable<TDto> baseQuery, string? order, string? orderBy)
         {
-            var query = baseQuery;
+            IQueryable<TDto> query = baseQuery;
 
             if (orderBy != null && order != null)
             {
-                var orderByParam = Expression.Parameter(typeof(TDto), "p");
-                var orderByProp = Expression.Property(orderByParam, orderBy);
-                var exp = Expression.Lambda(orderByProp, orderByParam);
+                ParameterExpression orderByParam = Expression.Parameter(typeof(TDto), "p");
+                MemberExpression orderByProp = Expression.Property(orderByParam, orderBy);
+                LambdaExpression exp = Expression.Lambda(orderByProp, orderByParam);
                 string method = order == "asc" ? "OrderBy" : "OrderByDescending";
                 System.Type[] types = { query.ElementType, exp.Body.Type };
-                var mce = Expression.Call(typeof(Queryable), method, types, query.Expression, exp);
+                MethodCallExpression mce = Expression.Call(typeof(Queryable), method, types, query.Expression, exp);
 
                 query = query.Provider.CreateQuery<TDto>(mce);
             }
@@ -58,7 +58,7 @@ namespace Inkukan.Application.Features.Abstractions
 
         private IQueryable<TDto> ApplyFilters(IQueryable<TDto> baseQuery, string[] filters)
         {
-            var query = baseQuery;
+            IQueryable<TDto> query = baseQuery;
 
             foreach (string filter in filters)
             {

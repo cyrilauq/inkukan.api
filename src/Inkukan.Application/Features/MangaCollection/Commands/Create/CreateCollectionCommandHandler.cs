@@ -17,11 +17,11 @@ namespace Inkukan.Application.Features.MangaCollection.Commands.Create
     public class CreateCollectionCommandHandler(ICollectionRepository collectionRepository, IMapper mapper, IValidator<CreateMangaCollectionCommand> validator)
         : BaseCreateCommandHandler<CreateMangaCollectionCommand, MangaCollectionDto, Domain.Entities.MangaCollection>(collectionRepository, validator, mapper)
     {
-        public override async Task<bool> AlreadyExistsAsync(CreateMangaCollectionCommand request)
+        public override async Task<bool> AlreadyExistsAsync(CreateMangaCollectionCommand request, CancellationToken cancellationToken = default)
         {
             return await collectionRepository.GetQuery()
                 .Where(t => t.Name.ToLower() == request.Name.ToLower())
-                .AnyAsync();
+                .AnyAsync(cancellationToken);
         }
 
         public override Task BeforeCreateAsync(CreateMangaCollectionCommand request, Domain.Entities.MangaCollection enttiy, CancellationToken cancellationToken)

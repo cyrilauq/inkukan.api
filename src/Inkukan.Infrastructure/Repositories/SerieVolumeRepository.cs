@@ -9,13 +9,13 @@ namespace Inkukan.Infrastructure.Repositories
         : BaseRepository<SerieVolume>(dbContextFactory), ISerieVolumeRepository
     {
 
-        public async Task<SerieVolume?> GetBySerieIdAndVolumeNumber(Guid serieId, int volumeNumber)
+        public async Task<SerieVolume?> GetBySerieIdAndVolumeNumber(Guid serieId, int volumeNumber, CancellationToken cancellationToken = default)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             return await dbContext
                 .SerieVolumes
                 .Where(sv => sv.MangaSerieId == serieId && sv.VolumeNumber == volumeNumber)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Inkukan.Application.Features.MangaCollection.Commands.Update
     public class UpdateMangaCollectionCommandHandler(IBaseRepository<Domain.Entities.MangaCollection> mangaCollectionRepository, IValidator<UpdateMangaCollectionCommand> validator, IMapper mapper)
         : BaseUpdateCommandHandler<UpdateMangaCollectionCommand, MangaCollectionDto, Domain.Entities.MangaCollection>(mangaCollectionRepository, validator, mapper)
     {
-        public override Task<bool> AlreadyExistsAsync(UpdateMangaCollectionCommand request)
+        public override Task<bool> AlreadyExistsAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken = default)
         {
             return mangaCollectionRepository.GetQuery()
                 .Where(t => t.Name.ToLower() == request.Name.ToLower())
-                .AnyAsync();
+                .AnyAsync(cancellationToken);
         }
 
         public override Task BeforeUpdateAsync(UpdateMangaCollectionCommand request, Domain.Entities.MangaCollection enttiy, CancellationToken cancellationToken)
@@ -28,9 +28,9 @@ namespace Inkukan.Application.Features.MangaCollection.Commands.Update
             return Task.CompletedTask;
         }
 
-        public override Task<Domain.Entities.MangaCollection?> GetByIdAsync(UpdateMangaCollectionCommand request)
+        public override Task<Domain.Entities.MangaCollection?> GetByIdAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken = default)
         {
-            return mangaCollectionRepository.GetByIdAsync(request.Id);
+            return mangaCollectionRepository.GetByIdAsync(request.Id, cancellationToken);
         }
     }
 }

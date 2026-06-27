@@ -13,7 +13,7 @@ namespace Inkukan.Application.Services.Implementations
             (Png, "png", true),
         ];
 
-        public Task<bool> FileByteHasSupportedType(byte[] fileContent, params SupportedFileType[] supportedFileTypes)
+        public Task<bool> FileByteHasSupportedType(byte[] fileContent, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes)
         {
             var formatsToCheck = ImageFormats
                 .Where(i => Enum.TryParse(typeof(SupportedFileType), i.extension, true, out object? foundType))
@@ -29,12 +29,12 @@ namespace Inkukan.Application.Services.Implementations
             return Task.FromResult(false);
         }
 
-        public async Task<bool> FileIsSupportedType(string fileName, byte[] fileContent, params SupportedFileType[] supportedFileTypes)
+        public async Task<bool> FileIsSupportedType(string fileName, byte[] fileContent, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes)
         {
-            return await FileNameHasSupportedType(fileName, supportedFileTypes) && await FileByteHasSupportedType(fileContent, supportedFileTypes);
+            return await FileNameHasSupportedType(fileName, cancellationToken, supportedFileTypes) && await FileByteHasSupportedType(fileContent, cancellationToken, supportedFileTypes);
         }
 
-        public Task<bool> FileNameHasSupportedType(string fileName, params SupportedFileType[] supportedFileTypes)
+        public Task<bool> FileNameHasSupportedType(string fileName, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes)
         {
             string fileExtension = Path.GetExtension(fileName).Replace(".", "");
             if (Enum.TryParse(typeof(SupportedFileType), fileExtension, true, out object? foundType) 

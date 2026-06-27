@@ -18,11 +18,11 @@ namespace Inkukan.Application.Features.Type.Commands.Create
     public class CreateTypeCommandHandler(ITypeRepository typeRepository, IMapper mapper, IValidator<CreateTypeCommand> validator)
         : BaseCreateCommandHandler<CreateTypeCommand, TypeDto, MangaType>(typeRepository, validator, mapper)
     {
-        public override async Task<bool> AlreadyExistsAsync(CreateTypeCommand request)
+        public override async Task<bool> AlreadyExistsAsync(CreateTypeCommand request, CancellationToken cancellationToken = default)
         {
             return await typeRepository.GetQuery()
                 .Where(t => t.Name.ToLower() == request.Name.ToLower())
-                .AnyAsync();
+                .AnyAsync(cancellationToken);
         }
 
         public override Task BeforeCreateAsync(CreateTypeCommand request, MangaType enttiy, CancellationToken cancellationToken)

@@ -6,11 +6,11 @@ namespace Inkukan.Application.Extensions
 {
     public static class ImageExtensions
     {
-        public static async Task<byte[]> ToByteArrayAsync(this Image image, IImageEncoder encoder)
+        public static async Task<byte[]> ToByteArrayAsync(this Image image, IImageEncoder encoder, CancellationToken cancellationToken = default)
         {
             using MemoryStream outStream = new();
 
-            await image.SaveAsync(outStream, encoder);
+            await image.SaveAsync(outStream, encoder, cancellationToken);
             outStream.Seek(0, SeekOrigin.Begin);
 
             return outStream.ToArray();

@@ -12,11 +12,11 @@ namespace Inkukan.Application.Features.Type.Commands.Udpate
     public class UpdateTypeCommandHandler(IBaseRepository<MangaType> typeRepository, IValidator<UpdateTypeCommand> validator, IMapper mapper)
         : BaseUpdateCommandHandler<UpdateTypeCommand, TypeDto, MangaType>(typeRepository, validator, mapper)
     {
-        public override Task<bool> AlreadyExistsAsync(UpdateTypeCommand request)
+        public override Task<bool> AlreadyExistsAsync(UpdateTypeCommand request, CancellationToken cancellationToken = default)
         {
             return typeRepository.GetQuery()
                 .Where(t => t.Name.ToLower() == request.Name.ToLower())
-                .AnyAsync();
+                .AnyAsync(cancellationToken);
         }
 
         public override Task BeforeUpdateAsync(UpdateTypeCommand request, MangaType enttiy, CancellationToken cancellationToken)
@@ -29,9 +29,9 @@ namespace Inkukan.Application.Features.Type.Commands.Udpate
             return Task.CompletedTask;
         }
 
-        public override Task<MangaType?> GetByIdAsync(UpdateTypeCommand request)
+        public override Task<MangaType?> GetByIdAsync(UpdateTypeCommand request, CancellationToken cancellationToken = default)
         {
-            return typeRepository.GetByIdAsync(request.Id);
+            return typeRepository.GetByIdAsync(request.Id, cancellationToken);
         }
     }
 }

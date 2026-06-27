@@ -12,22 +12,22 @@ namespace Inkukan.Api.Controllers
     public class TypeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpGet]
-        public Task<PaginatedDto<TypeDto>> GetAllAsync([Required][FromQuery] GetAllTypeQuery query)
-            => Mediator.Send(query);
+        public Task<PaginatedDto<TypeDto>> GetAllAsync([Required][FromQuery] GetAllTypeQuery query, CancellationToken cancellationToken)
+            => Mediator.Send(query, cancellationToken);
 
         [HttpPost]
-        public Task<TypeDto> CreateAsync([Required][FromBody] CreateTypeCommand command)
-            => Mediator.Send(command);
+        public Task<TypeDto> CreateAsync([Required][FromBody] CreateTypeCommand command, CancellationToken cancellationToken)
+            => Mediator.Send(command, cancellationToken);
 
         [HttpDelete("{id:guid}")]
-        public Task DeleteAsync([Required] Guid id)
-            => Mediator.Send(new DeleteTypeCommand() { Id = id });
+        public Task DeleteAsync([Required] Guid id, CancellationToken cancellationToken)
+            => Mediator.Send(new DeleteTypeCommand() { Id = id }, cancellationToken);
 
         [HttpPut("{id:guid}")]
-        public Task<TypeDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateTypeCommand command)
+        public Task<TypeDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateTypeCommand command, CancellationToken cancellationToken)
         {
             command.Id = id;
-            return Mediator.Send(command);
+            return Mediator.Send(command, cancellationToken);
         }
     }
 }

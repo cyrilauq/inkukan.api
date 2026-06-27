@@ -7,6 +7,6 @@
         /// </summary>
         /// <param name="content">File content</param>
         /// <returns>The filename of the savedFile</returns>
-        Task<string> UploadAsync(byte[] content, string filePath);
+        Task<string> UploadAsync(byte[] content, string filePath, CancellationToken cancellationToken = default);
     }
 }

@@ -32,11 +32,11 @@ namespace Inkukan.Application.Tests.Services.Implementations
             {
                 // Arrange
                 var content = new byte[] { 1, 2, 3 };
-                _fileCheckerMock.Setup(f => f.FileIsSupportedType(It.IsAny<string>(), content, It.IsAny<SupportedFileType[]>()))
+                _fileCheckerMock.Setup(f => f.FileIsSupportedType(It.IsAny<string>(), content, CancellationToken.None, It.IsAny<SupportedFileType[]>()))
                     .ReturnsAsync(false);
 
                 // Act
-                Func<Task> act = async () => await _service.UploadAsync("test.txt", content, "", SupportedFileType.PNG);
+                Func<Task> act = async () => await _service.UploadAsync("test.txt", content, "", CancellationToken.None, SupportedFileType.PNG);
 
                 // Assert
                 await act.Should().ThrowAsync<EntityValidationException>()
@@ -50,11 +50,11 @@ namespace Inkukan.Application.Tests.Services.Implementations
                 var fileName = "test.png";
                 var imageContent = CreateValidImageBytes();
 
-                _fileCheckerMock.Setup(f => f.FileIsSupportedType(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<SupportedFileType[]>()))
+                _fileCheckerMock.Setup(f => f.FileIsSupportedType(It.IsAny<string>(), It.IsAny<byte[]>(), CancellationToken.None, It.IsAny<SupportedFileType[]>()))
                     .ReturnsAsync(true);
 
                 // Act
-                var result = await _service.UploadAsync(fileName, imageContent, "", SupportedFileType.PNG);
+                var result = await _service.UploadAsync(fileName, imageContent, "", CancellationToken.None, SupportedFileType.PNG);
 
                 // Assert
                 result.Should().NotBeNull();

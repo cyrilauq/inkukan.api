@@ -12,22 +12,22 @@ namespace Inkukan.Api.Controllers
     public class EditorController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
-        public Task<EditorDto> CreateAsync([Required] CreateEditorCommand command)
-            => Mediator.Send(command);
+        public Task<EditorDto> CreateAsync([Required] CreateEditorCommand command, CancellationToken cancellationToken)
+            => Mediator.Send(command, cancellationToken);
 
         [HttpDelete("{editorId:guid}")]
-        public Task DeleteAsync([Required] Guid editorId)
-            => Mediator.Send(new DeleteEditorCommand { Id = editorId });
+        public Task DeleteAsync([Required] Guid editorId, CancellationToken cancellationToken)
+            => Mediator.Send(new DeleteEditorCommand { Id = editorId }, cancellationToken);
 
         [HttpGet]
-        public Task<PaginatedDto<EditorDto>> GetAllAsync([Required][FromQuery] GetAllEditorsQuery command)
-            => Mediator.Send(command);
+        public Task<PaginatedDto<EditorDto>> GetAllAsync([Required][FromQuery] GetAllEditorsQuery command, CancellationToken cancellationToken)
+            => Mediator.Send(command, cancellationToken);
 
         [HttpPut("{editorId:guid}")]
-        public Task<EditorDto> UpdateAsync([Required] Guid editorId, [Required][FromBody] UpdateEditorCommand command)
+        public Task<EditorDto> UpdateAsync([Required] Guid editorId, [Required][FromBody] UpdateEditorCommand command, CancellationToken cancellationToken)
         {
             command.Id = editorId;
-            return Mediator.Send(command);
+            return Mediator.Send(command, cancellationToken);
         }
     }
 }

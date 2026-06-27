@@ -13,31 +13,31 @@ namespace Inkukan.Application.Features.Abstractions
         where TEntity : class, new()
         where TDto : class
     {
-        public async Task<bool> EnsureIsValidAsync(TCommand value)
+        public async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken = default)
         {
-            if (await AlreadyExistsAsync(value)) throw new ConflictException("Another entity with the same value already exists");
-            FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
+            if (await AlreadyExistsAsync(value, cancellationToken)) throw new ConflictException("Another entity with the same value already exists");
+            FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
             if (validationResult.IsValid) return true;
             throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
         }
 
         public async Task<TDto> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            await EnsureIsValidAsync(request);
-            TEntity entity = await GetByIdAsync(request) ?? throw new EntityValidationException("A validation error occure", ["The asked resource doesn't exists"]);
+            await EnsureIsValidAsync(request, cancellationToken);
+            TEntity entity = await GetByIdAsync(request, cancellationToken) ?? throw new EntityValidationException("A validation error occure", ["The asked resource doesn't exists"]);
             mapper.Map(request, entity);
             await BeforeUpdateAsync(request, entity, cancellationToken);
             TEntity result = await repository.UpdateAsync(entity, cancellationToken);
             return mapper.Map<TDto>(result);
         }
 
-        public virtual Task<TEntity?> GetByIdAsync(TCommand request)
+        public virtual Task<TEntity?> GetByIdAsync(TCommand request, CancellationToken cancellationToken = default)
             => Task.FromResult((TEntity?)null);
 
-        public virtual Task BeforeUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
+        public virtual Task BeforeUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken = default)
             => Task.CompletedTask;
 
-        public virtual Task<bool> AlreadyExistsAsync(TCommand request)
+        public virtual Task<bool> AlreadyExistsAsync(TCommand request, CancellationToken cancellationToken = default)
             => Task.FromResult(false);
     }
 }

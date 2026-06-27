@@ -13,31 +13,31 @@ namespace Inkukan.Api.Controllers
     public class MangaController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
-        public Task<MangaSerieDto> CreateAsync([Required][FromBody] CreateMangaSerieCommand command)
-            => Mediator.Send(command);
+        public Task<MangaSerieDto> CreateAsync([Required][FromBody] CreateMangaSerieCommand command, CancellationToken cancellationToken)
+            => Mediator.Send(command, cancellationToken);
 
         [HttpDelete("{serieId:guid}")]
-        public Task DeleteAsync(Guid serieId)
-            => Mediator.Send(new DeleteSerieCommand() { Id = serieId });
+        public Task DeleteAsync(Guid serieId, CancellationToken cancellationToken)
+            => Mediator.Send(new DeleteSerieCommand() { Id = serieId }, cancellationToken);
 
         [HttpPut("{mangaId:guid}")]
-        public Task<MangaSerieDto> UpdateAsync([Required] Guid mangaId, [Required][FromBody] UpdateMangaSerieCommand command)
+        public Task<MangaSerieDto> UpdateAsync([Required] Guid mangaId, [Required][FromBody] UpdateMangaSerieCommand command, CancellationToken cancellationToken)
         {
             command.Id = mangaId;
-            return Mediator.Send(command);
+            return Mediator.Send(command, cancellationToken);
         }
 
         [HttpGet("{mangaId:guid}")]
-        public Task<MangaSerieDto> GetByIdAsync([Required] Guid mangaId)
+        public Task<MangaSerieDto> GetByIdAsync([Required] Guid mangaId, CancellationToken cancellationToken)
         {
             GetSerieByIdQuery query = new() { Id = mangaId };
-            return Mediator.Send(query);
+            return Mediator.Send(query, cancellationToken);
         }
 
         [HttpGet]
-        public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([Required][FromQuery] GetAllSerieQuery query)
+        public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([Required][FromQuery] GetAllSerieQuery query, CancellationToken cancellationToken)
         {
-            return Mediator.Send(query);
+            return Mediator.Send(query, cancellationToken);
         }
     }
 }

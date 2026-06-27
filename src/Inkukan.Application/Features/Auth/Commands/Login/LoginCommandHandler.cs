@@ -12,9 +12,9 @@ namespace Inkukan.Application.Features.Auth.Commands.Login
     public class LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IMapper mapper, IValidator<LoginCommand> validator)
         : IRequestHandler<LoginCommand, UserDto>, IValidatable<LoginCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(LoginCommand value)
+        public async Task<bool> EnsureIsValidAsync(LoginCommand value, CancellationToken cancellationToken = default)
         {
-            FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
+            FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
             if (validationResult.IsValid)
                 return true;
             throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
@@ -22,13 +22,13 @@ namespace Inkukan.Application.Features.Auth.Commands.Login
 
         public async Task<UserDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            await EnsureIsValidAsync(request);
+            await EnsureIsValidAsync(request, cancellationToken);
 
             Domain.Entities.User? userToLogin = await userRepository.FindByCredentials(request.Login, request.Password, cancellationToken);
             if (userToLogin == null)
                 throw new WrongCredentialsException("Wrong credentials");
             UserDto user = mapper.Map<UserDto>(userToLogin);
-            user.AccessToken = await tokenService.GetTokenForUserAsync(userToLogin);
+            user.AccessToken = await tokenService.GetTokenForUserAsync(userToLogin, cancellationToken);
             return user;
         }
     }

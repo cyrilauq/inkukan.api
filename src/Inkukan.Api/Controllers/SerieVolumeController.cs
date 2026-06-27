@@ -15,43 +15,43 @@ namespace Inkukan.Api.Controllers
     public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
         [HttpPost]
-        public async Task<SerieVolumeDto> CreateAsync([Required] Guid serieId, [Required][FromForm] CreateSerieVolumeCommand command)
+        public async Task<SerieVolumeDto> CreateAsync([Required] Guid serieId, [Required][FromForm] CreateSerieVolumeCommand command, CancellationToken cancellationToken)
         {
             command.MangaSerieId = serieId;
 
-            return await Mediator.Send(command);
+            return await Mediator.Send(command, cancellationToken);
         }
 
         [HttpDelete("{volumeId:guid}")]
-        public Task DeleteAsync([Required] Guid volumeId) 
-            => Mediator.Send(new DeleteSerieVolumeCommand() { Id = volumeId });
+        public Task DeleteAsync([Required] Guid volumeId, CancellationToken cancellationToken) 
+            => Mediator.Send(new DeleteSerieVolumeCommand() { Id = volumeId }, cancellationToken);
 
         [HttpGet]
-        public async Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required] Guid serieId, [Required][FromQuery] GetAllBySerieQuery query)
+        public async Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required] Guid serieId, [Required][FromQuery] GetAllBySerieQuery query, CancellationToken cancellationToken)
         {
             query.SerieId = serieId;
-            return await Mediator.Send(query);
+            return await Mediator.Send(query, cancellationToken);
         }
 
         [HttpPut("{volumeId:guid}")]
-        public async Task<SerieVolumeDto> UpdateAsync([Required] Guid serieId, [Required] Guid volumeId, [Required][FromForm] UpdateSerieVolumeCommand command)
+        public async Task<SerieVolumeDto> UpdateAsync([Required] Guid serieId, [Required] Guid volumeId, [Required][FromForm] UpdateSerieVolumeCommand command, CancellationToken cancellationToken)
         {
             command.MangaSerieId = serieId;
             command.Id = volumeId;
 
-            return await Mediator.Send(command);
+            return await Mediator.Send(command, cancellationToken);
         }
 
         [HttpGet("/api/volumes")]
-        public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query)
+        public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query, CancellationToken cancellationToken)
         {
-            return Mediator.Send(query);
+            return Mediator.Send(query, cancellationToken);
         }
 
         [HttpGet("/api/volumes/{volumeId:guid}")]
-        public Task<SerieVolumeDto> GetAllAsync([Required] Guid volumeId)
+        public Task<SerieVolumeDto> GetAllAsync([Required] Guid volumeId, CancellationToken cancellationToken)
         {
-            return Mediator.Send(new GetSerieVolumeByIdQuery() { Id = volumeId });
+            return Mediator.Send(new GetSerieVolumeByIdQuery() { Id = volumeId }, cancellationToken);
         }
     }
 }

@@ -18,20 +18,20 @@ namespace Inkukan.Application.Services.Implementations
         private readonly WebpEncoder _webpEncoder = new() { Quality = 80 };
 
 
-        public async Task<Guid?> UploadAsync(string fileName, byte[] content, string outPutFileName, params SupportedFileType[] supportedFileTypes)
+        public async Task<Guid?> UploadAsync(string fileName, byte[] content, string outPutFileName, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes)
         {
-            await EnsureFileIsSupportedType(fileName, content, supportedFileTypes);
+            await EnsureFileIsSupportedType(fileName, content, cancellationToken, supportedFileTypes);
 
             Guid fileId = Guid.NewGuid();
 
             using MemoryStream contentStream = new(content);
-            using Image originalImage = await Image.LoadAsync(contentStream);
+            using Image originalImage = await Image.LoadAsync(contentStream, cancellationToken);
 
             foreach (var size in _fileSizes)
             {
                 using Image resizedImage = originalImage.ResizeImage(size.Value);
 
-                await blobStorage.UploadAsync(await resizedImage.ToByteArrayAsync(_webpEncoder), $"{size.Key}/{fileId}.webp");
+                await blobStorage.UploadAsync(await resizedImage.ToByteArrayAsync(_webpEncoder), $"{size.Key}/{fileId}.webp", cancellationToken);
             }
 
             string requestOriginalUri = $"original/{fileId}.{Path.GetExtension(fileName)}";
@@ -39,14 +39,14 @@ namespace Inkukan.Application.Services.Implementations
             using MemoryStream requestOriginalStream = new(content);
             requestOriginalStream.Seek(0, SeekOrigin.Begin);
 
-            await blobStorage.UploadAsync(requestOriginalStream.ToArray(), requestOriginalUri);
+            await blobStorage.UploadAsync(requestOriginalStream.ToArray(), requestOriginalUri, cancellationToken);
 
             return fileId;
         }
 
-        private async Task EnsureFileIsSupportedType(string fileName, byte[] content, params SupportedFileType[] supportedFileTypes)
+        private async Task EnsureFileIsSupportedType(string fileName, byte[] content, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes)
         {
-            if (await fileChecker.FileIsSupportedType(fileName, content, supportedFileTypes)) return;
+            if (await fileChecker.FileIsSupportedType(fileName, content, cancellationToken, supportedFileTypes)) return;
             throw new EntityValidationException(
                 $"An error occured while validating the file",
                 [$"The given file isn't of type [{string.Join(",", supportedFileTypes.Select(s => s.ToString()).ToList())}]"]);

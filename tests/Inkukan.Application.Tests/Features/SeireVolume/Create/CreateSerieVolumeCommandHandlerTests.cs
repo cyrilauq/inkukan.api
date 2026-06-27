@@ -137,14 +137,14 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
             _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None))
                 .ReturnsAsync(new SerieVolume());
 
-            _fileUploaderMock.Setup(f => f.UploadAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<SupportedFileType[]>()))
+            _fileUploaderMock.Setup(f => f.UploadAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), CancellationToken.None, It.IsAny<SupportedFileType[]>()))
                 .ReturnsAsync(Guid.NewGuid());
 
             // Act
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            _fileUploaderMock.Verify(f => f.UploadAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<SupportedFileType[]>()), Times.AtLeastOnce);
+            _fileUploaderMock.Verify(f => f.UploadAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), CancellationToken.None, It.IsAny<SupportedFileType[]>()), Times.AtLeastOnce);
         }
 
         // Helper pour créer une commande valide par défaut
