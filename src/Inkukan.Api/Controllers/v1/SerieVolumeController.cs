@@ -9,7 +9,7 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inkukan.Api.Controllers
+namespace Inkukan.Api.Controllers.v1
 {
     [Route("/api/series/{serieId:guid}/volumes")]
     public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)

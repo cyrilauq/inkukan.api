@@ -4,7 +4,7 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inkukan.Api.Controllers
+namespace Inkukan.Api.Controllers.v1
 {
     public class UsersController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {

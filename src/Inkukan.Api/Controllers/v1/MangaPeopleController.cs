@@ -7,7 +7,7 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inkukan.Api.Controllers
+namespace Inkukan.Api.Controllers.v1
 {
     public class MangaPeopleController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
     {
