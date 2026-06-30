@@ -12,10 +12,8 @@ namespace Inkukan.Domain.Entities
         public Guid VolumeId { get; set; }
         public SerieVolume Volume { get; set; } = null!;
 
-        #region ITrackableEntity
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        #endregion
     }
 }

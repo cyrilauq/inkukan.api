@@ -1,4 +1,5 @@
-﻿using Inkukan.Application.Mediator.Abstractions;
+﻿
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inkukan.Api.Controllers
