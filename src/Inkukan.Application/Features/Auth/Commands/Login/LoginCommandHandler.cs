@@ -12,7 +12,7 @@ namespace Inkukan.Application.Features.Auth.Commands.Login
     public class LoginCommandHandler(IUserRepository userRepository, ITokenService tokenService, IMapper mapper, IValidator<LoginCommand> validator)
         : IRequestHandler<LoginCommand, UserDto>, IValidatable<LoginCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(LoginCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(LoginCommand value, CancellationToken cancellationToken)
         {
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
             if (validationResult.IsValid)

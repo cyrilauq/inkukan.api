@@ -23,7 +23,7 @@ namespace Inkukan.Application.Features.Abstractions
             return mapper.Map<TDto>(found);
         }
 
-        protected virtual Task<TEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        protected virtual Task<TEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
             => baseRepository.GetByIdAsync(id, cancellationToken);
     }
 }

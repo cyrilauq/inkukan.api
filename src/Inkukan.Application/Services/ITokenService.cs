@@ -2,6 +2,6 @@
 {
     public interface ITokenService
     {
-        Task<string> GetTokenForUserAsync(Domain.Entities.User user, CancellationToken cancellationToken = default);
+        Task<string> GetTokenForUserAsync(Domain.Entities.User user, CancellationToken cancellationToken);
     }
 }

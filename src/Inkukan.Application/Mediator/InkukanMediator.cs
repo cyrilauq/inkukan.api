@@ -6,7 +6,7 @@ namespace Inkukan.Application.Mediator
     {
         private readonly IServiceProvider _serviceProvider = provider;
 
-        public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
+        public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
         {
             System.Type requestType = request.GetType();
             System.Type handlerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, typeof(TResponse));
@@ -15,7 +15,7 @@ namespace Inkukan.Application.Mediator
             return await ((dynamic)handler).Handle((dynamic)request, cancellationToken);
         }
 
-        public async Task Send(IRequest request, CancellationToken cancellationToken = default)
+        public async Task Send(IRequest request, CancellationToken cancellationToken)
         {
             System.Type requestType = request.GetType();
             System.Type handlerType = typeof(IRequestHandler<>).MakeGenericType(requestType);

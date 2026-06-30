@@ -6,7 +6,7 @@ namespace Inkukan.Application.Extensions
 {
     public static class ImageExtensions
     {
-        public static async Task<byte[]> ToByteArrayAsync(this Image image, IImageEncoder encoder, CancellationToken cancellationToken = default)
+        public static async Task<byte[]> ToByteArrayAsync(this Image image, IImageEncoder encoder, CancellationToken cancellationToken)
         {
             using MemoryStream outStream = new();
 

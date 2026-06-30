@@ -60,10 +60,10 @@ namespace Inkukan.Application.Tests.Services.Implementations
                 result.Should().NotBeNull();
                 result.Should().NotBe(Guid.Empty);
 
-                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("small/"))), Times.Once);
-                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("medium/"))), Times.Once);
-                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("large/"))), Times.Once);
-                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("original/"))), Times.Once);
+                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("small/")), CancellationToken.None), Times.Once);
+                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("medium/")), CancellationToken.None), Times.Once);
+                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("large/")), CancellationToken.None), Times.Once);
+                _blobStorageMock.Verify(b => b.UploadAsync(It.IsAny<byte[]>(), It.Is<string>(s => s.StartsWith("original/")), CancellationToken.None), Times.Once);
             }
 
             /// <summary>

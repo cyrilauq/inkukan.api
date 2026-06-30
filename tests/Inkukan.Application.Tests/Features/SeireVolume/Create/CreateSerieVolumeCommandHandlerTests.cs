@@ -65,7 +65,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
         {
             // Arrange
             CreateSerieVolumeCommand command = CreateValidCommand();
-            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(command.MangaSerieId, command.VolumeNumber))
+            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumberAsync(command.MangaSerieId, command.VolumeNumber, CancellationToken.None))
                 .ReturnsAsync(new SerieVolume());
 
             // Act
@@ -105,7 +105,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
             CreateSerieVolumeCommand command = CreateValidCommand();
             SerieVolume entity = new() { Id = Guid.NewGuid() };
 
-            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(It.IsAny<Guid>(), It.IsAny<int>()))
+            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumberAsync(It.IsAny<Guid>(), It.IsAny<int>(), CancellationToken.None))
                 .ReturnsAsync((SerieVolume?)null);
 
             _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None))
@@ -131,7 +131,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
             stream.Position = 0;
             command.VFCover = new FormFile(stream, 0, stream.Length, "", "test.png");
 
-            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumber(It.IsAny<Guid>(), It.IsAny<int>()))
+            _repositoryMock.Setup(r => r.GetBySerieIdAndVolumeNumberAsync(It.IsAny<Guid>(), It.IsAny<int>(), CancellationToken.None))
                 .ReturnsAsync((SerieVolume?)null);
 
             _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<SerieVolume>(), CancellationToken.None))

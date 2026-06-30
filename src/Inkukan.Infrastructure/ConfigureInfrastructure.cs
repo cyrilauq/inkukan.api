@@ -104,7 +104,7 @@ namespace Inkukan.Infrastructure
                 );
             }
 
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(CancellationToken.None);
 
             return services;
         }

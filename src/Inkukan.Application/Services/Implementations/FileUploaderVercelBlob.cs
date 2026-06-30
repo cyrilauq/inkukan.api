@@ -31,7 +31,7 @@ namespace Inkukan.Application.Services.Implementations
             {
                 using Image resizedImage = originalImage.ResizeImage(size.Value);
 
-                await blobStorage.UploadAsync(await resizedImage.ToByteArrayAsync(_webpEncoder), $"{size.Key}/{fileId}.webp", cancellationToken);
+                await blobStorage.UploadAsync(await resizedImage.ToByteArrayAsync(_webpEncoder, cancellationToken), $"{size.Key}/{fileId}.webp", cancellationToken);
             }
 
             string requestOriginalUri = $"original/{fileId}.{Path.GetExtension(fileName)}";

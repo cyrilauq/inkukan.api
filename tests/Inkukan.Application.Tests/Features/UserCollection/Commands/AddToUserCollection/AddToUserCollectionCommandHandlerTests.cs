@@ -40,7 +40,7 @@ namespace Inkukan.Application.Tests.Features.UserCollection.Commands.AddToUserCo
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            A.CallTo(() => _userRepoMock.GetByIdAsync(userId))
+            A.CallTo(() => _userRepoMock.GetByIdAsync(userId, CancellationToken.None))
                 .Returns((User?)null);
 
             // Act
@@ -57,7 +57,7 @@ namespace Inkukan.Application.Tests.Features.UserCollection.Commands.AddToUserCo
         {
             // Arrange
             Guid volumeId = Guid.NewGuid();
-            A.CallTo(() => _serieVolumeRepoMock.GetByIdAsync(volumeId))
+            A.CallTo(() => _serieVolumeRepoMock.GetByIdAsync(volumeId, CancellationToken.None))
                 .Returns((SerieVolume?)null);
 
             // Act

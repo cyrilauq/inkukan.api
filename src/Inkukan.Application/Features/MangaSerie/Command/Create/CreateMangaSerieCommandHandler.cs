@@ -12,7 +12,7 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Create
     public class CreateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<CreateMangaSerieCommand> validator, IMapper mapper) 
         : IRequestHandler<CreateMangaSerieCommand, MangaSerieDto>, IValidatable<CreateMangaSerieCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(CreateMangaSerieCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(CreateMangaSerieCommand value, CancellationToken cancellationToken)
         {
             var validationResult = await validator.ValidateAsync(value, cancellationToken);
             if (validationResult.IsValid) return true;
@@ -21,13 +21,13 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Create
 
         public async Task<MangaSerieDto> Handle(CreateMangaSerieCommand command, CancellationToken cancellationToken)
         {
-            await EnsureIsValidAsync(command);
-            await EnsureTitlesAreFree(command);
+            await EnsureIsValidAsync(command, cancellationToken);
+            await EnsureTitlesAreFree(command, cancellationToken);
             Domain.Entities.MangaSerie addedManga = await mangaSerieRepository.CreateAsync(mapper.Map<Domain.Entities.MangaSerie>(command), cancellationToken);
             return mapper.Map<MangaSerieDto>(addedManga);
         }
 
-        private async Task EnsureTitlesAreFree(CreateMangaSerieCommand command, CancellationToken cancellationToken = default)
+        private async Task EnsureTitlesAreFree(CreateMangaSerieCommand command, CancellationToken cancellationToken)
         {
             Domain.Entities.MangaSerie? foundMangaSerie = await mangaSerieRepository.GetQuery()
                 .Where(ms => 

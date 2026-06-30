@@ -7,7 +7,7 @@ namespace Inkukan.Infrastructure.Repositories
     public class VercelBlobStorage(IHttpClientFactory httpClientFactory) : IBlobStorage
     {
         private HttpClient _vercelBlobClient => httpClientFactory.CreateClient("VercelBlocClient");
-        public async Task<string> UploadAsync(byte[] content, string filePath, CancellationToken cancellationToken = default)
+        public async Task<string> UploadAsync(byte[] content, string filePath, CancellationToken cancellationToken)
         {
             using HttpRequestMessage request = new(HttpMethod.Put, filePath);
 

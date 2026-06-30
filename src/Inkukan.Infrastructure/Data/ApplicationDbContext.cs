@@ -69,7 +69,7 @@ namespace Inkukan.Infrastructure.Data
             }
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             IEnumerable<EntityEntry> entries = ChangeTracker.Entries();
             DateTime now = DateTime.UtcNow;

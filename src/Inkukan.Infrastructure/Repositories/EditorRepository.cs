@@ -7,7 +7,7 @@ namespace Inkukan.Infrastructure.Repositories
 {
     public class EditorRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory) : BaseRepository<Editor>(dbContextFactory), IEditorRepository
     {
-        public async Task<Editor?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+        public async Task<Editor?> GetByNameAsync(string name, CancellationToken cancellationToken)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             return await dbContext.Editors

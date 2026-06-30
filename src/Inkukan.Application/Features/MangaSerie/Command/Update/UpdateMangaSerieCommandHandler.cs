@@ -10,7 +10,7 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
     public class UpdateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<UpdateMangaSerieCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateMangaSerieCommand, MangaSerieDto, Domain.Entities.MangaSerie>(mangaSerieRepository, validator, mapper)
     {
-        public override async Task<bool> AlreadyExistsAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken = default)
+        public override async Task<bool> AlreadyExistsAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken)
         {
             Domain.Entities.MangaSerie? foundMangaSerie = await mangaSerieRepository.GetQuery()
                 .Where(ms =>
@@ -22,7 +22,7 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
             return foundMangaSerie != null;
         }
 
-        public override async Task<Domain.Entities.MangaSerie?> GetByIdAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken = default)
+        public override async Task<Domain.Entities.MangaSerie?> GetByIdAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken)
         {
             return await mangaSerieRepository.GetByIdAsync(request.Id, cancellationToken);
         }

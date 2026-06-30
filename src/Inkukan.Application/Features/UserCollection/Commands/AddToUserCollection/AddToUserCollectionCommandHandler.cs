@@ -11,7 +11,7 @@ namespace Inkukan.Application.Features.UserCollection.Commands.AddToUserCollecti
     public class AddToUserCollectionCommandHandler(IBaseRepository<UserListItem> baseRepository, IBaseRepository<User> userRepository, IBaseRepository<Domain.Entities.SerieVolume> volumeRepository, IValidator<AddToUserCollectionCommand> validator, IMapper mapper)
         : BaseCreateCommandHandler<AddToUserCollectionCommand, UserListItemDto, UserListItem>(baseRepository, validator, mapper)
     { 
-        public override async Task<bool> EnsureIsValidAsync(AddToUserCollectionCommand value, CancellationToken cancellationToken = default)
+        public override async Task<bool> EnsureIsValidAsync(AddToUserCollectionCommand value, CancellationToken cancellationToken)
         {
             bool baseResult = await base.EnsureIsValidAsync(value, cancellationToken);
 

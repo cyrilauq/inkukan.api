@@ -10,7 +10,7 @@ namespace Inkukan.Application.Features.MangaPeople.Commands.Update
     public class UpdateMangaPeopleCommandHandler(IMangaPeopleRepository mangaPeopleRepository, IValidator<UpdateMangaPeopleCommand> validator, IMapper mapper) 
         : BaseUpdateCommandHandler<UpdateMangaPeopleCommand, MangaPeopleDto, Domain.Entities.MangaPeople>(mangaPeopleRepository, validator, mapper)
     {
-        public override async Task<bool> AlreadyExistsAsync(UpdateMangaPeopleCommand request, CancellationToken cancellationToken = default)
+        public override async Task<bool> AlreadyExistsAsync(UpdateMangaPeopleCommand request, CancellationToken cancellationToken)
         {
             Domain.Entities.MangaPeople? mangaPeople = await mangaPeopleRepository.GetQuery()
                 .Where(mp =>
@@ -22,7 +22,7 @@ namespace Inkukan.Application.Features.MangaPeople.Commands.Update
             return mangaPeople != null;
         }
 
-        public override Task<Domain.Entities.MangaPeople?> GetByIdAsync(UpdateMangaPeopleCommand request, CancellationToken cancellationToken = default)
+        public override Task<Domain.Entities.MangaPeople?> GetByIdAsync(UpdateMangaPeopleCommand request, CancellationToken cancellationToken)
             => mangaPeopleRepository.GetByIdAsync(request.Id, cancellationToken);
     }
 }

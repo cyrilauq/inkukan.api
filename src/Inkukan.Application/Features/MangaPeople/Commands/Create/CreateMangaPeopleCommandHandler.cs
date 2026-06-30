@@ -14,7 +14,7 @@ namespace Inkukan.Application.Features.MangaPeople.Commands.Create
     public class CreateMangaPeopleCommandHandler(IMangaPeopleRepository mangaPeopleRepository, IValidator<CreateMangaPeopleCommand> validator, IMapper mapper) 
         : IRequestHandler<CreateMangaPeopleCommand, MangaPeopleDto>, IValidatable<CreateMangaPeopleCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(CreateMangaPeopleCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(CreateMangaPeopleCommand value, CancellationToken cancellationToken)
         {
             ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
             return validationResult.IsValid ? true 
@@ -29,7 +29,7 @@ namespace Inkukan.Application.Features.MangaPeople.Commands.Create
             return mapper.Map<MangaPeopleDto>(addResult);
         }
 
-        private async Task EnsureNotExists(CreateMangaPeopleCommand command, CancellationToken cancellationToken = default)
+        private async Task EnsureNotExists(CreateMangaPeopleCommand command, CancellationToken cancellationToken)
         {
             Domain.Entities.MangaPeople? mangaPeople = await mangaPeopleRepository.GetQuery()
                 .Where(mp => 

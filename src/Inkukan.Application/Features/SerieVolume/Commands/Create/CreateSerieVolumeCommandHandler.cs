@@ -12,9 +12,9 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
     public class CreateSerieVolumeCommandHandler(ISerieVolumeRepository serieVolumeRepository, IFileUploader fileUploader, IHashService hashService, IValidator<CreateSerieVolumeCommand> validator, IMapper mapper)
         : IRequestHandler<CreateSerieVolumeCommand, SerieVolumeDto>, IValidatable<CreateSerieVolumeCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(CreateSerieVolumeCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(CreateSerieVolumeCommand value, CancellationToken cancellationToken)
         {
-            Domain.Entities.SerieVolume? existingVolume = await serieVolumeRepository.GetBySerieIdAndVolumeNumber(value.MangaSerieId, value.VolumeNumber, cancellationToken);
+            Domain.Entities.SerieVolume? existingVolume = await serieVolumeRepository.GetBySerieIdAndVolumeNumberAsync(value.MangaSerieId, value.VolumeNumber, cancellationToken);
             if (existingVolume != null)
                 throw new ConflictException($"An volume already exist with the number [{value.VolumeNumber}] and for the serie with the id [{value.MangaSerieId}]");
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);

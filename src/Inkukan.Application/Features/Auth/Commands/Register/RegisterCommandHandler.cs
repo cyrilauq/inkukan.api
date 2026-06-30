@@ -11,7 +11,7 @@ namespace Inkukan.Application.Features.Auth.Commands.Register
     public class RegisterCommandHandler(IUserRepository userRepository, IMapper mapper, IValidator<RegisterCommand> validator)
         : IRequestHandler<RegisterCommand, UserDto>, IValidatable<RegisterCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(RegisterCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(RegisterCommand value, CancellationToken cancellationToken)
         {
             if ((await userRepository.GetByEmailAsync(value.Email, cancellationToken) ?? await userRepository.GetByUsernameAsync(value.Username, cancellationToken)) != null)
                 throw new ConflictException($"A user with the email [{value.Email}] or username [{value.Username}] already exist");

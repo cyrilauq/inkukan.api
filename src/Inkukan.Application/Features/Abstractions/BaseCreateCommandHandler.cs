@@ -13,9 +13,9 @@ namespace Inkukan.Application.Features.Abstractions
         where TEntity : class, new()
         where TDto : class
     {
-        public virtual async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken)
         {
-            if (await AlreadyExistsAsync(value)) throw new ConflictException("Another entity with the same value already exists");
+            if (await AlreadyExistsAsync(value, cancellationToken)) throw new ConflictException("Another entity with the same value already exists");
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value);
             if (validationResult.IsValid) return true;
             throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
@@ -33,7 +33,7 @@ namespace Inkukan.Application.Features.Abstractions
         public virtual Task BeforeCreateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
             => Task.CompletedTask;
 
-        public virtual Task<bool> AlreadyExistsAsync(TCommand request, CancellationToken cancellationToken = default)
+        public virtual Task<bool> AlreadyExistsAsync(TCommand request, CancellationToken cancellationToken)
             => Task.FromResult(false);
     }
 }

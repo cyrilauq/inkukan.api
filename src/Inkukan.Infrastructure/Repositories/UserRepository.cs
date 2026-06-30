@@ -7,7 +7,7 @@ namespace Inkukan.Infrastructure.Repositories
 {
     public class UserRepository(UserManager<User> userManager, RoleManager<Role> roleManager) : IUserRepository
     {
-        public async Task<User> CreateAsync(User user, string password, CancellationToken cancellationToken = default)
+        public async Task<User> CreateAsync(User user, string password, CancellationToken cancellationToken)
         {
             IdentityResult result = await userManager.CreateAsync(user, password);
 
@@ -19,9 +19,9 @@ namespace Inkukan.Infrastructure.Repositories
             return (await userManager.FindByEmailAsync(user.Email!))!;
         }
 
-        public async Task<User?> FindByCredentials(string login, string password, CancellationToken token = default)
+        public async Task<User?> FindByCredentials(string login, string password, CancellationToken cancellationToken = default)
         {
-            User? foundUser = await GetByUsernameAsync(login) ?? await GetByEmailAsync(login);
+            User? foundUser = await GetByUsernameAsync(login, cancellationToken) ?? await GetByEmailAsync(login, cancellationToken);
             if (foundUser == null)
                 return null;
 
@@ -31,12 +31,12 @@ namespace Inkukan.Infrastructure.Repositories
         }
 
 
-        public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
         {
             return await userManager.FindByNameAsync(username);
         }
 
-        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return await userManager.FindByEmailAsync(email);
         }

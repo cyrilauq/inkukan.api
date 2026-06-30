@@ -13,7 +13,7 @@ namespace Inkukan.Application.Features.Abstractions
         where TEntity : class, new()
         where TDto : class
     {
-        public async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken)
         {
             if (await AlreadyExistsAsync(value, cancellationToken)) throw new ConflictException("Another entity with the same value already exists");
             FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
@@ -31,13 +31,13 @@ namespace Inkukan.Application.Features.Abstractions
             return mapper.Map<TDto>(result);
         }
 
-        public virtual Task<TEntity?> GetByIdAsync(TCommand request, CancellationToken cancellationToken = default)
+        public virtual Task<TEntity?> GetByIdAsync(TCommand request, CancellationToken cancellationToken)
             => Task.FromResult((TEntity?)null);
 
-        public virtual Task BeforeUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken = default)
+        public virtual Task BeforeUpdateAsync(TCommand request, TEntity enttiy, CancellationToken cancellationToken)
             => Task.CompletedTask;
 
-        public virtual Task<bool> AlreadyExistsAsync(TCommand request, CancellationToken cancellationToken = default)
+        public virtual Task<bool> AlreadyExistsAsync(TCommand request, CancellationToken cancellationToken)
             => Task.FromResult(false);
     }
 }

@@ -36,7 +36,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Update
             }
         }
 
-        public override async Task<Domain.Entities.SerieVolume?> GetByIdAsync(UpdateSerieVolumeCommand request, CancellationToken cancellationToken = default)
+        public override async Task<Domain.Entities.SerieVolume?> GetByIdAsync(UpdateSerieVolumeCommand request, CancellationToken cancellationToken)
             => await volumeRepostory.GetByIdAsync(request.Id, cancellationToken);
     }
 }

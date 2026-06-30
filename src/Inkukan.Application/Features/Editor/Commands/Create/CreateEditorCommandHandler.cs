@@ -11,7 +11,7 @@ namespace Inkukan.Application.Features.Editor.Commands.Create
     public class CreateEditorCommandHandler(IEditorRepository editorRepository, IValidator<CreateEditorCommand> validator, IMapper mapper)
         : IRequestHandler<CreateEditorCommand, EditorDto>, IValidatable<CreateEditorCommand>
     {
-        public async Task<bool> EnsureIsValidAsync(CreateEditorCommand value, CancellationToken cancellationToken = default)
+        public async Task<bool> EnsureIsValidAsync(CreateEditorCommand value, CancellationToken cancellationToken)
         {
             Domain.Entities.Editor? existingEditor = await editorRepository.GetByNameAsync(value.Name, cancellationToken);
             if (existingEditor != null)
