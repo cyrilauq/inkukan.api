@@ -7,27 +7,26 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inkukan.Api.Controllers.v1
+namespace Inkukan.Api.Controllers.v1;
+
+public class TypeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
-    public class TypeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
+    [HttpGet]
+    public Task<PaginatedDto<TypeDto>> GetAllAsync([Required][FromQuery] GetAllTypeQuery query, CancellationToken cancellationToken)
+        => Mediator.Send(query, cancellationToken);
+
+    [HttpPost]
+    public Task<TypeDto> CreateAsync([Required][FromBody] CreateTypeCommand command, CancellationToken cancellationToken)
+        => Mediator.Send(command, cancellationToken);
+
+    [HttpDelete("{id:guid}")]
+    public Task DeleteAsync([Required][FromRoute] Guid id, CancellationToken cancellationToken)
+        => Mediator.Send(new DeleteTypeCommand() { Id = id }, cancellationToken);
+
+    [HttpPut("{id:guid}")]
+    public Task<TypeDto> UpdateAsync([Required][FromRoute] Guid id, [Required][FromBody] UpdateTypeCommand command, CancellationToken cancellationToken)
     {
-        [HttpGet]
-        public Task<PaginatedDto<TypeDto>> GetAllAsync([Required][FromQuery] GetAllTypeQuery query, CancellationToken cancellationToken)
-            => Mediator.Send(query, cancellationToken);
-
-        [HttpPost]
-        public Task<TypeDto> CreateAsync([Required][FromBody] CreateTypeCommand command, CancellationToken cancellationToken)
-            => Mediator.Send(command, cancellationToken);
-
-        [HttpDelete("{id:guid}")]
-        public Task DeleteAsync([Required] Guid id, CancellationToken cancellationToken)
-            => Mediator.Send(new DeleteTypeCommand() { Id = id }, cancellationToken);
-
-        [HttpPut("{id:guid}")]
-        public Task<TypeDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateTypeCommand command, CancellationToken cancellationToken)
-        {
-            command.Id = id;
-            return Mediator.Send(command, cancellationToken);
-        }
+        command.Id = id;
+        return Mediator.Send(command, cancellationToken);
     }
 }

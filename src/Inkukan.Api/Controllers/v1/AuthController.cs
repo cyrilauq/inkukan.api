@@ -6,34 +6,33 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inkukan.Api.Controllers.v1
+namespace Inkukan.Api.Controllers.v1;
+
+public class AuthController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
-    public class AuthController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
+    [HttpPost("register")]
+
+    public async Task<UserDto> RegisterAsync([Required][FromBody] RegisterCommand command, CancellationToken cancellationToken)
     {
-        [HttpPost("register")]
+        UserDto registerResult = await Mediator.Send(command, cancellationToken);
 
-        public async Task<UserDto> RegisterAsync([Required][FromBody] RegisterCommand command, CancellationToken cancellationToken)
-        {
-            UserDto registerResult = await Mediator.Send(command, cancellationToken);
+        return registerResult;
+    }
 
-            return registerResult;
-        }
+    [HttpPost("login")]
+    public async Task<UserDto> LoginAsync([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
+    {
+        UserDto loginResult = await Mediator.Send(command, cancellationToken);
 
-        [HttpPost("login")]
-        public async Task<UserDto> LoginAsync([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
-        {
-            UserDto loginResult = await Mediator.Send(command, cancellationToken);
+        return loginResult;
+    }
 
-            return loginResult;
-        }
+    [HttpPost("login2")]
+    [MapToApiVersion("2.0")]
+    public async Task<UserDto> Login2Async([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
+    {
+        UserDto loginResult = await Mediator.Send(command, cancellationToken);
 
-        [HttpPost("login2")]
-        [MapToApiVersion("2.0")]
-        public async Task<UserDto> Login2Async([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
-        {
-            UserDto loginResult = await Mediator.Send(command, cancellationToken);
-
-            return loginResult;
-        }
+        return loginResult;
     }
 }

@@ -8,36 +8,33 @@ using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inkukan.Api.Controllers.v1
+namespace Inkukan.Api.Controllers.v1;
+
+public class MangaController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
-    public class MangaController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
+    [HttpPost]
+    public Task<MangaSerieDto> CreateAsync([Required][FromBody] CreateMangaSerieCommand command, CancellationToken cancellationToken)
+        => Mediator.Send(command, cancellationToken);
+
+    [HttpDelete("{serieId:guid}")]
+    public Task DeleteAsync([Required][FromRoute] Guid serieId, CancellationToken cancellationToken)
+        => Mediator.Send(new DeleteSerieCommand() { Id = serieId }, cancellationToken);
+
+    [HttpPut("{mangaId:guid}")]
+    public Task<MangaSerieDto> UpdateAsync([Required][FromRoute] Guid mangaId, [Required][FromBody] UpdateMangaSerieCommand command, CancellationToken cancellationToken)
     {
-        [HttpPost]
-        public Task<MangaSerieDto> CreateAsync([Required][FromBody] CreateMangaSerieCommand command, CancellationToken cancellationToken)
-            => Mediator.Send(command, cancellationToken);
-
-        [HttpDelete("{serieId:guid}")]
-        public Task DeleteAsync(Guid serieId, CancellationToken cancellationToken)
-            => Mediator.Send(new DeleteSerieCommand() { Id = serieId }, cancellationToken);
-
-        [HttpPut("{mangaId:guid}")]
-        public Task<MangaSerieDto> UpdateAsync([Required] Guid mangaId, [Required][FromBody] UpdateMangaSerieCommand command, CancellationToken cancellationToken)
-        {
-            command.Id = mangaId;
-            return Mediator.Send(command, cancellationToken);
-        }
-
-        [HttpGet("{mangaId:guid}")]
-        public Task<MangaSerieDto> GetByIdAsync([Required] Guid mangaId, CancellationToken cancellationToken)
-        {
-            GetSerieByIdQuery query = new() { Id = mangaId };
-            return Mediator.Send(query, cancellationToken);
-        }
-
-        [HttpGet]
-        public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([Required][FromQuery] GetAllSerieQuery query, CancellationToken cancellationToken)
-        {
-            return Mediator.Send(query, cancellationToken);
-        }
+        command.Id = mangaId;
+        return Mediator.Send(command, cancellationToken);
     }
+
+    [HttpGet("{mangaId:guid}")]
+    public Task<MangaSerieDto> GetByIdAsync([Required][FromRoute] Guid mangaId, CancellationToken cancellationToken)
+    {
+        GetSerieByIdQuery query = new() { Id = mangaId };
+        return Mediator.Send(query, cancellationToken);
+    }
+
+    [HttpGet]
+    public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([Required][FromQuery] GetAllSerieQuery query, CancellationToken cancellationToken) 
+        => Mediator.Send(query, cancellationToken);
 }

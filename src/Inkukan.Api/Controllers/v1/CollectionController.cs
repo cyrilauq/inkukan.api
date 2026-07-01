@@ -20,13 +20,13 @@ public class CollectionController(IInkukaMediator mediator) : ApplicationBaseCon
         => Mediator.Send(command, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    public Task<MangaCollectionDto> UpdateAsync([Required] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command, CancellationToken cancellationToken)
+    public Task<MangaCollectionDto> UpdateAsync([Required][FromRoute] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command, CancellationToken cancellationToken)
     {
         command.Id = id;
         return Mediator.Send(command, cancellationToken);
     }
 
     [HttpDelete("{id:guid}")]
-    public Task DeleteAsync([Required] Guid id, CancellationToken cancellationToken)
+    public Task DeleteAsync([Required][FromRoute] Guid id, CancellationToken cancellationToken)
         => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id }, cancellationToken);
 }
