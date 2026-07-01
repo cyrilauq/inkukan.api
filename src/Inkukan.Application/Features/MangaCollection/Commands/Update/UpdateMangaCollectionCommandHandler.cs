@@ -6,31 +6,28 @@ using Inkukan.Application.Features.Abstractions;
 using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inkukan.Application.Features.MangaCollection.Commands.Update
+namespace Inkukan.Application.Features.MangaCollection.Commands.Update;
+
+public class UpdateMangaCollectionCommandHandler(IBaseRepository<Domain.Entities.MangaCollection> Repository, IValidator<UpdateMangaCollectionCommand> validator, IMapper mapper)
+    : BaseUpdateCommandHandler<UpdateMangaCollectionCommand, MangaCollectionDto, Domain.Entities.MangaCollection>(Repository, validator, mapper)
 {
-    public class UpdateMangaCollectionCommandHandler(IBaseRepository<Domain.Entities.MangaCollection> mangaCollectionRepository, IValidator<UpdateMangaCollectionCommand> validator, IMapper mapper)
-        : BaseUpdateCommandHandler<UpdateMangaCollectionCommand, MangaCollectionDto, Domain.Entities.MangaCollection>(mangaCollectionRepository, validator, mapper)
+    public override Task<bool> AlreadyExistsAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken)
     {
-        public override Task<bool> AlreadyExistsAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken)
-        {
-            return mangaCollectionRepository.GetQuery()
-                .Where(t => t.Name.ToLower() == request.Name.ToLower())
-                .AnyAsync(cancellationToken);
-        }
-
-        public override Task BeforeUpdateAsync(UpdateMangaCollectionCommand request, Domain.Entities.MangaCollection enttiy, CancellationToken cancellationToken)
-        {
-            enttiy.Code = request.Name
-                .ToLower()
-                .Replace(" ", "_")
-                .RemoveNonAsciiCharacters();
-
-            return Task.CompletedTask;
-        }
-
-        public override Task<Domain.Entities.MangaCollection?> GetByIdAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken)
-        {
-            return mangaCollectionRepository.GetByIdAsync(request.Id, cancellationToken);
-        }
+        return Repository.GetQuery()
+            .Where(t => t.Name.ToLower() == request.Name.ToLower())
+            .AnyAsync(cancellationToken);
     }
+
+    public override Task BeforeUpdateAsync(UpdateMangaCollectionCommand request, Domain.Entities.MangaCollection enttiy, CancellationToken cancellationToken)
+    {
+        enttiy.Code = request.Name
+            .ToLower()
+            .Replace(" ", "_")
+            .RemoveNonAsciiCharacters();
+
+        return Task.CompletedTask;
+    }
+
+    public override Task<Domain.Entities.MangaCollection?> GetByIdAsync(UpdateMangaCollectionCommand request, CancellationToken cancellationToken) 
+        => Repository.GetByIdAsync(request.Id, cancellationToken);
 }

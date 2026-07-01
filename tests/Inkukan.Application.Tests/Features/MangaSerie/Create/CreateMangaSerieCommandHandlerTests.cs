@@ -8,104 +8,103 @@ using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
 
-namespace Inkukan.Application.Tests.Features.MangaSerie.Create
+namespace Inkukan.Application.Tests.Features.MangaSerie.Create;
+
+[TestClass]
+public class CreateMangaSerieCommandHandlerTests
 {
-    [TestClass]
-    public class CreateMangaSerieCommandHandlerTests
+    private ILoggerFactory _loggerFactory = null!;
+    private Mock<IMangaSerieRepository> _mangaSerieRepoMock = null!;
+    private IMapper _mapper = null!;
+    private CreateMangaSerieValidator _validator = null!;
+    private CreateMangaSerieCommandHandler _handler = null!;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private Microsoft.Extensions.Logging.ILoggerFactory _loggerFactory;
-        private Mock<IMangaSerieRepository> _mangaSerieRepoMock;
-        private IMapper _mapper;
-        private CreateMangaSerieValidator _validator;
-        private CreateMangaSerieCommandHandler _handler;
+        _loggerFactory = LoggerFactory.Create(cfg => cfg.AddConsole());
+        _mangaSerieRepoMock = new Mock<IMangaSerieRepository>();
+        _mapper = new MapperConfiguration(cfg => cfg.AddProfile<MangaSerieProfile>(), _loggerFactory)
+            .CreateMapper();
+        _validator = new CreateMangaSerieValidator();
+        _handler = new CreateMangaSerieCommandHandler(_mangaSerieRepoMock.Object, _validator, _mapper);
+    }
 
-        [TestInitialize]
-        public void Setup()
+    [DataRow("")]
+    [DataRow(null)]
+    [DataTestMethod]
+    public async Task When_TitleIsNotValid_Then_ThrowsException(string title)
+    {
+        // Arrange
+        CreateMangaSerieCommand command = new CreateMangaSerieCommand()
         {
-            _loggerFactory = LoggerFactory.Create(cfg => cfg.AddConsole());
-            _mangaSerieRepoMock = new Mock<IMangaSerieRepository>();
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<MangaSerieProfile>(), _loggerFactory)
-                .CreateMapper();
-            _validator = new CreateMangaSerieValidator();
-            _handler = new CreateMangaSerieCommandHandler(_mangaSerieRepoMock.Object, _validator, _mapper);
-        }
+            Synopsis = "Test",
+            TitleVO = "Test",
+            TitleVF = title,
+            TotalVolumes = 1,
+        };
 
-        [DataRow("")]
-        [DataRow(null)]
-        [DataTestMethod]
-        public async Task When_TitleIsNotValid_Then_ThrowsException(string title)
-        {
-            // Arrange
-            CreateMangaSerieCommand command = new CreateMangaSerieCommand()
+        // Act
+        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await result.Should()
+            .ThrowAsync<EntityValidationException>();
+    }
+
+    [TestMethod]
+    public async Task When_TitleIsAlreadyTaken_Then_ThrowsException()
+    {
+        // Arrange
+        List<Domain.Entities.MangaSerie> mangas =
+        [
+            new()
             {
-                Synopsis = "Test",
-                TitleVO = "Test",
-                TitleVF = title,
-                TotalVolumes = 1,
-            };
-
-            // Act
-            Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            await result.Should()
-                .ThrowAsync<EntityValidationException>();
-        }
-
-        [TestMethod]
-        public async Task When_TitleIsAlreadyTaken_Then_ThrowsException()
-        {
-            // Arrange
-            List<Domain.Entities.MangaSerie> mangas =
-            [
-                new()
-                {
-                    TitleVO = "Test",
-                    TitleVF = "Test",
-                }
-            ];
-            _mangaSerieRepoMock.Setup(msrm => msrm.GetQuery())
-                .Returns(mangas.BuildMock());
-
-            CreateMangaSerieCommand command = new()
-            {
-                Synopsis = "Test",
                 TitleVO = "Test",
                 TitleVF = "Test",
-                TotalVolumes = 1,
-                VOParutionCountry = "Japan"
-            };
+            }
+        ];
+        _mangaSerieRepoMock.Setup(msrm => msrm.GetQuery())
+            .Returns(mangas.BuildMock());
 
-            // Act
-            Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            await result.Should()
-                .ThrowAsync<ConflictException>();
-        }
-
-        [TestMethod]
-        public async Task When_TitleIsNotTaken_Then_CallRepository_CreateAsyncMethod()
+        CreateMangaSerieCommand command = new()
         {
-            // Arrange
-            List<Domain.Entities.MangaSerie> mangas = [];
-            _mangaSerieRepoMock.Setup(msrm => msrm.GetQuery())
-                .Returns(mangas.BuildMock());
+            Synopsis = "Test",
+            TitleVO = "Test",
+            TitleVF = "Test",
+            TotalVolumes = 1,
+            VOParutionCountry = "Japan"
+        };
 
-            CreateMangaSerieCommand command = new()
-            {
-                Synopsis = "Test",
-                TitleVO = "Test",
-                TitleVF = "Test",
-                TotalVolumes = 1,
-                VOParutionCountry = "Japan"
-            };
+        // Act
+        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
-            // Act
-            await _handler.Handle(command, CancellationToken.None);
+        // Assert
+        await result.Should()
+            .ThrowAsync<ConflictException>();
+    }
 
-            // Assert
-            _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Domain.Entities.MangaSerie>(), CancellationToken.None), Times.Once);
-        }
+    [TestMethod]
+    public async Task When_TitleIsNotTaken_Then_CallRepository_CreateAsyncMethod()
+    {
+        // Arrange
+        List<Domain.Entities.MangaSerie> mangas = [];
+        _mangaSerieRepoMock.Setup(msrm => msrm.GetQuery())
+            .Returns(mangas.BuildMock());
+
+        CreateMangaSerieCommand command = new()
+        {
+            Synopsis = "Test",
+            TitleVO = "Test",
+            TitleVF = "Test",
+            TotalVolumes = 1,
+            VOParutionCountry = "Japan"
+        };
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _mangaSerieRepoMock.Verify(msrm => msrm.CreateAsync(It.IsAny<Domain.Entities.MangaSerie>(), CancellationToken.None), Times.Once);
     }
 }
