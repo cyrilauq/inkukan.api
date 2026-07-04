@@ -19,11 +19,11 @@ namespace Inkukan.Application.Features.Abstractions
     {
         public async Task<TDto> Handle(TCommand request, CancellationToken cancellationToken)
         {
-            TEntity found = await FindByIdAsync(request.Id) ?? throw new EntityNotFoundException($"No entity found with the id [{request.Id}]");
+            TEntity found = await FindByIdAsync(request.Id, cancellationToken) ?? throw new EntityNotFoundException($"No entity found with the id [{request.Id}]");
             return mapper.Map<TDto>(found);
         }
 
-        protected virtual Task<TEntity?> FindByIdAsync(Guid id)
-            => baseRepository.GetByIdAsync(id);
+        protected virtual Task<TEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+            => baseRepository.GetByIdAsync(id, cancellationToken);
     }
 }

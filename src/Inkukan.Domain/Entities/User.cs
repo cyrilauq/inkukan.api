@@ -11,5 +11,7 @@ namespace Inkukan.Domain.Entities
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; } = [];
+
+        public ICollection<UserListItem> List { get; set; } = [];
     }
 }

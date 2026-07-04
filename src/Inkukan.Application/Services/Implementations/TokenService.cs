@@ -17,7 +17,7 @@ namespace Inkukan.Application.Services.Implementations
 
     public class TokenService(IRoleRepository roleRepository, IOptions<TokenConfiguration> tokenOptions) : ITokenService
     {
-        public async Task<string> GetTokenForUserAsync(User user)
+        public async Task<string> GetTokenForUserAsync(User user, CancellationToken cancellationToken)
         {
             JsonWebTokenHandler handler = new();
             byte[] key = Encoding.ASCII.GetBytes(tokenOptions.Value.SecretKey);
@@ -27,7 +27,7 @@ namespace Inkukan.Application.Services.Implementations
 
             SecurityTokenDescriptor tokenDescriptor = new()
             {
-                Subject = await GenerateClaims(user),
+                Subject = await GenerateClaims(user, cancellationToken),
                 Expires = DateTime.UtcNow.AddHours(tokenOptions.Value.ValidityInHours),
                 SigningCredentials = credentials,
                 Issuer = tokenOptions.Value.Issuer,
@@ -37,7 +37,7 @@ namespace Inkukan.Application.Services.Implementations
             return handler.CreateToken(tokenDescriptor);
         }
 
-        private async Task<ClaimsIdentity> GenerateClaims(User user)
+        private async Task<ClaimsIdentity> GenerateClaims(User user, CancellationToken cancellationToken)
         {
             ClaimsIdentity claims = new();
             claims.AddClaim(new Claim(ClaimTypes.Email, user.Email!));

@@ -10,7 +10,7 @@ namespace Inkukan.Infrastructure.Repositories
         protected IDbContextFactory<ApplicationDbContext> DbContextFactory = dbContextFactory;
         protected ApplicationDbContext DbContext { get => DbContextFactory.CreateDbContext(); }
 
-        public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             EntityEntry<T> result = dbContext.Set<T>().Add(entity);
@@ -18,14 +18,14 @@ namespace Inkukan.Infrastructure.Repositories
             return result.Entity;
         }
 
-        public async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             dbContext.Set<T>().Remove(entity);
             return await dbContext.SaveChangesAsync(cancellationToken) == 1;
         }
 
-        public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             return await dbContext.Set<T>()
@@ -38,7 +38,7 @@ namespace Inkukan.Infrastructure.Repositories
             return dbContext.Set<T>();
         }
 
-        public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken)
         {
             ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
             EntityEntry<T> result = dbContext.Set<T>().Update(entity);

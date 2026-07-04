@@ -8,6 +8,6 @@
         /// <param name="value"></param>
         /// <exception cref="EntityValidationException">If the value is not valid</exception>
         /// <returns></returns>
-        public Task<bool> EnsureIsValidAsync(T value);
+        public Task<bool> EnsureIsValidAsync(T value, CancellationToken cancellationToken);
     }
 }

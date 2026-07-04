@@ -37,15 +37,11 @@ namespace Inkukan.Domain.Entities
         public IList<MangaTheme> Themes { get; set; } = [];
         public IList<SerieVolume> Volumes { get; set; } = [];
 
-        #region ITrackableEntity
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        #endregion
 
-        #region ILogicalDelete
         public DateTime? DeletedAt { get; set; }
         public bool IsDeleted { get; }
-        #endregion
     }
 }

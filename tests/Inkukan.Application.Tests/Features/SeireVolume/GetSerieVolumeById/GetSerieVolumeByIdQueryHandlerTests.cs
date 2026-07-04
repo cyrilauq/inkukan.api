@@ -49,7 +49,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.GetSerieVolumeById
         {
             // Arrange
             Guid volumeId = Guid.NewGuid();
-            A.CallTo(() => _serieVolumeRepository.GetByIdAsync(volumeId))
+            A.CallTo(() => _serieVolumeRepository.GetByIdAsync(volumeId, CancellationToken.None))
                 .Returns((SerieVolume?)null);
 
             // Act
@@ -66,7 +66,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.GetSerieVolumeById
         {
             // Arrange
             Guid volumeId = Guid.NewGuid();
-            A.CallTo(() => _serieVolumeRepository.GetByIdAsync(volumeId))
+            A.CallTo(() => _serieVolumeRepository.GetByIdAsync(volumeId, CancellationToken.None))
                 .Returns(new Domain.Entities.SerieVolume()
                 {
                     Id = volumeId,

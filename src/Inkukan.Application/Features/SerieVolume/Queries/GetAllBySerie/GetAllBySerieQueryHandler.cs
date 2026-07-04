@@ -4,17 +4,16 @@ using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Abstractions;
 using Inkukan.Domain.Repositories;
 
-namespace Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie
+namespace Inkukan.Application.Features.SerieVolume.Queries.GetAllBySerie;
+
+public class GetAllBySerieQueryHandler(ISerieVolumeRepository serieVolumeRepository, IMapper mapper)
+    : BaseGetAllQueryHandler<Domain.Entities.SerieVolume, SerieVolumeDto, GetAllBySerieQuery>(serieVolumeRepository, mapper)
 {
-    public class GetAllBySerieQueryHandler(ISerieVolumeRepository serieVolumeRepository, IMapper mapper)
-        : BaseGetAllQueryHandler<Domain.Entities.SerieVolume, SerieVolumeDto, GetAllBySerieQuery>(serieVolumeRepository, mapper)
+    public override IQueryable<SerieVolumeDto> GetQuery(GetAllBySerieQuery query)
     {
-        public override IQueryable<SerieVolumeDto> GetQuery(GetAllBySerieQuery query)
-        {
-            return serieVolumeRepository
-                .GetQuery()
-                .ProjectTo<SerieVolumeDto>(mapper.ConfigurationProvider)
-                .Where(v => v.MangaSerieId == query.SerieId);
-        }
+        return Repository
+            .GetQuery()
+            .ProjectTo<SerieVolumeDto>(Mapper.ConfigurationProvider)
+            .Where(v => v.MangaSerieId == query.SerieId);
     }
 }

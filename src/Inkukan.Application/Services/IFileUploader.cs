@@ -2,7 +2,7 @@
 {
     public interface IFileUploader
     {
-        Task<Guid?> UploadAsync(string fileName, byte[] content, string outPutFileName, params SupportedFileType[] supportedFileTypes);
+        Task<Guid?> UploadAsync(string fileName, byte[] content, string outPutFileName, CancellationToken cancellationToken = default, params SupportedFileType[] supportedFileTypes);
     }
 
     [Flags]

@@ -483,6 +483,37 @@ namespace InkShelf.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Inkukan.Domain.Entities.UserListItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("VolumeId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VolumeId");
+
+                    b.ToTable("UserListItem");
+                });
+
             modelBuilder.Entity("Inkukan.Domain.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -661,6 +692,25 @@ namespace InkShelf.Infrastructure.Data.Migrations
                     b.Navigation("MangaSerie");
                 });
 
+            modelBuilder.Entity("Inkukan.Domain.Entities.UserListItem", b =>
+                {
+                    b.HasOne("Inkukan.Domain.Entities.User", "User")
+                        .WithMany("List")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Inkukan.Domain.Entities.SerieVolume", "Volume")
+                        .WithMany("UserLists")
+                        .HasForeignKey("VolumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Volume");
+                });
+
             modelBuilder.Entity("Inkukan.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("Inkukan.Domain.Entities.Role", "Role")
@@ -751,8 +801,15 @@ namespace InkShelf.Infrastructure.Data.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("Inkukan.Domain.Entities.SerieVolume", b =>
+                {
+                    b.Navigation("UserLists");
+                });
+
             modelBuilder.Entity("Inkukan.Domain.Entities.User", b =>
                 {
+                    b.Navigation("List");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

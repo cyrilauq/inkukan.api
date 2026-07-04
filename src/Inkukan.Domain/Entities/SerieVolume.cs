@@ -19,18 +19,13 @@ namespace Inkukan.Domain.Entities
         public Guid MangaSerieId { get; set; }
         public MangaSerie MangaSerie { get; set; } = null!;
 
-        #region ITrackableEntity
+        public ICollection<UserListItem> UserLists { get; set; } = [];
 
         public Guid Id { get; set; }
-
         public DateTime CreatedAt { get; set; }
-
         public DateTime UpdatedAt { get; set; }
-        #endregion
 
-        #region ILogicalDelete
         public DateTime? DeletedAt { get; set; }
         public bool IsDeleted { get; }
-        #endregion
     }
 }
