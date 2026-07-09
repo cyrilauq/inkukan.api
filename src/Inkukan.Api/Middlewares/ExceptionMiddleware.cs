@@ -2,58 +2,57 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace Inkukan.Api.Middlewares
+namespace Inkukan.Api.Middlewares;
+
+public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvironment environment) : IMiddleware
 {
-    public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvironment environment) : IMiddleware
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        try
         {
-            try
-            {
-                await next(context);
-            }
-            catch (Exception ex)
-            {
-                Guid traceId = Guid.NewGuid();
-                logger.LogError("{now} | Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
-                    DateTime.Now, traceId, ex.Message, ex.StackTrace, JsonSerializer.Serialize(ex.Data));
-                
-                Tuple<int, string, string> httpError = GetHttpErrorFromException(ex, traceId);
-
-                context.Response.StatusCode = httpError.Item1;
-
-                ProblemDetails problemDetails = new()
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-                    Title = httpError.Item2,
-                    Status = httpError.Item1,
-                    Instance = context.Request.Path,
-                    Detail = httpError.Item3,
-                };
-                await context.Response.WriteAsJsonAsync(problemDetails);
-            }
+            await next(context);
         }
-
-        public Tuple<int, string, string> GetHttpErrorFromException(Exception exception, Guid traceId)
+        catch (Exception ex)
         {
-            Type exceptionType = exception.GetType();
-            if (exceptionType == typeof(ConflictException))
+            Guid traceId = Guid.NewGuid();
+            logger.LogError("{now} | Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
+                DateTime.Now, traceId, ex.Message, ex.StackTrace, JsonSerializer.Serialize(ex.Data));
+            
+            Tuple<int, string, string> httpError = GetHttpErrorFromException(ex, traceId);
+
+            context.Response.StatusCode = httpError.Item1;
+
+            ProblemDetails problemDetails = new()
             {
-                return Tuple.Create(StatusCodes.Status409Conflict, "Conflict", exception.Message);
-            }
-            if (exceptionType == typeof(WrongCredentialsException))
-            {
-                return Tuple.Create(StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message);
-            }
-            if (exceptionType == typeof(EntityNotFoundException))
-            {
-                return Tuple.Create(StatusCodes.Status404NotFound, "Not Found", exception.Message);
-            }
-            if (exception is EntityValidationException validationException)
-            {
-                return Tuple.Create(StatusCodes.Status400BadRequest, "Bad request", JsonSerializer.Serialize(validationException.Errors));
-            }
-            return Tuple.Create(StatusCodes.Status500InternalServerError, "Internal Server Error", environment.IsDevelopment() ? exception.Message : $"Internal server error occured, traceId : {traceId}");
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                Title = httpError.Item2,
+                Status = httpError.Item1,
+                Instance = context.Request.Path,
+                Detail = httpError.Item3,
+            };
+            await context.Response.WriteAsJsonAsync(problemDetails);
         }
+    }
+
+    public Tuple<int, string, string> GetHttpErrorFromException(Exception exception, Guid traceId)
+    {
+        Type exceptionType = exception.GetType();
+        if (exceptionType == typeof(ConflictException))
+        {
+            return Tuple.Create(StatusCodes.Status409Conflict, "Conflict", exception.Message);
+        }
+        if (exceptionType == typeof(WrongCredentialsException))
+        {
+            return Tuple.Create(StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message);
+        }
+        if (exceptionType == typeof(EntityNotFoundException))
+        {
+            return Tuple.Create(StatusCodes.Status404NotFound, "Not Found", exception.Message);
+        }
+        if (exception is EntityValidationException validationException)
+        {
+            return Tuple.Create(StatusCodes.Status400BadRequest, "Bad request", JsonSerializer.Serialize(validationException.Errors));
+        }
+        return Tuple.Create(StatusCodes.Status500InternalServerError, "Internal Server Error", environment.IsDevelopment() ? exception.Message : $"Internal server error occured, traceId : {traceId}");
     }
 }
