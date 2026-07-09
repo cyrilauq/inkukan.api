@@ -19,7 +19,7 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
         return (await userManager.FindByEmailAsync(user.Email!))!;
     }
 
-    public async Task<User?> FindByCredentials(string login, string password, CancellationToken cancellationToken = default)
+    public async Task<User?> FindByCredentials(string login, string password, CancellationToken cancellationToken)
     {
         User? foundUser = await GetByUsernameAsync(login, cancellationToken) ?? await GetByEmailAsync(login, cancellationToken);
         if (foundUser == null)
