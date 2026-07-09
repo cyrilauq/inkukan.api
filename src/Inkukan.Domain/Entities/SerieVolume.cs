@@ -1,31 +1,30 @@
 ﻿using Inkukan.Domain.Entities.Interfaces;
 
-namespace Inkukan.Domain.Entities
+namespace Inkukan.Domain.Entities;
+
+public class SerieVolume : ITrackableEntity, ILogicalDelete
 {
-    public class SerieVolume : ITrackableEntity, ILogicalDelete
-    {
-        public int VolumeNumber { get; set; }
-        public string Synopsis { get; set; } = null!;
-        public string? VFCoverPath { get; set; }
-        public string? VFCoverHash { get; set; }
-        public string? VOCoverPath { get; set; }
-        public string? VOCoverHash { get; set; }
-        public DateTime VOParutionDate { get; set; }
-        public DateTime? VFParutionDate { get; set; }
-        public int RecommendedAge { get; set; }
-        public string? EANCode { get; set; }
-        public string? PriceCode { get; set; }
+    public int VolumeNumber { get; set; }
+    public string Synopsis { get; set; } = null!;
+    public string? VFCoverPath { get; set; }
+    public string? VFCoverHash { get; set; }
+    public string? VOCoverPath { get; set; }
+    public string? VOCoverHash { get; set; }
+    public DateTime VOParutionDate { get; set; }
+    public DateTime? VFParutionDate { get; set; }
+    public int RecommendedAge { get; set; }
+    public string? EANCode { get; set; }
+    public string? PriceCode { get; set; }
 
-        public Guid MangaSerieId { get; set; }
-        public MangaSerie MangaSerie { get; set; } = null!;
+    public Guid MangaSerieId { get; set; }
+    public MangaSerie MangaSerie { get; set; } = null!;
 
-        public ICollection<UserListItem> UserLists { get; set; } = [];
+    public ICollection<UserListItem> UserLists { get; set; } = [];
 
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+    public Guid Id { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
-        public DateTime? DeletedAt { get; set; }
-        public bool IsDeleted { get; }
-    }
+    public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; }
 }

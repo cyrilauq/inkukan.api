@@ -1,7 +1,6 @@
-﻿namespace Inkukan.Domain.Exceptions
+﻿namespace Inkukan.Domain.Exceptions;
+
+public class EntityValidationException(string message, IEnumerable<string> errors) : Exception(message)
 {
-    public class EntityValidationException(string message, IEnumerable<string> errors) : Exception(message)
-    {
-        public IEnumerable<string> Errors => errors;
-    }
+    public IEnumerable<string> Errors => errors;
 }
