@@ -5,69 +5,68 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Inkukan.Api
+namespace Inkukan.Api;
+
+public static class ConfigureServices
 {
-    public static class ConfigureServices
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+        services
+            .AddApplicationCors(configuration)
+            .AddInfrastructure(configuration)
+            .AddApplication(configuration)
+            .AddLogging()
+            .AddTransient<ExceptionMiddleware>()
+            .AddJwtAuthorization(configuration);
+
+        services.AddDistributedMemoryCache();
+        services.AddSession(options =>
         {
-            services
-                .AddApplicationCors(configuration)
-                .AddInfrastructure(configuration)
-                .AddApplication(configuration)
-                .AddLogging()
-                .AddTransient<ExceptionMiddleware>()
-                .AddJwtAuthorization(configuration);
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
 
-            services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+        return services;
+    }
 
-            return services;
-        }
-
-        public static IServiceCollection AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthentication(x =>
         {
-            services.AddAuthentication(x =>
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+            .AddJwtBearer(x =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(x =>
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration[$"TokenConfiguration:SecretKey"] ?? throw new ArgumentNullException("No key was provided for jwt authorization"))),
-                        ValidateIssuer = true,
-                        ValidateAudience = false
-                    };
-                });
-            services.AddAuthorization();
-            return services;
-        }
-
-        private static IServiceCollection AddApplicationCors(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CORS", policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration[$"TokenConfiguration:SecretKey"] ?? throw new ArgumentNullException("No key was provided for jwt authorization"))),
+                    ValidateIssuer = true,
+                    ValidateAudience = false
+                };
             });
+        services.AddAuthorization();
+        return services;
+    }
 
-            return services;
-        }
-
-        public static IApplicationBuilder UseApplicationCors(this IApplicationBuilder builder, IConfiguration configuration)
+    private static IServiceCollection AddApplicationCors(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddCors(options =>
         {
-            builder.UseCors("CORS");
+            options.AddPolicy("CORS", policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        });
 
-            return builder;
-        }
+        return services;
+    }
+
+    public static IApplicationBuilder UseApplicationCors(this IApplicationBuilder builder, IConfiguration configuration)
+    {
+        builder.UseCors("CORS");
+
+        return builder;
     }
 }

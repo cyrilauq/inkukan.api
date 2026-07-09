@@ -26,13 +26,4 @@ public class AuthController(IInkukaMediator mediator) : ApplicationBaseControlle
 
         return loginResult;
     }
-
-    [HttpPost("login2")]
-    [MapToApiVersion("2.0")]
-    public async Task<UserDto> Login2Async([Required][FromBody] LoginCommand command, CancellationToken cancellationToken)
-    {
-        UserDto loginResult = await Mediator.Send(command, cancellationToken);
-
-        return loginResult;
-    }
 }
