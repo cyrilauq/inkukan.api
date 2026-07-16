@@ -14,6 +14,7 @@ namespace Inkukan.Api.Controllers.v1;
 public class CollectionController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
     [HttpGet]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "All the serie's collection", typeof(UserDto))]
     [SwaggerOperation(Summary = "Get serie's collection", Description = "Return all the serie related to that collection")]
     public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([Required][FromQuery] GetAllCollectionQuery query, CancellationToken cancellationToken)

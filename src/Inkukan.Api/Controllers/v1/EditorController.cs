@@ -30,6 +30,7 @@ public class EditorController(IInkukaMediator mediator) : ApplicationBaseControl
         => Mediator.Send(new DeleteEditorCommand { Id = editorId }, cancellationToken);
 
     [HttpGet]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried editors")]
     [SwaggerOperation(Summary = "Get editors", Description = "Returns all the editor corresponding to the request in a paginated result")]
     public Task<PaginatedDto<EditorDto>> GetAllAsync([Required][FromQuery] GetAllEditorsQuery command, CancellationToken cancellationToken)

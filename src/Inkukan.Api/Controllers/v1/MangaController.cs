@@ -42,6 +42,7 @@ public class MangaController(IInkukaMediator mediator) : ApplicationBaseControll
     }
 
     [HttpGet("{mangaId:guid}")]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The corresponding serie")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "When the id isn't related to a known serie")]
     [SwaggerOperation(Summary = "Get a serie by id")]
@@ -52,6 +53,7 @@ public class MangaController(IInkukaMediator mediator) : ApplicationBaseControll
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerOperation(Summary = "Get all series", Description = "Get all the serie corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<MangaSerieDto>> GetAllAsync([Required][FromQuery] GetAllSerieQuery query, CancellationToken cancellationToken) 

@@ -59,12 +59,14 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
     }
 
     [HttpGet("/api/volumes")]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volumes")]
     [SwaggerOperation(Summary = "Get all volumes", Description = "Get all the volumes corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query, CancellationToken cancellationToken) 
         => Mediator.Send(query, cancellationToken);
 
     [HttpGet("/api/volumes/{volumeId:guid}")]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volume")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "When the id isn't related to a known volume")]
     [SwaggerOperation(Summary = "Get volume by id", Description = "Get the volume corresponding to the given id")]

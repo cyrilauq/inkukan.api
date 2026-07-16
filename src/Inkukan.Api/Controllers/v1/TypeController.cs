@@ -14,6 +14,7 @@ namespace Inkukan.Api.Controllers.v1;
 public class TypeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
     [HttpGet]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried serie types")]
     [SwaggerOperation(Summary = "Get all serie types", Description = "Get all the serie types corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<TypeDto>> GetAllAsync([Required][FromQuery] GetAllTypeQuery query, CancellationToken cancellationToken)

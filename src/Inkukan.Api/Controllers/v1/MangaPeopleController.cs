@@ -30,6 +30,7 @@ public class MangaPeopleController(IInkukaMediator mediator) : ApplicationBaseCo
         => Mediator.Send(new DeleteMangaPeopleCommand { Id = peopleId }, cancellationToken);
 
     [HttpGet]
+    [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried people")]
     [SwaggerOperation(Summary = "Get all people", Description = "Get all the people corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<MangaPeopleDto>> GetAllAsync([Required][FromQuery] GetAllMangaPeopleQuery query, CancellationToken cancellationToken)
