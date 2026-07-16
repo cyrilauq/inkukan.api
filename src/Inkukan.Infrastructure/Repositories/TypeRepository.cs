@@ -3,10 +3,9 @@ using Inkukan.Domain.Repositories;
 using Inkukan.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inkukan.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories;
+
+public class TypeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory) 
+    : BaseRepository<MangaType>(dbContextFactory), ITypeRepository
 {
-    public class TypeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory) 
-        : BaseRepository<MangaType>(dbContextFactory), ITypeRepository
-    {
-    }
 }
