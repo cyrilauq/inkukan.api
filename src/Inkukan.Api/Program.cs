@@ -72,6 +72,7 @@ app.UseSession();
 
 app
     .UseApplicationCors(builder.Configuration)
+    .UseMiddleware<TraceIdMiddleware>()
     .UseMiddleware<ExceptionMiddleware>()
     .UseAuthentication()
     .UseAuthorization();

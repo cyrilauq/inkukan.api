@@ -22,7 +22,7 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
                 ex.StackTrace, 
                 JsonSerializer.Serialize(ex.Data));
             
-            Tuple<int, string, string> httpError = GetHttpErrorFromException(ex, traceId);
+            Tuple<int, string, string> httpError = GetHttpErrorFromException(ex);
 
             context.Response.StatusCode = httpError.Item1;
 
@@ -38,7 +38,7 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         }
     }
 
-    public Tuple<int, string, string> GetHttpErrorFromException(Exception exception, Guid traceId)
+    public Tuple<int, string, string> GetHttpErrorFromException(Exception exception)
     {
         Type exceptionType = exception.GetType();
         if (exceptionType == typeof(ConflictException))
@@ -57,6 +57,6 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         {
             return Tuple.Create(StatusCodes.Status400BadRequest, "Bad request", JsonSerializer.Serialize(validationException.Errors));
         }
-        return Tuple.Create(StatusCodes.Status500InternalServerError, "Internal Server Error", environment.IsDevelopment() ? exception.Message : $"Internal server error occured, traceId : {traceId}");
+        return Tuple.Create(StatusCodes.Status500InternalServerError, "Internal Server Error", environment.IsDevelopment() ? exception.Message : $"Internal server error occured");
     }
 }
