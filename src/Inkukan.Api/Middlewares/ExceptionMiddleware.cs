@@ -15,8 +15,12 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         catch (Exception ex)
         {
             Guid traceId = Guid.NewGuid();
-            logger.LogError("{now} | Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
-                DateTime.Now, traceId, ex.Message, ex.StackTrace, JsonSerializer.Serialize(ex.Data));
+            logger.LogError(
+                "Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
+                traceId, 
+                ex.Message, 
+                ex.StackTrace, 
+                JsonSerializer.Serialize(ex.Data));
             
             Tuple<int, string, string> httpError = GetHttpErrorFromException(ex, traceId);
 
