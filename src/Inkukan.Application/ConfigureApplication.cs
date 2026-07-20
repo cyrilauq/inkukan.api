@@ -52,7 +52,7 @@ public static class ConfigureApplication
     {
         services.AddAutoMapper(cfg =>
         {
-            cfg.LicenseKey = configuration["LicenseKeys:LuckyPennySoftware"] ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
+            cfg.LicenseKey = configuration.GetSection("LicenseKeys").GetSection("LuckyPennySoftware").Value ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
         }, typeof(ConfigureApplication).Assembly);
 
         return services;
