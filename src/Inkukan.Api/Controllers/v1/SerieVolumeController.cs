@@ -1,4 +1,4 @@
-﻿using Inkukan.Application.Dtos;
+using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.SerieVolume.Commands.Create;
 using Inkukan.Application.Features.SerieVolume.Commands.Delete;
 using Inkukan.Application.Features.SerieVolume.Commands.Update;
@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Inkukan.Api.Controllers.v1;
 
-[Route("/api/series/{serieId:guid}/volumes")]
+[Route("/series/{serieId:guid}/volumes")]
 public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
     [Authorize(Roles = "Admin")]
@@ -58,14 +58,14 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
         return await Mediator.Send(command, cancellationToken);
     }
 
-    [HttpGet("/api/volumes")]
+    [HttpGet("/volumes")]
     [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volumes")]
     [SwaggerOperation(Summary = "Get all volumes", Description = "Get all the volumes corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query, CancellationToken cancellationToken) 
         => Mediator.Send(query, cancellationToken);
 
-    [HttpGet("/api/volumes/{volumeId:guid}")]
+    [HttpGet("/volumes/{volumeId:guid}")]
     [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volume")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "When the id isn't related to a known volume")]
