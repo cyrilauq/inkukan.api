@@ -9,7 +9,7 @@ public class EditorRepository(IDbContextFactory<ApplicationDbContext> dbContextF
 {
     public async Task<Editor?> GetByNameAsync(string name, CancellationToken cancellationToken)
     {
-        ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+        ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Editors
             .Where(e => e.Name == name)
             .FirstOrDefaultAsync(cancellationToken);
