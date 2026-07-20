@@ -1,4 +1,4 @@
-﻿using Inkukan.Application.Mediator.Abstractions;
+using Inkukan.Application.Mediator.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -6,7 +6,7 @@ using System.Net.Mime;
 
 namespace Inkukan.Api.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("v{version:apiVersion}/[controller]")]
 [ApiController]
 [Authorize]
 [SwaggerResponse(StatusCodes.Status401Unauthorized, "If the user is unauthenticated")]
