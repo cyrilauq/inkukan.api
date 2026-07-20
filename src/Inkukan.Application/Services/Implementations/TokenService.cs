@@ -44,7 +44,7 @@ namespace Inkukan.Application.Services.Implementations
             claims.AddClaim(new Claim(ClaimTypes.Name, user.UserName!));
             claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
-            IEnumerable<string> userRoles = await roleRepository.GetUserRolesAsync(user);
+            IEnumerable<string> userRoles = await roleRepository.GetUserRolesAsync(user, cancellationToken);
 
             claims.AddClaims(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
