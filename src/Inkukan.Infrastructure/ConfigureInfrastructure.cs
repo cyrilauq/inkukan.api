@@ -2,11 +2,15 @@
 using Inkukan.Domain.Repositories;
 using Inkukan.Infrastructure.Data;
 using Inkukan.Infrastructure.Repositories;
+using Inkukan.Infrastructure.Repositories.Polly;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Extensions.Http;
+using System.Net.Http.Headers;
 
 namespace Inkukan.Infrastructure;
 
@@ -16,7 +20,8 @@ public static class ConfigureInfrastructure
     {
         services
             .AddEntityFramework(configuration)
-            .AddRepositories();
+            .AddRepositories()
+            .ConfigureHttpClients(configuration);
 
         return services;
     }
@@ -45,22 +50,37 @@ public static class ConfigureInfrastructure
         return services;
     }
 
+    private static IServiceCollection ConfigureHttpClients(this IServiceCollection services, IConfiguration configuration)
+    {
+        VercelBlobOptions blobOptions = new();
+        configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
+        services
+            .AddSingleton(blobOptions);
+
+        services.AddHttpClient("VercelBlocClient", client =>
+            {
+                client.BaseAddress = new(blobOptions.BlobUrl);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", blobOptions.Token);
+                client.DefaultRequestHeaders.Add("x-add-random-suffix", "true");
+            })
+            .AddPolly();
+
+        return services;
+    }
+
     private static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContextFactory<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString),
-            ServiceLifetime.Scoped); // <--- THIS IS CRITICAL
+            ServiceLifetime.Scoped);
 
-        // 2. This satisfies Identity's need for a standard DbContext in the DI container
         services.AddScoped(p =>
             p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
 
-        // 3. Fix the 'IDataProtectionProvider' error
         services.AddDataProtection();
 
-        // 4. Identity Configuration
         services.AddIdentityCore<User>(cfg =>
         {
             cfg.SignIn.RequireConfirmedEmail = false;
@@ -82,11 +102,11 @@ public static class ConfigureInfrastructure
         await dbContext.Database.MigrateAsync();
 
         if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen") == 0)
-            dbContext.MangaTypes.Add(new() { Code = "seinen", Name = "Seinen" });
+            await dbContext.MangaTypes.AddAsync(new() { Code = "seinen", Name = "Seinen" });
         if (await dbContext.MangaCollections.CountAsync(mt => mt.Code == "seinen") == 0)
-            dbContext.MangaCollections.Add(new() { Code = "seinen", Name = "Seinen" });
+            await dbContext.MangaCollections.AddAsync(new() { Code = "seinen", Name = "Seinen" });
 
-        if (await roleManager.Roles.CountAsync() == 0)
+        if (!await roleManager.Roles.AnyAsync())
         {
             await roleManager.CreateAsync(new Role { Name = "User" });
             await roleManager.CreateAsync(new Role { Name = "Admin" });

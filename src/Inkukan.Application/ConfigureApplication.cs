@@ -25,18 +25,8 @@ public static class ConfigureApplication
 
     private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        VercelBlobOptions blobOptions = new();
-        configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
         services
-            .Configure<TokenConfiguration>(configuration.GetSection(nameof(TokenConfiguration)))
-            .AddSingleton(blobOptions);
-
-        services.AddHttpClient("VercelBlocClient", client =>
-        {
-            client.BaseAddress = new(blobOptions.BlobUrl);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", blobOptions.Token);
-            client.DefaultRequestHeaders.Add("x-add-random-suffix", "true");
-        });
+            .Configure<TokenConfiguration>(configuration.GetSection(nameof(TokenConfiguration)));
 
         services
             .AddScoped<IFileUploader, FileUploaderVercelBlob>()
