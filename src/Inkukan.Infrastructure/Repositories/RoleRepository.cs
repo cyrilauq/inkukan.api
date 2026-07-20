@@ -6,6 +6,6 @@ namespace Inkukan.Infrastructure.Repositories;
 
 public class RoleRepository(UserManager<User> userManager) : IRoleRepository
 {
-    public async Task<IEnumerable<string>> GetUserRolesAsync(User user)
+    public async Task<IEnumerable<string>> GetUserRolesAsync(User user, CancellationToken cancellationToken)
         => await userManager.GetRolesAsync(user);
 }
