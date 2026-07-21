@@ -2,12 +2,9 @@
 
 namespace Inkukan.Api.Middlewares;
 
-public class TraceIdMiddleware
+public class TraceIdMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
     private const string CorrelationIdHeader = "X-Trace-Id";
-
-    public TraceIdMiddleware(RequestDelegate next) => _next = next;
 
     public async Task InvokeAsync(HttpContext context, ITraceIdAccessor accessor)
     {
@@ -20,14 +17,14 @@ public class TraceIdMiddleware
         // Add to response headers so clients can see it
         context.Response.OnStarting(() =>
         {
-            context.Response.Headers.TryAdd(CorrelationIdHeader, correlationId.ToString());
+            context.Response.Headers.TryAdd(CorrelationIdHeader, System.Diagnostics.Activity.Current?.Id ?? context.TraceIdentifier);
             return Task.CompletedTask;
         });
 
         // Add to the HttpContext.Items for easy access
         context.Items[CorrelationIdHeader] = correlationId;
 
-        await _next(context);
+        await next(context);
     }
 
     private static Guid GetOrCreateCorrelationId(HttpContext context)

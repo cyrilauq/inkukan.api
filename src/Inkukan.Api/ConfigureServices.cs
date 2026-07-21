@@ -3,12 +3,27 @@ using Inkukan.Application;
 using Inkukan.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Text;
 
 namespace Inkukan.Api;
 
 public static class ConfigureServices
 {
+    public static IServiceCollection AddTraceAndTelemetry(this IServiceCollection services)
+    {
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(serviceName: "Inkukan.Api"))
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter()
+                .SetErrorStatusOnException());
+
+        return services;
+    }
+
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
