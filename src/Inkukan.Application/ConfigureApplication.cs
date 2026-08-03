@@ -27,6 +27,10 @@ public static class ConfigureApplication
     {
         VercelBlobOptions blobOptions = new();
         configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
+        services.AddOptions<TokenConfiguration>()
+            .Bind(configuration.GetSection(nameof(TokenConfiguration)))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
         services
             .Configure<TokenConfiguration>(configuration.GetSection(nameof(TokenConfiguration)))
             .AddSingleton(blobOptions);

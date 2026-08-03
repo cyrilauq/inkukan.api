@@ -11,9 +11,12 @@ namespace Inkukan.Application.Services.Implementations;
 
 public class TokenConfiguration
 {
-    public required string SecretKey { get; set; }
-    public required string Issuer { get; set; }
-    public required int ValidityInHours { get; set; }
+    [Required]
+    public string SecretKey { get; set; } = string.Empty;
+    [Required]
+    public string Issuer { get; set; } = string.Empty;
+    [Required]
+    public int ValidityInHours { get; set; }
 }
 
 public class TokenService(IRoleRepository roleRepository, IOptions<TokenConfiguration> tokenOptions) : ITokenService
