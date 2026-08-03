@@ -11,11 +11,8 @@ namespace Inkukan.Application.Services.Implementations;
 
 public class TokenConfiguration
 {
-    [Required]
     public required string SecretKey { get; set; }
-    [Required]
     public required string Issuer { get; set; }
-    [Required]
     public required int ValidityInHours { get; set; }
 }
 
