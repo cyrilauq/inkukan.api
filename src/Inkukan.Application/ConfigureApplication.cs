@@ -27,6 +27,10 @@ public static class ConfigureApplication
     {
         VercelBlobOptions blobOptions = new();
         configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
+        services.AddOptions<TokenConfiguration>()
+            .Bind(configuration.GetSection(nameof(TokenConfiguration)))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
         services
             .Configure<TokenConfiguration>(configuration.GetSection(nameof(TokenConfiguration)))
             .AddSingleton(blobOptions);
@@ -52,7 +56,7 @@ public static class ConfigureApplication
     {
         services.AddAutoMapper(cfg =>
         {
-            cfg.LicenseKey = configuration["LicenseKeys:LuckyPennySoftware"] ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
+            cfg.LicenseKey = configuration.GetSection("LicenseKeys").GetSection("LuckyPennySoftware").Value ?? throw new ArgumentException("The [LuckyPennySoftware]'s key should be specified");
         }, typeof(ConfigureApplication).Assembly);
 
         return services;
