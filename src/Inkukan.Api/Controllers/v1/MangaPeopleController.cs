@@ -22,12 +22,12 @@ public class MangaPeopleController(IInkukaMediator mediator) : ApplicationBaseCo
         => Mediator.Send(command, cancellationToken);
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete("{peopleId:guid}")]
+    [HttpDelete("{mangaPeopleId:guid}")]
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Delete a person")]
-    public Task DeleteAsync([Required][FromRoute] Guid peopleId, CancellationToken cancellationToken)
-        => Mediator.Send(new DeleteMangaPeopleCommand { Id = peopleId }, cancellationToken);
+    public Task DeleteAsync([Required][FromRoute] Guid mangaPeopleId, CancellationToken cancellationToken)
+        => Mediator.Send(new DeleteMangaPeopleCommand { Id = mangaPeopleId }, cancellationToken);
 
     [HttpGet]
     [AllowAnonymous]
@@ -37,13 +37,13 @@ public class MangaPeopleController(IInkukaMediator mediator) : ApplicationBaseCo
         => Mediator.Send(query, cancellationToken);
 
     [Authorize(Roles = "Admin")]
-    [HttpPut("{peppolId:guid}")]
+    [HttpPut("{mangaPeopleId:guid}")]
     [SwaggerResponse(StatusCodes.Status200OK, "The udpated person")]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Update a person")]
-    public Task<MangaPeopleDto> UpdateAsync([Required][FromRoute] Guid peppolId, [Required][FromBody] UpdateMangaPeopleCommand command, CancellationToken cancellationToken)
+    public Task<MangaPeopleDto> UpdateAsync([Required][FromRoute] Guid mangaPeopleId, [Required][FromBody] UpdateMangaPeopleCommand command, CancellationToken cancellationToken)
     {
-        command.Id = peppolId;
+        command.Id = mangaPeopleId;
         return Mediator.Send(command, cancellationToken);
     }
 }

@@ -16,6 +16,7 @@ public class TokenConfiguration
     [Required]
     public string Issuer { get; set; } = string.Empty;
     [Required]
+    [Range(4,12)]
     public int ValidityInHours { get; set; }
 }
 

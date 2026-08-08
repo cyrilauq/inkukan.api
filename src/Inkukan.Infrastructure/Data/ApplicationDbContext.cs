@@ -57,13 +57,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             if (typeof(ILogicalDelete).IsAssignableFrom(entityType.ClrType))
             {
-                // modify expression to handle correct child type
                 Expression<Func<ILogicalDelete, bool>> filterExpr = bm => !bm.IsDeleted;
                 ParameterExpression parameter = Expression.Parameter(entityType.ClrType);
                 Expression body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
                 LambdaExpression lambdaExpression = Expression.Lambda(body, parameter);
 
-                // set filter
                 entityType.SetQueryFilter(lambdaExpression);
             }
         }
@@ -72,7 +70,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
         IEnumerable<EntityEntry> entries = ChangeTracker.Entries();
-        DateTime now = DateTime.UtcNow;
+        DateTimeOffset now = DateTimeOffset.UtcNow;
 
         foreach (EntityEntry entry in entries)
         {

@@ -11,7 +11,7 @@ public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contex
 
     public new async Task<MangaSerie?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
+        using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.MangaSeries
             .Include(s => s.Author)
             .Include(s => s.Translator)

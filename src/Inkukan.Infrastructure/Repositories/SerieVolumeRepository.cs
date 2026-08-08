@@ -11,7 +11,7 @@ public class SerieVolumeRepository(IDbContextFactory<ApplicationDbContext> dbCon
 
     public async Task<SerieVolume?> GetBySerieIdAndVolumeNumberAsync(Guid serieId, int volumeNumber, CancellationToken cancellationToken)
     {
-        ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
+        using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext
             .SerieVolumes
             .Where(sv => sv.MangaSerieId == serieId && sv.VolumeNumber == volumeNumber)
