@@ -1,5 +1,6 @@
-review:
-    auto_review: true
+reviews:
+    auto_review: 
+        enabled: true
     target_branches: [ “main”, “develop” ]
     block_on: [ “security”, “tests-missing” ]
     comments:
