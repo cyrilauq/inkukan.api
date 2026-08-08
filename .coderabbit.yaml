@@ -1,8 +1,6 @@
 reviews:
-    auto_review: 
-        enabled: true
-    target_branches: [ "main", "develop" ]
-    block_on: [ "security", "tests-missing" ]
-    comments:
-    inline: true
-    summary: true
+  auto_review:
+    enabled: true
+    base_branches:
+      - "develop"
+    drafts: false
