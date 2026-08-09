@@ -2,11 +2,13 @@
 using Inkukan.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace Inkukan.Infrastructure.Repositories
+namespace Inkukan.Infrastructure.Repositories;
+
+public class RoleRepository(UserManager<User> userManager) : IRoleRepository
 {
-    public class RoleRepository(UserManager<User> userManager) : IRoleRepository
+    public async Task<IEnumerable<string>> GetUserRolesAsync(User user, CancellationToken cancellationToken)
     {
-        public async Task<IEnumerable<string>> GetUserRolesAsync(User user)
-            => await userManager.GetRolesAsync(user);
+        cancellationToken.ThrowIfCancellationRequested();
+        return await userManager.GetRolesAsync(user);
     }
 }

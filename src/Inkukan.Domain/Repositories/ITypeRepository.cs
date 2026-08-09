@@ -1,8 +1,7 @@
 ﻿using Inkukan.Domain.Entities;
 
-namespace Inkukan.Domain.Repositories
+namespace Inkukan.Domain.Repositories;
+
+public interface ITypeRepository : IBaseRepository<MangaType>
 {
-    public interface ITypeRepository : IBaseRepository<MangaType>
-    {
-    }
 }

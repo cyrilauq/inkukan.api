@@ -1,8 +1,7 @@
-﻿namespace Inkukan.Domain.Entities.Interfaces
+﻿namespace Inkukan.Domain.Entities.Interfaces;
+
+public interface ILogicalDelete
 {
-    public interface ILogicalDelete
-    {
-        public DateTime? DeletedAt { get; set; }
-        public bool IsDeleted { get; }
-    }
+    public DateTimeOffset? DeletedAt { get; set; }
+    public bool IsDeleted { get; }
 }

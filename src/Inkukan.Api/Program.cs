@@ -35,6 +35,8 @@ builder.Services
 
 builder.Services.AddSwaggerGen(options =>
 {
+    options.EnableAnnotations();
+
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Inkukan V1",
@@ -44,7 +46,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services
-    .AddServices(builder.Configuration);
+    .AddServices(builder.Configuration)
+    .AddTraceAndTelemetry();
 
 var app = builder.Build();
 
@@ -70,6 +73,7 @@ app.UseSession();
 
 app
     .UseApplicationCors(builder.Configuration)
+    .UseMiddleware<TraceIdMiddleware>()
     .UseMiddleware<ExceptionMiddleware>()
     .UseAuthentication()
     .UseAuthorization();

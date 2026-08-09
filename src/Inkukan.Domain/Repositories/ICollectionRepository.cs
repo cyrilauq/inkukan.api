@@ -1,8 +1,7 @@
 ﻿using Inkukan.Domain.Entities;
 
-namespace Inkukan.Domain.Repositories
+namespace Inkukan.Domain.Repositories;
+
+public interface ICollectionRepository : IBaseRepository<MangaCollection>
 {
-    public interface ICollectionRepository : IBaseRepository<MangaCollection>
-    {
-    }
 }

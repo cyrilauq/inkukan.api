@@ -1,12 +1,11 @@
-﻿namespace Inkukan.Domain.Repositories
+﻿namespace Inkukan.Domain.Repositories;
+
+public interface IBlobStorage
 {
-    public interface IBlobStorage
-    {
-        /// <summary>
-        /// Save a file to a blob storage
-        /// </summary>
-        /// <param name="content">File content</param>
-        /// <returns>The filename of the savedFile</returns>
-        Task<string> UploadAsync(byte[] content, string filePath, CancellationToken cancellationToken);
-    }
+    /// <summary>
+    /// Save a file to a blob storage
+    /// </summary>
+    /// <param name="content">File content</param>
+    /// <returns>The filename of the savedFile</returns>
+    Task<string> UploadAsync(byte[] content, string filePath, CancellationToken cancellationToken);
 }

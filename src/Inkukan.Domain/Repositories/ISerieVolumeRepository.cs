@@ -1,9 +1,8 @@
 ﻿using Inkukan.Domain.Entities;
 
-namespace Inkukan.Domain.Repositories
+namespace Inkukan.Domain.Repositories;
+
+public interface ISerieVolumeRepository : IBaseRepository<SerieVolume>
 {
-    public interface ISerieVolumeRepository : IBaseRepository<SerieVolume>
-    {
-        Task<SerieVolume?> GetBySerieIdAndVolumeNumberAsync(Guid serieId, int volumeNumber, CancellationToken cancellationToken);
-    }
+    Task<SerieVolume?> GetBySerieIdAndVolumeNumberAsync(Guid serieId, int volumeNumber, CancellationToken cancellationToken);
 }

@@ -1,7 +1,6 @@
-﻿namespace Inkukan.Domain.Entities
+﻿namespace Inkukan.Domain.Entities;
+
+public enum UserListType
 {
-    public enum UserListType
-    {
-        Collection
-    }
+    Collection
 }

@@ -1,6 +1,5 @@
-﻿namespace Inkukan.Domain.Exceptions
+﻿namespace Inkukan.Domain.Exceptions;
+
+public class CustomException(string message) : Exception(message)
 {
-    public class CustomException(string message) : Exception(message)
-    {
-    }
 }
