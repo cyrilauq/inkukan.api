@@ -5,7 +5,6 @@ using Inkukan.Application.Services;
 using Inkukan.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
 
 namespace Inkukan.Application;
 
@@ -17,6 +16,11 @@ public static class ConfigureApplication
             .AddMapper(configuration)
             .AddMediator(typeof(ConfigureApplication).Assembly)
             .AddServices(configuration);
+
+        VercelBlobOptions blobOptions = new();
+        configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
+        services
+            .AddTransient(svc => blobOptions);
 
         services.AddValidatorsFromAssemblyContaining<CreateMangaSerieValidator>();
 

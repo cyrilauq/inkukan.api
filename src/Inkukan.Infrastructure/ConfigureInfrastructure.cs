@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Polly;
-using Polly.Extensions.Http;
 using System.Net.Http.Headers;
 
 namespace Inkukan.Infrastructure;
@@ -55,7 +53,7 @@ public static class ConfigureInfrastructure
         VercelBlobOptions blobOptions = new();
         configuration.GetSection(nameof(VercelBlobOptions)).Bind(blobOptions);
         services
-            .AddSingleton(blobOptions);
+            .AddTransient(svc => blobOptions);
 
         services.AddHttpClient("VercelBlocClient", client =>
             {
