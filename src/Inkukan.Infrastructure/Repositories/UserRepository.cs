@@ -31,9 +31,15 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
     }
 
 
-    public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken) 
-        => await userManager.FindByNameAsync(username);
+    public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return await userManager.FindByNameAsync(username);
+    }
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken) 
-        => await userManager.FindByEmailAsync(email);
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return await userManager.FindByEmailAsync(email);
+    }
 }

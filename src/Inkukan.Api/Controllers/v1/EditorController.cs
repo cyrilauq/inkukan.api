@@ -18,7 +18,7 @@ public class EditorController(IInkukaMediator mediator) : ApplicationBaseControl
     [SwaggerResponse(StatusCodes.Status200OK, "The created editor")]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Create a new editor")]
-    public Task<EditorDto> CreateAsync([Required][FromRoute] CreateEditorCommand command, CancellationToken cancellationToken)
+    public Task<EditorDto> CreateAsync([Required][FromBody] CreateEditorCommand command, CancellationToken cancellationToken)
         => Mediator.Send(command, cancellationToken);
 
     [HttpDelete("{editorId:guid}")]
@@ -31,7 +31,7 @@ public class EditorController(IInkukaMediator mediator) : ApplicationBaseControl
 
     [HttpGet]
     [AllowAnonymous]
-    [SwaggerResponse(StatusCodes.Status200OK, "The queried editors")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The queried editors", typeof(PaginatedDto<EditorDto>))]
     [SwaggerOperation(Summary = "Get editors", Description = "Returns all the editor corresponding to the request in a paginated result")]
     public Task<PaginatedDto<EditorDto>> GetAllAsync([Required][FromQuery] GetAllEditorsQuery command, CancellationToken cancellationToken)
         => Mediator.Send(command, cancellationToken);

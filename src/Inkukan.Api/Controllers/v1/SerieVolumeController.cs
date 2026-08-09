@@ -47,9 +47,9 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{volumeId:guid}")]
-    [SwaggerResponse(StatusCodes.Status200OK, "The udpated volume")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The updated volume", typeof(SerieVolumeDto))]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
-    [SwaggerOperation(Summary = "Udpate a volume")]
+    [SwaggerOperation(Summary = "Update a volume")]
     public async Task<SerieVolumeDto> UpdateAsync([Required][FromRoute] Guid serieId, [Required][FromRoute] Guid volumeId, [Required][FromForm] UpdateSerieVolumeCommand command, CancellationToken cancellationToken)
     {
         command.MangaSerieId = serieId;
@@ -60,7 +60,7 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
 
     [HttpGet("/volumes")]
     [AllowAnonymous]
-    [SwaggerResponse(StatusCodes.Status200OK, "The queried volumes")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The queried volumes", typeof(PaginatedDto<SerieVolumeDto>))]
     [SwaggerOperation(Summary = "Get all volumes", Description = "Get all the volumes corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query, CancellationToken cancellationToken) 
         => Mediator.Send(query, cancellationToken);

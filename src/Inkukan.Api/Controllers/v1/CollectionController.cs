@@ -15,21 +15,21 @@ public class CollectionController(IInkukaMediator mediator) : ApplicationBaseCon
 {
     [HttpGet]
     [AllowAnonymous]
-    [SwaggerResponse(StatusCodes.Status200OK, "All the serie's collection", typeof(UserDto))]
+    [SwaggerResponse(StatusCodes.Status200OK, "All the serie's collection", typeof(PaginatedDto<MangaCollectionDto>))]
     [SwaggerOperation(Summary = "Get serie's collection", Description = "Return all the serie related to that collection")]
     public Task<PaginatedDto<MangaCollectionDto>> GetAllAsync([Required][FromQuery] GetAllCollectionQuery query, CancellationToken cancellationToken)
         => Mediator.Send(query, cancellationToken);
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    [SwaggerResponse(StatusCodes.Status200OK, "The added serie's collection item", typeof(UserDto))]
+    [SwaggerResponse(StatusCodes.Status200OK, "The added serie's collection item", typeof(MangaCollectionDto))]
     [SwaggerOperation(Summary = "Add aserie's collection", Description = "Add a serie's collection")]
     public Task<MangaCollectionDto> CreateAsync([Required][FromBody] CreateMangaCollectionCommand command, CancellationToken cancellationToken)
         => Mediator.Send(command, cancellationToken);
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:guid}")]
-    [SwaggerResponse(StatusCodes.Status200OK, "The update serie's collection", typeof(UserDto))]
+    [SwaggerResponse(StatusCodes.Status200OK, "The update serie's collection", typeof(MangaCollectionDto))]
     [SwaggerOperation(Summary = "Update a serie's collection")]
     public Task<MangaCollectionDto> UpdateAsync([Required][FromRoute] Guid id, [Required][FromBody] UpdateMangaCollectionCommand command, CancellationToken cancellationToken)
     {
@@ -39,7 +39,7 @@ public class CollectionController(IInkukaMediator mediator) : ApplicationBaseCon
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
-    [SwaggerResponse(StatusCodes.Status200OK, "", typeof(UserDto))]
+    [SwaggerResponse(StatusCodes.Status200OK, "")]
     [SwaggerOperation(Summary = "Delete a serie's collection")]
     public Task DeleteAsync([Required][FromRoute] Guid id, CancellationToken cancellationToken)
         => Mediator.Send(new DeleteMangaCollectionCommand() { Id = id }, cancellationToken);

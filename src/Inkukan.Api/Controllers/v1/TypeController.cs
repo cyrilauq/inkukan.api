@@ -38,9 +38,9 @@ public class TypeController(IInkukaMediator mediator) : ApplicationBaseControlle
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:guid}")]
-    [SwaggerResponse(StatusCodes.Status200OK, "The udpated serie type")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The updated serie type")]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
-    [SwaggerOperation(Summary = "Udpate a serie type")]
+    [SwaggerOperation(Summary = "Update a serie type")]
     public Task<TypeDto> UpdateAsync([Required][FromRoute] Guid id, [Required][FromBody] UpdateTypeCommand command, CancellationToken cancellationToken)
     {
         command.Id = id;
