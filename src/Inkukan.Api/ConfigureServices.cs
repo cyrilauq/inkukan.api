@@ -1,14 +1,30 @@
 ﻿using Inkukan.Api.Middlewares;
 using Inkukan.Application;
+using Inkukan.Application.Services.Implementations;
 using Inkukan.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Text;
 
 namespace Inkukan.Api;
 
 public static class ConfigureServices
 {
+    public static IServiceCollection AddTraceAndTelemetry(this IServiceCollection services)
+    {
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(serviceName: "Inkukan.Api"))
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter()
+                .SetErrorStatusOnException());
+
+        return services;
+    }
+
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
@@ -40,11 +56,14 @@ public static class ConfigureServices
         })
             .AddJwtBearer(x =>
             {
+                TokenConfiguration? tokenConfiguration = configuration.GetSection(nameof(TokenConfiguration))
+                    .Get<TokenConfiguration>();
+
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("TokenConfiguration").GetSection("SecretKey").Value ?? throw new ArgumentNullException("No key was provided for jwt authorization"))),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenConfiguration?.SecretKey ?? throw new ArgumentNullException("No key was provided for jwt authorization"))),
                     ValidateIssuer = true,
                     ValidateAudience = false
                 };

@@ -14,10 +14,10 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         }
         catch (Exception ex)
         {
-            Guid traceId = Guid.NewGuid();
+            string traceId = System.Diagnostics.Activity.Current?.Id ?? context.TraceIdentifier;
             logger.LogError(
-                "Error occured while processing the request, TraceId : {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
-                traceId, 
+                "Error occured while processing the request, TraceId: {traceId}, Message : {message},\nStackTrace: {stackTrace}\nException data: {data}", 
+                traceId,
                 ex.Message, 
                 ex.StackTrace, 
                 JsonSerializer.Serialize(ex.Data));
@@ -34,6 +34,8 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
                 Instance = context.Request.Path,
                 Detail = httpError.Item3,
             };
+            problemDetails.Extensions["traceId"] = traceId;
+
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
     }

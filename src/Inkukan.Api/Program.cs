@@ -46,7 +46,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services
-    .AddServices(builder.Configuration);
+    .AddServices(builder.Configuration)
+    .AddTraceAndTelemetry();
 
 var app = builder.Build();
 
