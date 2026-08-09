@@ -1,6 +1,76 @@
 reviews:
+  slop_detection:
+    enabled: true
+    label: "slop"
   auto_review:
     enabled: true
     base_branches:
       - "develop"
+      - "main"
     drafts: false
+  path_instructions:
+    - path: "**/*.cs"
+      instructions: |
+        Review this C# code as a senior .NET engineer. Flag violations of the following, with a short
+        explanation and a suggested fix for each:
+
+        General C# / .NET good practices:
+        - Naming conventions (PascalCase for types/methods/properties, camelCase for locals/parameters,
+          _camelCase or camelCase for private fields depending on project convention).
+        - Proper use of async/await: no async void (except event handlers), no blocking calls on async
+          code (.Result, .Wait(), .GetAwaiter().GetResult()), no unnecessary async wrapping.
+        - Every async method that calls into I/O, a repository, an HTTP client, or another async method
+          must accept and propagate a CancellationToken parameter (named `cancellationToken`, typically
+          with a default of `default` only at the outermost boundary, e.g. controllers). Flag any async
+          method missing a CancellationToken, and flag any place where a received CancellationToken is
+          not passed down to the inner async calls.
+        - Proper disposal of IDisposable/IAsyncDisposable (using/await using statements).
+        - Nullability: correct use of nullable reference types, avoid unnecessary null-forgiving (!)
+          operators, avoid returning null where an empty collection or Option/Result type is more
+          appropriate.
+        - Avoid magic strings/numbers; prefer constants, enums, or configuration.
+        - Prefer immutability where reasonable (readonly fields, records for DTOs/value objects, init-only
+          properties).
+        - Exceptions used only for exceptional conditions, not control flow; don't swallow exceptions
+          silently; avoid catching generic Exception unless rethrowing or logging with context.
+        - LINQ used clearly and without unnecessary multiple enumeration of IEnumerable.
+        - Dependency injection used correctly (constructor injection, no service locator anti-pattern,
+          appropriate lifetimes: singleton/scoped/transient).
+
+        API / Web API good practices:
+        - Controllers/endpoints stay thin; business logic lives in services/handlers, not in controllers.
+        - Correct and consistent use of HTTP verbs and status codes (e.g. 201 with Location header on
+          create, 204 on delete, 404 vs 400 usage, ProblemDetails for errors).
+        - Input validation happens before business logic executes (model validation, FluentValidation,
+          guard clauses), and validation errors return 400 with a clear payload.
+        - DTOs are used at the API boundary instead of leaking domain/EF entities directly.
+        - Async all the way through the request pipeline; CancellationToken from the request
+          (e.g. HttpContext.RequestAborted) is threaded through to downstream calls.
+        - Versioning, route naming, and response shapes stay consistent with existing endpoints in the repo.
+
+        Clean Architecture:
+        - Dependency rule is respected: dependencies point inward only. Domain layer must not reference
+          Application, Infrastructure, or Presentation/API layers. Application layer must not reference
+          Infrastructure or Presentation.
+        - No framework-specific types (EF Core entities/DbContext, ASP.NET Core types, HttpContext, etc.)
+          leaking into the Domain or Application layer.
+        - Infrastructure implements interfaces defined in Domain/Application (Dependency Inversion), not
+          the other way around.
+        - Use cases / application services orchestrate domain logic rather than domain entities depending
+          on application services.
+        - Cross-cutting concerns (logging, caching, transactions) are handled via decorators/behaviors/
+          middleware, not scattered inline inside domain or application code.
+
+        CQRS:
+        - Commands (write) and Queries (read) are clearly separated into distinct types/handlers; a single
+          handler should not both mutate state and return a complex read model.
+        - Commands should generally return minimal data (e.g. an id or nothing / Result), not full read DTOs.
+        - Queries must not have side effects (no state mutation, no writes) inside a query handler.
+        - If using MediatR or a similar mediator, commands/queries and their handlers follow a consistent
+          naming pattern (e.g. XCommand/XCommandHandler, XQuery/XQueryHandler) and live in the expected
+          folders/namespaces per the project's convention.
+        - Validation and cross-cutting concerns for commands/queries are implemented as pipeline
+          behaviors rather than duplicated inside each handler.
+
+        Only comment when a rule above is actually violated in the diff — don't restate rules that are
+        already respected.
