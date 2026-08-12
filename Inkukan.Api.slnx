@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Inkukan.Api/Inkukan.Api.csproj" />
+    <Project Path="src/Inkukan.Application/Inkukan.Application.csproj" />
+    <Project Path="src/Inkukan.Domain/Inkukan.Domain.csproj" />
+    <Project Path="src/Inkukan.Infrastructure/Inkukan.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="tests/Inkukan.Application.Tests/Inkukan.Application.Tests.csproj" />
+    <Project Path="tests/Inkukan.Infrastructure.Tests/Inkukan.Infrastructure.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Éléments de solution/">
+    <File Path=".dockerignore" />
+    <File Path="Dockerfile" />
+  </Folder>
+</Solution>
