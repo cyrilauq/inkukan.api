@@ -65,6 +65,7 @@ public static class ConfigureServices
                 {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenConfiguration?.SecretKey ?? throw new ArgumentNullException("No key was provided for jwt authorization"))),
                     ValidateIssuer = true,
+                    ValidIssuer = tokenConfiguration.Issuer,
                     ValidateAudience = false
                 };
             });

@@ -1,0 +1,70 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- Get version number from the csproj under src/Inkukan.api ---
+      - name: Extract version from csproj
+        id: version
+        run: |
+          CSPROJ=$(find src/Inkukan.api -maxdepth 1 -name "*.csproj" | head -n1)
+          if [ -z "$CSPROJ" ]; then
+            echo "No .csproj found in src/Inkukan.api" >&2
+            exit 1
+          fi
+
+          VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" "$CSPROJ" || true)
+          if [ -z "$VERSION" ]; then
+            VERSION=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" "$CSPROJ" || true)
+          fi
+          if [ -z "$VERSION" ]; then
+            VERSION="0.0.0-${GITHUB_SHA::7}"
+            echo "No <Version>/<VersionPrefix> tag found, falling back to $VERSION"
+          fi
+
+          echo "Detected version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # --- Build the image locally on the runner (no registry) ---
+      - name: Build image
+        run: |
+          docker build -t inkukan-api:${{ steps.version.outputs.version }} .
+
+      - name: Save image as tarball
+        run: |
+          docker save -o inkukan-api.tar inkukan-api:${{ steps.version.outputs.version }}
+
+      # --- Ship it to the VPS ---
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Copy image + version info to server
+        run: |
+          scp -i ~/.ssh/deploy_key inkukan-api.tar \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/inkukan-api.tar"
+
+          echo "IMAGE_TAG=${{ steps.version.outputs.version }}" > .env.deploy
+          scp -i ~/.ssh/deploy_key .env.deploy \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/.env"
+
+      # inkukan-admin has no direct docker access (not in the docker group,
+      # no general sudo rights) - these are the same "docker load" /
+      # "docker compose up -d" commands, just run as root via the one
+      # whitelisted script so the deploy user stays locked down.
+      - name: Load image and restart the stack
+        run: |
+          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "sudo /usr/local/bin/app-deploy.sh load inkukan-api.tar && sudo /usr/local/bin/app-deploy.sh up"

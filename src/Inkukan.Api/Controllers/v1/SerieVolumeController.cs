@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Inkukan.Api.Controllers.v1;
 
-[Route("/series/{serieId:guid}/volumes")]
+[Route("/v{version:apiVersion}/series/{serieId:guid}/volumes")]
 public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseController(mediator)
 {
     [Authorize(Roles = "Admin")]
@@ -58,14 +58,14 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
         return await Mediator.Send(command, cancellationToken);
     }
 
-    [HttpGet("/volumes")]
+    [HttpGet("/v{version:apiVersion}/volumes")]
     [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volumes", typeof(PaginatedDto<SerieVolumeDto>))]
     [SwaggerOperation(Summary = "Get all volumes", Description = "Get all the volumes corresponding to the query inside a paginated result")]
     public Task<PaginatedDto<SerieVolumeDto>> GetAllAsync([Required][FromQuery] GetAllSerieVolumeQuery query, CancellationToken cancellationToken) 
         => Mediator.Send(query, cancellationToken);
 
-    [HttpGet("/volumes/{volumeId:guid}")]
+    [HttpGet("/v{version:apiVersion}/volumes/{volumeId:guid}")]
     [AllowAnonymous]
     [SwaggerResponse(StatusCodes.Status200OK, "The queried volume")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "When the id isn't related to a known volume")]

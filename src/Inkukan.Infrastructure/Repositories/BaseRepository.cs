@@ -34,7 +34,7 @@ public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContext
 
     public IQueryable<T> GetQuery()
     {
-        using ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
+        ApplicationDbContext dbContext = DbContextFactory.CreateDbContext();
         return dbContext.Set<T>();
     }
 
