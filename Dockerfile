@@ -5,6 +5,10 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /source
 
+# Central package management files - must be present before any restore
+COPY Directory.Packages.props .
+COPY Directory.Build.props .
+
 # 1. On copie les fichiers projets
 COPY ./src/Inkukan.Api/*.csproj Inkukan.Api/
 COPY ./src/Inkukan.Application/*.csproj Inkukan.Application/
