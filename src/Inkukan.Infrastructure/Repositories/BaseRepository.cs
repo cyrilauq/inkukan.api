@@ -29,7 +29,7 @@ public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContext
     {
         using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Set<T>()
-            .FindAsync(id, cancellationToken);
+            .FindAsync([id], cancellationToken: cancellationToken);
     }
 
     public IQueryable<T> GetQuery()
