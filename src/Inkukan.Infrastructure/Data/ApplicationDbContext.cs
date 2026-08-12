@@ -87,4 +87,25 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    public override int SaveChanges()
+    {
+        IEnumerable<EntityEntry> entries = ChangeTracker.Entries();
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+
+        foreach (EntityEntry entry in entries)
+        {
+            if ((entry.State == EntityState.Modified || entry.State == EntityState.Added) && entry.Entity is ITrackableEntity updatedEntity)
+                updatedEntity.UpdatedAt = now;
+            if (entry.State == EntityState.Added && entry.Entity is ITrackableEntity createdEntity)
+                createdEntity.CreatedAt = now;
+            if (entry.State == EntityState.Deleted && entry.Entity is ILogicalDelete deletedEntity)
+            {
+                entry.State = EntityState.Modified;
+                deletedEntity.DeletedAt = now;
+            }
+        }
+
+        return base.SaveChanges();
+    }
 }
