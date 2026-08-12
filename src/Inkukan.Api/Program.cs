@@ -5,7 +5,8 @@ using Inkukan.Infrastructure;
 using Microsoft.OpenApi;
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
+CancellationToken cancellationToken = new();
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -65,7 +66,7 @@ if (app.Environment.IsDevelopment())
 using (IServiceScope scope = app.Services.CreateScope())
 {
     IServiceProvider services = scope.ServiceProvider;
-    await services.ExecuteMigrationsAsync(app.Configuration);
+    await services.ExecuteMigrationsAsync(app.Configuration, cancellationToken);
 }
 
 app.UseHttpsRedirection();

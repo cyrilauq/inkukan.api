@@ -93,7 +93,7 @@ public static class ConfigureInfrastructure
         return services;
     }
 
-    public static async Task<IServiceProvider> ExecuteMigrationsAsync(this IServiceProvider services, IConfiguration configuration)
+    public static async Task<IServiceProvider> ExecuteMigrationsAsync(this IServiceProvider services, IConfiguration configuration, CancellationToken cancellationToken)
     {
         SeedingConfig seedingConfig = configuration.GetSection(nameof(SeedingConfig))
             .Get<SeedingConfig>() ?? throw new ArgumentException("The [SeedingConfig] section should be configured");
@@ -102,17 +102,17 @@ public static class ConfigureInfrastructure
         RoleManager<Role> roleManager = services.GetRequiredService<RoleManager<Role>>();
         UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
 
-        await dbContext.Database.MigrateAsync();
+        await dbContext.Database.MigrateAsync(cancellationToken);
 
-        if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen") == 0)
-            await dbContext.MangaTypes.AddAsync(new() { Code = "seinen", Name = "Seinen" });
-        if (await dbContext.MangaCollections.CountAsync(mt => mt.Code == "seinen") == 0)
-            await dbContext.MangaCollections.AddAsync(new() { Code = "seinen", Name = "Seinen" });
+        if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen", cancellationToken) == 0)
+            await dbContext.MangaTypes.AddAsync(new() { Code = "seinen", Name = "Seinen" }, cancellationToken);
+        if (await dbContext.MangaCollections.CountAsync(mt => mt.Code == "seinen", cancellationToken) == 0)
+            await dbContext.MangaCollections.AddAsync(new() { Code = "seinen", Name = "Seinen" }, cancellationToken);
 
-        await SeedRoleIfMissingAsync(roleManager, "User");
-        await SeedRoleIfMissingAsync(roleManager, "Admin");
+        await SeedRoleIfMissingAsync(roleManager, "User", cancellationToken);
+        await SeedRoleIfMissingAsync(roleManager, "Admin", cancellationToken);
 
-        if (!await userManager.Users.AnyAsync())
+        if (!await userManager.Users.AnyAsync(cancellationToken))
         {
             await userManager.CreateAsync(
                 new User
@@ -126,14 +126,14 @@ public static class ConfigureInfrastructure
             );
         }
 
-        await dbContext.SaveChangesAsync(CancellationToken.None);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return services;
     }
 
-    private static async Task SeedRoleIfMissingAsync(RoleManager<Role> roleManager, string roleName)
+    private static async Task SeedRoleIfMissingAsync(RoleManager<Role> roleManager, string roleName, CancellationToken cancellationToken)
     {
-        if(await roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName) == null)
+        if(await roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken) == null)
         {
             IdentityResult addRoleReulst = await roleManager.CreateAsync(new Role { Name = roleName });
             if(!addRoleReulst.Succeeded)
