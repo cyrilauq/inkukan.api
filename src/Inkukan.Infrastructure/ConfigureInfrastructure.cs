@@ -109,11 +109,11 @@ public static class ConfigureInfrastructure
         if (await dbContext.MangaCollections.CountAsync(mt => mt.Code == "seinen") == 0)
             await dbContext.MangaCollections.AddAsync(new() { Code = "seinen", Name = "Seinen" });
 
-        if (!await roleManager.Roles.AnyAsync())
-        {
-            await roleManager.CreateAsync(new Role { Name = "User" });
-            await roleManager.CreateAsync(new Role { Name = "Admin" });
+        await SeedRoleIfMissingAsync(roleManager, "User");
+        await SeedRoleIfMissingAsync(roleManager, "Admin");
 
+        if (!await userManager.Users.AnyAsync())
+        {
             await userManager.CreateAsync(
                 new User
                 {
@@ -129,6 +129,18 @@ public static class ConfigureInfrastructure
         await dbContext.SaveChangesAsync(CancellationToken.None);
 
         return services;
+    }
+
+    private static async Task SeedRoleIfMissingAsync(RoleManager<Role> roleManager, string roleName)
+    {
+        if(roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName) == null)
+        {
+            IdentityResult addRoleReulst = await roleManager.CreateAsync(new Role { Name = roleName });
+            if(!addRoleReulst.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(",", addRoleReulst.Errors));
+            }
+        }
     }
 }
 
