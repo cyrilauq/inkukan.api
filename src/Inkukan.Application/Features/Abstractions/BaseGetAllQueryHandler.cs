@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Mediator.Abstractions;
+using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -66,6 +67,10 @@ public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEn
         foreach (string filter in filters)
         {
             string[] filterComponents = filter.Split(' ');
+
+            if (filterComponents.Length > 3)
+                throw new EntityValidationException("The filters should be composed of three thing: filtered property, operator, query", []);
+
             string propertyName = filterComponents[0];
             string filterMethod = filterComponents[1];
             string searchQuery = string.Join(' ', filterComponents.Skip(2)).Replace("'", string.Empty);
