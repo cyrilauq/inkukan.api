@@ -65,7 +65,7 @@ if (app.Environment.IsDevelopment())
 using (IServiceScope scope = app.Services.CreateScope())
 {
     IServiceProvider services = scope.ServiceProvider;
-    await services.ExecuteMigrationsAsync();
+    await services.ExecuteMigrationsAsync(app.Configuration);
 }
 
 app.UseHttpsRedirection();

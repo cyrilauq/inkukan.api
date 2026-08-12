@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 
 namespace Inkukan.Infrastructure;
@@ -92,11 +93,15 @@ public static class ConfigureInfrastructure
         return services;
     }
 
-    public static async Task<IServiceProvider> ExecuteMigrationsAsync(this IServiceProvider services)
+    public static async Task<IServiceProvider> ExecuteMigrationsAsync(this IServiceProvider services, IConfiguration configuration)
     {
+        SeedingConfig seedingConfig = configuration.GetSection(nameof(SeedingConfig))
+            .Get<SeedingConfig>() ?? throw new ArgumentException("The [SeedingConfig] section should be configured");
+
         ApplicationDbContext dbContext = services.GetRequiredService<ApplicationDbContext>();
         RoleManager<Role> roleManager = services.GetRequiredService<RoleManager<Role>>();
         UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
+
         await dbContext.Database.MigrateAsync();
 
         if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen") == 0)
@@ -116,8 +121,8 @@ public static class ConfigureInfrastructure
                     Firstname = "Cyril",
                     Lastname = "Auquier",
                     UserName = "admin"
-                }, 
-                "Password123$"
+                },
+                seedingConfig.AdminDefaultPassword
             );
         }
 
@@ -146,4 +151,11 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 
         return new ApplicationDbContext(builder.Options);
     }
+}
+
+public class SeedingConfig
+{
+    [Required]
+    [MinLength(10)]
+    public required string AdminDefaultPassword { get; set; }
 }
