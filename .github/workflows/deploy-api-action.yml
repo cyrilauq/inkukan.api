@@ -16,11 +16,23 @@ jobs:
       - name: Extract version from csproj
         id: version
         run: |
-          CSPROJ=$(find src/Inkukan.api -maxdepth 1 -name "*.csproj" | head -n1)
+          echo "Repo root contents:"
+          ls -la
+
+          echo "Looking for src/ folder (case-insensitive):"
+          find . -maxdepth 2 -iname "src" -type d
+
+          echo "Searching whole repo for Inkukan.api csproj:"
+          CSPROJ=$(find . -iname "*.csproj" -ipath "*inkukan.api*" | head -n1)
+
           if [ -z "$CSPROJ" ]; then
-            echo "No .csproj found in src/Inkukan.api" >&2
+            echo "No matching .csproj found anywhere in the repo." >&2
+            echo "All .csproj files found instead:" >&2
+            find . -iname "*.csproj" >&2
             exit 1
           fi
+
+          echo "Using csproj: $CSPROJ"
 
           VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" "$CSPROJ" || true)
           if [ -z "$VERSION" ]; then
