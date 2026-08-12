@@ -9,26 +9,24 @@ WORKDIR /source
 COPY Directory.Packages.props .
 COPY Directory.Build.props .
 
-# 1. On copie les fichiers projets
-COPY ./src/Inkukan.Api/*.csproj Inkukan.Api/
-COPY ./src/Inkukan.Application/*.csproj Inkukan.Application/
-COPY ./src/Inkukan.Domain/*.csproj Inkukan.Domain/
-COPY ./src/Inkukan.Infrastructure/*.csproj Inkukan.Infrastructure/
+# 1. On copie les fichiers projets (en gardant l'arborescence src/)
+COPY ./src/Inkukan.Api/*.csproj ./src/Inkukan.Api/
+COPY ./src/Inkukan.Application/*.csproj ./src/Inkukan.Application/
+COPY ./src/Inkukan.Domain/*.csproj ./src/Inkukan.Domain/
+COPY ./src/Inkukan.Infrastructure/*.csproj ./src/Inkukan.Infrastructure/
 
 # 2. On restore
-RUN dotnet restore "Inkukan.Api/Inkukan.Api.csproj"
+RUN dotnet restore "src/Inkukan.Api/Inkukan.Api.csproj"
 
 # 3. On copie tout le code source
 COPY ./ .
 
-# 4. On compile (SANS le -o /app/build pour laisser les DLL � leur place standard)
-WORKDIR "/source/Inkukan.Api"
+# 4. On compile
+WORKDIR "/source/src/Inkukan.Api"
 RUN dotnet build "./Inkukan.Api.csproj" -c Release --no-restore
 
 # 5. On publie
 FROM build AS publish
-# Ici on retire --no-build pour laisser dotnet s'assurer que tout est l�, 
-# mais comme c'est d�j� compil�, ce sera instantan�.
 RUN dotnet publish "Inkukan.Api.csproj" -c Release -o /app/publish
 
 FROM base AS finale
