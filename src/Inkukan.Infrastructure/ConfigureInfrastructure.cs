@@ -133,7 +133,7 @@ public static class ConfigureInfrastructure
 
     private static async Task SeedRoleIfMissingAsync(RoleManager<Role> roleManager, string roleName)
     {
-        if(roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName) == null)
+        if(await roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName) == null)
         {
             IdentityResult addRoleReulst = await roleManager.CreateAsync(new Role { Name = roleName });
             if(!addRoleReulst.Succeeded)

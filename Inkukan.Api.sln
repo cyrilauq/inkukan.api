@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 		.dockerignore = .dockerignore
 		Directory.Packages.props = Directory.Packages.props
 		Dockerfile = Dockerfile
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inkukan.Api", "src\Inkukan.Api\Inkukan.Api.csproj", "{F214E28F-970B-9685-7CAB-E6B0CDA0B1EC}"
