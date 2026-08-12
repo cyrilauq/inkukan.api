@@ -20,5 +20,5 @@ Add these in the appsettings or set the usersecrets using it
         "ValidityInHours": 0
     },
     "SeedingConfig": {
-        "AdminDefaultPassword": "Password"
+        "AdminDefaultPassword": "Password123$"
     }
