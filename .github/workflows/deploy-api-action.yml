@@ -74,7 +74,15 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+          echo "Running ssh-keyscan against ${{ secrets.SSH_HOST }}..."
+          if ! ssh-keyscan -H -T 10 "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>keyscan_err.log; then
+            echo "ssh-keyscan failed:" >&2
+            cat keyscan_err.log >&2
+            exit 1
+          fi
+          echo "known_hosts populated successfully:"
+          cat ~/.ssh/known_hosts
 
       - name: Copy image + version info to server
         run: |
