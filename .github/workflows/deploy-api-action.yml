@@ -87,11 +87,11 @@ jobs:
       - name: Copy image + version info to server
         run: |
           scp -i ~/.ssh/deploy_key inkukan-api.tar \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/api/inkukan-api.tar"
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/inkukan-api.tar"
 
           echo "IMAGE_TAG=${{ steps.version.outputs.version }}" > .env.deploy
           scp -i ~/.ssh/deploy_key .env.deploy \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/api/.env"
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/.env"
 
       # inkukan-admin has no direct docker access (not in the docker group,
       # no general sudo rights) - these are the same "docker load" /
