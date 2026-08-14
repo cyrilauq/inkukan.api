@@ -49,11 +49,16 @@ jobs:
       # --- Build the image locally on the runner (no registry) ---
       - name: Build image
         run: |
-          docker build -t inkukan-api:${{ steps.version.outputs.version }} .
+          docker build \
+            -t cyrilauq/inkukan-api:${{ steps.version.outputs.version }} \
+            -t cyrilauq/inkukan-api:latest \
+            .
 
       - name: Save image as tarball
         run: |
-          docker save -o inkukan-api.tar inkukan-api:${{ steps.version.outputs.version }}
+          docker save -o inkukan-api.tar \
+            cyrilauq/inkukan-api:${{ steps.version.outputs.version }} \
+            cyrilauq/inkukan-api:latest
 
       # --- Ship it to the VPS ---
       - name: Set up SSH key
