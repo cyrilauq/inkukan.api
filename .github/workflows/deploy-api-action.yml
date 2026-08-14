@@ -102,7 +102,7 @@ jobs:
       # no general sudo rights) - these are the same "docker load" /
       # "docker compose up -d" commands, just run as root via the one
       # whitelisted script so the deploy user stays locked down.
-      - name: Load image and restart the stack
+      - name: Deploy app
         run: |
-          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "sudo /usr/local/bin/app-deploy.sh load inkukan-api.tar && sudo /usr/local/bin/app-deploy.sh up"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "sudo /usr/local/bin/app-deploy.sh load inkukan-api.tar"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "sudo /usr/local/bin/app-deploy.sh up"
