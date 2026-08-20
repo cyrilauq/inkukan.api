@@ -17,4 +17,17 @@ public class SerieVolumeRepository(IDbContextFactory<ApplicationDbContext> dbCon
             .Where(sv => sv.MangaSerieId == serieId && sv.VolumeNumber == volumeNumber)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<IQueryable<SerieVolume>> GetByUserAndListAsync(Guid userId, UserListType userListType, CancellationToken cancellationToken)
+    {
+        ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
+        List<Guid> listItemIds = await dbContext
+            .UserListItems
+            .Where(uli => uli.UserId == userId && uli.Type == userListType)
+            .Select(uli => uli.VolumeId)
+            .ToListAsync(cancellationToken);
+        return dbContext
+            .SerieVolumes
+            .Where(sv => listItemIds.Contains(sv.Id));
+    }
 }
