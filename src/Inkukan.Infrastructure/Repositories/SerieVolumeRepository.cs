@@ -30,4 +30,12 @@ public class SerieVolumeRepository(IDbContextFactory<ApplicationDbContext> dbCon
             .SerieVolumes
             .Where(sv => listItemIds.Contains(sv.Id));
     }
+
+    public async Task<IQueryable<SerieVolume>> GetBySerieIdAsync(Guid serieId, CancellationToken cancellationToken)
+    {
+        ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
+        return dbContext
+            .SerieVolumes
+            .Where(sv => sv.MangaSerieId == serieId);
+    }
 }
