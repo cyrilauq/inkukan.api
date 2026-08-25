@@ -22,3 +22,8 @@ Add these in the appsettings or set the usersecrets using it
     "SeedingConfig": {
         "AdminDefaultPassword": "Password123$"
     }
+
+## Add migration
+```sh
+
+```

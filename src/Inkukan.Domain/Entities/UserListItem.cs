@@ -2,7 +2,7 @@
 
 namespace Inkukan.Domain.Entities;
 
-public class UserListItem : ITrackableEntity
+public class UserListItem : ITrackableEntity, ILogicalDelete
 {
     public UserListType Type { get; set; }
 
@@ -15,4 +15,7 @@ public class UserListItem : ITrackableEntity
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
+
+    public DateTimeOffset? DeletedAt { get; set; }
+    public bool IsDeleted { get; set; }
 }
