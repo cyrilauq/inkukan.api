@@ -5,6 +5,7 @@ using Inkukan.Application.Features.Abstractions;
 using Inkukan.Domain.Entities;
 using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Application.Features.UserCollection.Commands.AddToUserCollection;
 
@@ -19,6 +20,17 @@ public class AddToUserCollectionCommandHandler(IBaseRepository<UserListItem> bas
             throw new EntityNotFoundException("No volume with the provided id were found");
         if (await userRepository.GetByIdAsync(value.UserId, cancellationToken) is null)
             throw new EntityNotFoundException("No user with the provided id were found");
+
+        UserListItem? exisitingItem = await baseRepository.GetQuery()
+            .Where(uli =>
+                uli.VolumeId == value.SerieVolumeId
+                && uli.UserId == value.UserId
+                && uli.Type == value.ListType
+                && uli.IsDeleted == false
+            )
+            .FirstOrDefaultAsync(cancellationToken);
+        if(exisitingItem != null)
+            throw new ConflictException("Volume already in the list");
 
         return baseResult;
     }

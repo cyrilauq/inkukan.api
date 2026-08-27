@@ -36,6 +36,7 @@ public static class ConfigureInfrastructure
             .AddScoped<ICollectionRepository, CollectionRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IRoleRepository, RoleRepository>()
+            .AddScoped<IUserlistItemRepository, UserListItemRepository>()
             .AddScoped<IBaseRepository<MangaSerie>, MangaSerieRepository>()
             .AddScoped<IBaseRepository<MangaPeople>, MangaPeopleRepository>()
             .AddScoped<IBaseRepository<Editor>, EditorRepository>()
