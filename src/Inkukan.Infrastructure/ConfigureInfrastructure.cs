@@ -45,7 +45,6 @@ public static class ConfigureInfrastructure
             .AddScoped<IBaseRepository<MangaCollection>, CollectionRepository>()
             .AddScoped<IBaseRepository<UserListItem>, BaseRepository<UserListItem>>()
             .AddScoped<IBaseRepository<User>, BaseRepository<User>>()
-            .AddScoped<IBaseRepository<UserListItem>, BaseRepository<UserListItem>>()
             .AddScoped<IBlobStorage, VercelBlobStorage>();
 
         return services;
