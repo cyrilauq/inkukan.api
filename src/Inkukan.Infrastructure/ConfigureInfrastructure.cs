@@ -118,10 +118,10 @@ public static class ConfigureInfrastructure
             await userManager.CreateAsync(
                 new User
                 {
-                    Email = "cyrilauqier@hotmail.fr",
+                    Email = "cyrilauquier@hotmail.fr",
                     Firstname = "Cyril",
                     Lastname = "Auquier",
-                    UserName = "admin"
+                    UserName = "cyrilauquier"
                 },
                 seedingConfig.AdminDefaultPassword
             );
