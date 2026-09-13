@@ -109,6 +109,19 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
           echo "known_hosts populated from pinned secret."
 
+      - name: DEBUG known_hosts (remove after fixing)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          echo "SSH_HOST value length: ${#SSH_HOST}"
+          echo "SSH_HOST (raw): [$SSH_HOST]"
+          echo "--- known_hosts content ---"
+          cat ~/.ssh/known_hosts
+          echo "--- line count ---"
+          wc -l ~/.ssh/known_hosts
+          echo "--- live host key offered by server right now ---"
+          ssh-keyscan -t ed25519,rsa,ecdsa -H "$SSH_HOST" 2>&1 || true
+
       - name: Copy image + version info to server
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
