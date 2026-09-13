@@ -127,6 +127,12 @@ public static class ConfigureInfrastructure
             );
         }
 
+        if(await userManager.FindByEmailAsync("cyrilauquier@hotmail.fr") is User admin)
+        {
+            await userManager.AddToRoleAsync(admin, "Admin");
+            await userManager.AddToRoleAsync(admin, "User");
+        }
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return services;
