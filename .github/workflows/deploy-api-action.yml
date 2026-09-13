@@ -43,66 +43,93 @@ jobs:
             echo "No <Version>/<VersionPrefix> tag found, falling back to $VERSION"
           fi
 
+          # --- Validate before it ever gets used as a Docker tag or in a shell command ---
+          # Docker tags: letters, digits, underscore, period, dash only (keep it tight on purpose).
+          if ! [[ "$VERSION" =~ ^[A-Za-z0-9]([A-Za-z0-9._-]{0,127})$ ]]; then
+            echo "Extracted version '$VERSION' is not a safe/valid Docker tag. Refusing to continue." >&2
+            exit 1
+          fi
+
           echo "Detected version: $VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       # --- Build the image locally on the runner (no registry) ---
       - name: Build image
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           docker build \
-            -t cyrilauq/inkukan-api:${{ steps.version.outputs.version }} \
-            -t cyrilauq/inkukan-api:latest \
+            -t "cyrilauq/inkukan-api:$VERSION" \
+            -t "cyrilauq/inkukan-api:latest" \
             .
 
       - name: Save image as tarball
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           docker save -o inkukan-api.tar \
-            cyrilauq/inkukan-api:${{ steps.version.outputs.version }} \
-            cyrilauq/inkukan-api:latest
+            "cyrilauq/inkukan-api:$VERSION" \
+            "cyrilauq/inkukan-api:latest"
 
       # --- Ship it to the VPS ---
       - name: Set up SSH key
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Pinned host key(s) for SSH_HOST, in known_hosts format.
+          # Obtain this ONCE via a trusted channel (e.g. run `ssh-keyscan -H your.host`
+          # from a machine you trust, or read /etc/ssh/ssh_host_*_key.pub on the VPS
+          # itself) and store the resulting line(s) as this secret.
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
-          if [ -z "${{ secrets.SSH_HOST }}" ]; then
+          if [ -z "$SSH_HOST" ]; then
             echo "SSH_HOST secret is not set" >&2
             exit 1
           fi
-          if [ -z "${{ secrets.SSH_USER }}" ]; then
+          if [ -z "$SSH_USER" ]; then
             echo "SSH_USER secret is not set" >&2
             exit 1
           fi
-          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+          if [ -z "$SSH_PRIVATE_KEY" ]; then
             echo "SSH_PRIVATE_KEY secret is not set" >&2
+            exit 1
+          fi
+          if [ -z "$SSH_KNOWN_HOSTS" ]; then
+            echo "SSH_KNOWN_HOSTS secret is not set. Refusing to trust an unverified host key." >&2
             exit 1
           fi
 
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          echo "Running ssh-keyscan against ${{ secrets.SSH_HOST }}..."
-          if ! ssh-keyscan -H -T 10 "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>keyscan_err.log; then
-            echo "ssh-keyscan failed:" >&2
-            cat keyscan_err.log >&2
-            exit 1
-          fi
-          echo "known_hosts populated successfully:"
-          cat ~/.ssh/known_hosts
+          # Use the pinned host key(s) instead of trusting whatever ssh-keyscan returns.
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          echo "known_hosts populated from pinned secret."
 
       - name: Copy image + version info to server
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           scp -i ~/.ssh/deploy_key inkukan-api.tar \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/inkukan-api.tar"
+            "$SSH_USER@$SSH_HOST:/opt/inkukan/inkukan-api.tar"
 
-          echo "IMAGE_TAG=${{ steps.version.outputs.version }}" > .env.deploy
+          echo "IMAGE_TAG=$VERSION" > .env.deploy
           scp -i ~/.ssh/deploy_key .env.deploy \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/inkukan/.env"
+            "$SSH_USER@$SSH_HOST:/opt/inkukan/.env"
 
       # inkukan-admin has no direct docker access (not in the docker group,
       # no general sudo rights) - these are the same "docker load" /
       # "docker compose up -d" commands, just run as root via the one
       # whitelisted script so the deploy user stays locked down.
       - name: Deploy app
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
-          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "sudo /usr/local/bin/app-deploy.sh load inkukan-api.tar"
-          ssh -i ~/.ssh/deploy_key "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "sudo /usr/local/bin/app-deploy.sh up"
+          ssh -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" "sudo /usr/local/bin/app-deploy.sh load inkukan-api.tar"
+          ssh -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" "sudo /usr/local/bin/app-deploy.sh up"

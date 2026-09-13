@@ -30,6 +30,11 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
         return checkIdentityResult ? foundUser : null;
     }
 
+    public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return await userManager.FindByIdAsync(userId.ToString());
+    }
 
     public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
     {

@@ -36,6 +36,7 @@ public static class ConfigureInfrastructure
             .AddScoped<ICollectionRepository, CollectionRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IRoleRepository, RoleRepository>()
+            .AddScoped<IUserlistItemRepository, UserListItemRepository>()
             .AddScoped<IBaseRepository<MangaSerie>, MangaSerieRepository>()
             .AddScoped<IBaseRepository<MangaPeople>, MangaPeopleRepository>()
             .AddScoped<IBaseRepository<Editor>, EditorRepository>()
@@ -117,13 +118,19 @@ public static class ConfigureInfrastructure
             await userManager.CreateAsync(
                 new User
                 {
-                    Email = "cyrilauqier@hotmail.fr",
+                    Email = "cyrilauquier@hotmail.fr",
                     Firstname = "Cyril",
                     Lastname = "Auquier",
-                    UserName = "admin"
+                    UserName = "cyrilauquier"
                 },
                 seedingConfig.AdminDefaultPassword
             );
+        }
+
+        if(await userManager.FindByEmailAsync("cyrilauquier@hotmail.fr") is User admin)
+        {
+            await userManager.AddToRoleAsync(admin, "Admin");
+            await userManager.AddToRoleAsync(admin, "User");
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);

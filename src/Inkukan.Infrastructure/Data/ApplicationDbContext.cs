@@ -21,6 +21,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MangaPeople> MangaPeoples { get; set; }
     public DbSet<MangaType> MangaTypes { get; set; }
     public DbSet<SerieVolume> SerieVolumes { get; set; }
+    public DbSet<UserListItem> UserListItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
