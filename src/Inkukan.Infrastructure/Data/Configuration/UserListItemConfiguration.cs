@@ -18,5 +18,13 @@ public class UserListItemConfiguration : IEntityTypeConfiguration<UserListItem>
 
         builder.Property(e => e.Type)
             .HasConversion<string>();
+
+        builder.Property(e => e.Type)
+            .HasConversion<string>();
+        
+        builder.HasIndex(e => new { e.UserId, e.VolumeId, e.Type })
+            .IsUnique()
+            .HasFilter("\"DeletedAt\" IS NULL");
+
     }
 }
