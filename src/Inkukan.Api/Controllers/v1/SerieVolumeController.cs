@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 
 namespace Inkukan.Api.Controllers.v1;
 
@@ -21,6 +22,7 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
     [SwaggerResponse(StatusCodes.Status200OK, "The created volume")]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Create a volume")]
+    [Consumes(MediaTypeNames.Multipart.FormData)]
     public async Task<SerieVolumeDto> CreateAsync([Required][FromRoute] Guid serieId, [Required][FromForm] CreateSerieVolumeCommand command, CancellationToken cancellationToken)
     {
         command.MangaSerieId = serieId;
