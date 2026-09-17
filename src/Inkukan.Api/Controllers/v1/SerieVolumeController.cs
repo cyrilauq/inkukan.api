@@ -32,6 +32,7 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{volumeId:guid}")]
+    [HttpDelete("/v{version:apiVersion}/volumes/{volumeId:guid}")]
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Delete a volume")]
