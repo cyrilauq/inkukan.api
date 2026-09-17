@@ -1,5 +1,6 @@
 using Asp.Versioning.Conventions;
 using Inkukan.Api;
+using Inkukan.Api.Conventions;
 using Inkukan.Api.Middlewares;
 using Inkukan.Infrastructure;
 using Microsoft.OpenApi;
@@ -10,7 +11,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+    {
+        options.Conventions.Add(new RemoveConsumesForDeleteConvention());
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
