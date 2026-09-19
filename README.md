@@ -27,5 +27,5 @@ Add these in the appsettings or set the usersecrets using it
 1. Open a terminal inside root folder of solution
 2. Execute the following command
 ```sh
-dotnet ef migrations add [migration-name] --startup-project ./Inkukan.Api --project ./Inkukan.Infrastructure
+dotnet ef migrations add [migration-name] --startup-project ./src/Inkukan.Api --project ./src/Inkukan.Infrastructure
 ```

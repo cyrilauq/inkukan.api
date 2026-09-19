@@ -14,7 +14,7 @@ namespace Inkukan.Infrastructure.Data.Configuration
             builder
                 .Property(b => b.Synopsis)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(1000);
             builder
                 .Property(b => b.VFCoverPath)
                 .HasMaxLength(255);

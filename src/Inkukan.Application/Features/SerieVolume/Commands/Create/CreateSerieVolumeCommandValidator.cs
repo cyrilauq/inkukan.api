@@ -12,7 +12,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
                 .NotNull().WithMessage("synopsis_required")
                 .NotEmpty().WithMessage("synopsis_required")
                 .MinimumLength(15).WithMessage("synopsis_min_length_15")
-                .MaximumLength(255).WithMessage("synopsis_max_length_15");
+                .MaximumLength(1000).WithMessage("synopsis_max_length_1000");
             RuleFor(c => c.VOParutionDate)
                 .GreaterThan(DateTime.MinValue);
             RuleFor(c => c.VFParutionDate)
