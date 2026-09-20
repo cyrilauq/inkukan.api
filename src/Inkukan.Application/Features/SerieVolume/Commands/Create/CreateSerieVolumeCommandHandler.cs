@@ -26,7 +26,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
         {
             await EnsureIsValidAsync(request, cancellationToken);
             Domain.Entities.SerieVolume serieToAdd = mapper.Map<Domain.Entities.SerieVolume>(request);
-            if (request.VFCover != null)
+            if (request.VFCover != null && request.VFCover.Length > 0)
             {
                 using MemoryStream stream = new();
                 await request.VFCover.CopyToAsync(stream, cancellationToken);
@@ -36,7 +36,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Create
                 serieToAdd.VFCoverPath = vfCoverPath.ToString();
                 serieToAdd.VFCoverHash = await hashService.HashBytesAsync(vfCover.Content);
             }
-            if (request.VOCover != null)
+            if (request.VOCover != null && request.VOCover.Length > 0)
             {
                 using MemoryStream stream = new();
                 await request.VOCover.CopyToAsync(stream, cancellationToken);

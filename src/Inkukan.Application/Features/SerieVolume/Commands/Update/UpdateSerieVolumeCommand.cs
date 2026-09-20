@@ -12,7 +12,7 @@ namespace Inkukan.Application.Features.SerieVolume.Commands.Update
         public IFormFile? VFCover { get; set; }
         public IFormFile? VOCover { get; set; }
         public DateTime VOParutionDate { get; set; }
-        public DateTime VFParutionDate { get; set; }
+        public DateTime? VFParutionDate { get; set; }
         public int RecommendedAge { get; set; }
         public string? EANCode { get; set; }
         public string? PriceCode { get; set; }

@@ -19,8 +19,12 @@ public class SerieVolumeProfile : Profile
             .AfterMap<SetImageDtoAction>()
             .ReverseMap();
         CreateMap<CreateSerieVolumeCommand, SerieVolume>()
+            .ForMember(dest => dest.VFParutionDate, opt => opt.MapFrom(src => src.VFParutionDate == null ? (DateTime?)null : DateTime.SpecifyKind(src.VFParutionDate.Value, DateTimeKind.Utc)))
+            .ForMember(dest => dest.VOParutionDate, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.VOParutionDate, DateTimeKind.Utc)))
             .ReverseMap();
         CreateMap<UpdateSerieVolumeCommand, SerieVolume>()
+            .ForMember(dest => dest.VFParutionDate, opt => opt.MapFrom(src => src.VFParutionDate == null ? (DateTime?)null : DateTime.SpecifyKind(src.VFParutionDate.Value, DateTimeKind.Utc)))
+            .ForMember(dest => dest.VOParutionDate, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.VOParutionDate, DateTimeKind.Utc)))
             .ReverseMap();
     }
 }
