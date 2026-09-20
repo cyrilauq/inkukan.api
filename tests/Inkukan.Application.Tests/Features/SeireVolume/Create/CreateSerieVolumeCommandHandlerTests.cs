@@ -95,7 +95,7 @@ namespace Inkukan.Application.Tests.Features.SeireVolume.Create
             yield return [null];
             yield return [""];
             yield return ["Too short"]; // < 15 chars
-            yield return [new string('a', 256)]; // > 255 chars
+            yield return [new string('a', 1500)]; // > 1000 chars
         }
 
         [TestMethod]
