@@ -53,6 +53,7 @@ public class SerieVolumeController(IInkukaMediator mediator) : ApplicationBaseCo
     [SwaggerResponse(StatusCodes.Status200OK, "The updated volume", typeof(SerieVolumeDto))]
     [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
     [SwaggerOperation(Summary = "Update a volume")]
+    [Consumes(MediaTypeNames.Multipart.FormData)]
     public async Task<SerieVolumeDto> UpdateAsync([Required][FromRoute] Guid serieId, [Required][FromRoute] Guid volumeId, [Required][FromForm] UpdateSerieVolumeCommand command, CancellationToken cancellationToken)
     {
         command.MangaSerieId = serieId;
