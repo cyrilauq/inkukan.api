@@ -88,7 +88,7 @@ public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEn
 
             if (underlyingType == typeof(DateTime))
             {
-                // 2. On parse en forçant l'ajustement UTC
+                // On parse en forçant l'ajustement UTC
                 if (!DateTime.TryParse(searchQuery, System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.DateTimeStyles.AdjustToUniversal | System.Globalization.DateTimeStyles.AssumeUniversal,
                     out DateTime parsedDate))
@@ -96,7 +96,7 @@ public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEn
                     continue;
                 }
 
-                // 3. On s'assure que le Kind est bien UTC
+                // On s'assure que le Kind est bien UTC
                 convertedValue = DateTime.SpecifyKind(parsedDate, DateTimeKind.Utc);
             }
             else
@@ -104,15 +104,10 @@ public class BaseGetAllQueryHandler<TEntity, TDto, TCommand>(IBaseRepository<TEn
                 convertedValue = Convert.ChangeType(searchQuery, targetType);
             }
 
-            // 4. CRUCIAL : On passe targetType (DateTime?) explicitement à la constante
+            // On passe targetType (DateTime?) explicitement à la constante
             // Cela évite que EF Core ne refasse un cast implicite qui perdrait le Kind UTC
             value = Expression.Constant(convertedValue, targetType);
 
-            //try
-            //{
-            //    value = Expression.Constant(Convert.ChangeType(searchQuery, propertyInfo.PropertyType));
-            //} 
-            //catch(InvalidCastException) { }
             BinaryExpression equal;
             switch (filterMethod)
             {
