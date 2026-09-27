@@ -34,6 +34,9 @@ public class MangaSerie : ITrackableEntity, ILogicalDelete
     public MangaType Type { get; set; } = null!;
     public Guid TypeId { get; set; }
 
+    public Universe? Universe { get; set; }
+    public Guid? UniverseId { get; set; }
+
     public IList<MangaTheme> Themes { get; set; } = [];
     public IList<SerieVolume> Volumes { get; set; } = [];
 

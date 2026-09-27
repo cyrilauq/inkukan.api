@@ -43,6 +43,7 @@ public static class ConfigureInfrastructure
             .AddScoped<IBaseRepository<SerieVolume>, SerieVolumeRepository>()
             .AddScoped<IBaseRepository<MangaType>, TypeRepository>()
             .AddScoped<IBaseRepository<MangaCollection>, CollectionRepository>()
+            .AddScoped<IBaseRepository<Universe>, BaseRepository<Universe>>()
             .AddScoped<IBaseRepository<UserListItem>, BaseRepository<UserListItem>>()
             .AddScoped<IBaseRepository<User>, BaseRepository<User>>()
             .AddScoped<IBlobStorage, VercelBlobStorage>();
