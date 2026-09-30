@@ -39,19 +39,7 @@ public class CreateUniverseCommandHandlerTests
     [DataTestMethod]
     public async Task When_NameIsNotValid_Then_ThrowsValidationException(string name)
     {
-        CreateUniverseCommand command = new() { Name = name, Code = "test" };
-
-        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
-
-        await result.Should().ThrowAsync<EntityValidationException>();
-    }
-
-    [DataRow("")]
-    [DataRow(null)]
-    [DataTestMethod]
-    public async Task When_CodeIsNotValid_Then_ThrowsValidationException(string code)
-    {
-        CreateUniverseCommand command = new() { Name = "Test", Code = code };
+        CreateUniverseCommand command = new() { Name = name };
 
         Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
@@ -59,11 +47,11 @@ public class CreateUniverseCommandHandlerTests
     }
 
     [TestMethod]
-    public async Task When_CodeIsAlreadyTaken_Then_ThrowsConflictException()
+    public async Task When_NameIsAlreadyTaken_Then_ThrowsConflictException()
     {
         _universeRepository.Setup(repository => repository.GetQuery())
             .Returns(new List<UniverseEntity> { new() { Name = "Existing", Code = "test" } }.BuildMock());
-        CreateUniverseCommand command = new() { Name = "New", Code = "TEST" };
+        CreateUniverseCommand command = new() { Name = "Existing" };
 
         Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
@@ -77,12 +65,12 @@ public class CreateUniverseCommandHandlerTests
             .Returns(new List<UniverseEntity>().BuildMock());
         _universeRepository.Setup(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((UniverseEntity universe, CancellationToken _) => universe);
-        CreateUniverseCommand command = new() { Name = "Test Universe", Code = "test_universe" };
+        CreateUniverseCommand command = new() { Name = "Test Universe" };
 
         UniverseDto result = await _handler.Handle(command, CancellationToken.None);
 
         result.Name.Should().Be(command.Name);
-        result.Code.Should().Be(command.Code);
+        result.Code.Should().Be("test_universe");
         _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), CancellationToken.None), Times.Once);
     }
 }
