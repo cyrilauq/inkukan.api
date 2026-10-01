@@ -34,9 +34,9 @@ public class GetAllUniversesQueryHandlerTests
     {
         List<UniverseEntity> universes =
         [
-            new() { Name = "Universe One", Code = "universe-one" },
-            new() { Name = "Universe Two", Code = "universe-two" },
-            new() { Name = "Universe Three", Code = "universe-three" }
+            new() { Id = Guid.NewGuid(), Name = "Universe One", Code = "universe-one" },
+            new() { Id = Guid.NewGuid(), Name = "Universe Two", Code = "universe-two" },
+            new() { Id = Guid.NewGuid(), Name = "Universe Three", Code = "universe-three" }
         ];
         _universeRepository.Setup(repository => repository.GetQuery())
             .Returns(universes.BuildMock());
@@ -48,6 +48,6 @@ public class GetAllUniversesQueryHandlerTests
         result.PageSize.Should().Be(1);
         result.TotalCount.Should().Be(3);
         result.Items.Should().ContainSingle()
-            .Which.Should().BeEquivalentTo(new { Name = "Universe Two", Code = "universe-two" });
+            .Which.Should().BeEquivalentTo(new { Id = universes[1].Id, Name = "Universe Two", Code = "universe-two" });
     }
 }
