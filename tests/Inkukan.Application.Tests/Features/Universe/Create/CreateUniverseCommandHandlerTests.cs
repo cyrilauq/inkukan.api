@@ -64,11 +64,16 @@ public class CreateUniverseCommandHandlerTests
         _universeRepository.Setup(repository => repository.GetQuery())
             .Returns(new List<UniverseEntity>().BuildMock());
         _universeRepository.Setup(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((UniverseEntity universe, CancellationToken _) => universe);
+            .ReturnsAsync((UniverseEntity universe, CancellationToken _) =>
+            {
+                universe.Id = Guid.NewGuid();
+                return universe;
+            });
         CreateUniverseCommand command = new() { Name = "Test Universe" };
 
         UniverseDto result = await _handler.Handle(command, CancellationToken.None);
 
+        result.Id.Should().NotBeEmpty();
         result.Name.Should().Be(command.Name);
         result.Code.Should().Be("test_universe");
         _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), CancellationToken.None), Times.Once);
