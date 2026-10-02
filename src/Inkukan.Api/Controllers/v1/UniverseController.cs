@@ -1,5 +1,6 @@
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Universe.Commands.Create;
+using Inkukan.Application.Features.Universe.Commands.Delete;
 using Inkukan.Application.Features.Universe.Commands.Update;
 using Inkukan.Application.Features.Universe.Queries.GetAll;
 using Inkukan.Application.Features.Universe.Queries.GetById;
@@ -35,6 +36,14 @@ public class UniverseController(IInkukaMediator mediator) : ApplicationBaseContr
     [SwaggerOperation(Summary = "Create a new universe")]
     public Task<UniverseDto> CreateAsync([Required][FromBody] CreateUniverseCommand command, CancellationToken cancellationToken)
         => Mediator.Send(command, cancellationToken);
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "If the user is unauthorized")]
+    [SwaggerOperation(Summary = "Delete a universe")]
+    public Task DeleteAsync([Required][FromRoute] Guid id, CancellationToken cancellationToken)
+        => Mediator.Send(new DeleteUniverseCommand { Id = id }, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin")]
