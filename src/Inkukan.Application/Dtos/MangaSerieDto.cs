@@ -29,6 +29,8 @@ namespace Inkukan.Application.Dtos
         public MangaCollectionDto? Collection { get; set; }
         public Guid? TypeId { get; set; }
         public MangaType? Type { get; set; }
+        public Guid UniverseId { get; set; }
+        public UniverseDto? Universe { get; set; }
         public IList<SerieVolumeDto> Volumes { get; set; } = [];
     }
 }

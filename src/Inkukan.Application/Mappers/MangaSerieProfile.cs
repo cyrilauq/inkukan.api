@@ -12,7 +12,7 @@ public class MangaSerieProfile : Profile
     public MangaSerieProfile()
     {
         CreateMap<MangaSerie, MangaSerieDto>()
-                        .ForMember(dest => dest.Volumes, opt => opt.ExplicitExpansion());
+            .ForMember(dest => dest.Volumes, opt => opt.ExplicitExpansion());
 
         CreateMap<MangaSerieDto, MangaSerie>();
 

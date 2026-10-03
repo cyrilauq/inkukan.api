@@ -21,5 +21,6 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
         public Guid? EditorVOId { get; set; }
         public Guid? CollectionId { get; set; }
         public Guid? TypeId { get; set; }
+        public Guid UniverseId { get; set; }
     }
 }
