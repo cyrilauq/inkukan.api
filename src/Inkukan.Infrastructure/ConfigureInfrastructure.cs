@@ -105,6 +105,7 @@ public static class ConfigureInfrastructure
         UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
 
         await dbContext.Database.MigrateAsync(cancellationToken);
+        await EnsureEachSerieHasItsOwnUniverseAsync(dbContext, cancellationToken);
 
         if(await dbContext.MangaTypes.CountAsync(mt => mt.Code == "seinen", cancellationToken) == 0)
             await dbContext.MangaTypes.AddAsync(new() { Code = "seinen", Name = "Seinen" }, cancellationToken);
@@ -137,6 +138,42 @@ public static class ConfigureInfrastructure
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return services;
+    }
+
+    private static async Task EnsureEachSerieHasItsOwnUniverseAsync(ApplicationDbContext dbContext, CancellationToken cancellationToken)
+    {
+        List<MangaSerie> series = await dbContext.MangaSeries
+            .IgnoreQueryFilters()
+            .ToListAsync(cancellationToken);
+
+        HashSet<Guid> assignedUniverseIds = [];
+        HashSet<Guid> existingUniverseIds = await dbContext.Universes
+            .IgnoreQueryFilters()
+            .Select(universe => universe.Id)
+            .ToHashSetAsync(cancellationToken);
+
+        foreach (MangaSerie serie in series)
+        {
+            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId) && assignedUniverseIds.Add(serie.UniverseId))
+                continue;
+
+            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId))
+                throw new InvalidOperationException($"Universe [{serie.UniverseId}] is assigned to multiple manga series.");
+
+            Universe universe = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = serie.TitleVF,
+                Code = $"serie_{serie.Id:N}"
+            };
+
+            await dbContext.Universes.AddAsync(universe, cancellationToken);
+            serie.UniverseId = universe.Id;
+            assignedUniverseIds.Add(universe.Id);
+            existingUniverseIds.Add(universe.Id);
+        }
+
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private static async Task SeedRoleIfMissingAsync(RoleManager<Role> roleManager, string roleName, CancellationToken cancellationToken)

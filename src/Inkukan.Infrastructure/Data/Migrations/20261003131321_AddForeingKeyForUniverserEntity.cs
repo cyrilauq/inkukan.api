@@ -15,6 +15,17 @@ namespace Inkukan.Infrastructure.Data.Migrations
                 name: "FK_MangaSeries_Universes_UniverseId",
                 table: "MangaSeries");
 
+            migrationBuilder.Sql("""
+                INSERT INTO "Universes" ("Id", "Name", "Code", "CreatedAt", "UpdatedAt", "DeletedAt")
+                SELECT gen_random_uuid(), series."TitleVF", 'serie_' || replace(series."Id"::text, '-', ''), now(), now(), NULL
+                FROM "MangaSeries" AS series;
+
+                UPDATE "MangaSeries" AS series
+                SET "UniverseId" = universe."Id"
+                FROM "Universes" AS universe
+                WHERE universe."Code" = 'serie_' || replace(series."Id"::text, '-', '');
+                """);
+
             migrationBuilder.AlterColumn<Guid>(
                 name: "UniverseId",
                 table: "MangaSeries",
