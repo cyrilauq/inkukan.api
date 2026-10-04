@@ -42,12 +42,31 @@ public class CreateMangaSerieCommandHandlerTests
             TitleVO = "Test",
             TitleVF = title,
             TotalVolumes = 1,
+            UniverseId = Guid.NewGuid(),
         };
 
         // Act
         Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
         // Assert
+        await result.Should()
+            .ThrowAsync<EntityValidationException>();
+    }
+
+    [TestMethod]
+    public async Task When_UniverseIdIsMissing_Then_ThrowsValidationException()
+    {
+        CreateMangaSerieCommand command = new()
+        {
+            Synopsis = "Test",
+            TitleVO = "Test",
+            TitleVF = "Test",
+            TotalVolumes = 1,
+            VOParutionCountry = "Japan"
+        };
+
+        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
+
         await result.Should()
             .ThrowAsync<EntityValidationException>();
     }
@@ -73,7 +92,8 @@ public class CreateMangaSerieCommandHandlerTests
             TitleVO = "Test",
             TitleVF = "Test",
             TotalVolumes = 1,
-            VOParutionCountry = "Japan"
+            VOParutionCountry = "Japan",
+            UniverseId = Guid.NewGuid()
         };
 
         // Act
@@ -98,7 +118,8 @@ public class CreateMangaSerieCommandHandlerTests
             TitleVO = "Test",
             TitleVF = "Test",
             TotalVolumes = 1,
-            VOParutionCountry = "Japan"
+            VOParutionCountry = "Japan",
+            UniverseId = Guid.NewGuid()
         };
 
         // Act

@@ -20,6 +20,7 @@ public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contex
             .Include(s => s.EditorVO)
             .Include(s => s.Collection)
             .Include(s => s.Type)
+            .Include(s => s.Universe)
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
