@@ -26,5 +26,11 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
         {
             return await mangaSerieRepository.GetByIdAsync(request.Id, cancellationToken);
         }
+
+        public override async Task BeforeUpdateAsync(UpdateMangaSerieCommand request, Domain.Entities.MangaSerie enttiy, CancellationToken cancellationToken)
+        {
+            await base.BeforeUpdateAsync(request, enttiy, cancellationToken);
+            enttiy.Universe = null;
+        }
     }
 }
