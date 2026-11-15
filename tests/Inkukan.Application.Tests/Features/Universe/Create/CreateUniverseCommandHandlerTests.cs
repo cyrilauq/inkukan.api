@@ -59,6 +59,19 @@ public class CreateUniverseCommandHandlerTests
     }
 
     [TestMethod]
+    public async Task When_GeneratedCodeIsAlreadyTaken_Then_ThrowsConflictException()
+    {
+        _universeRepository.Setup(repository => repository.GetQuery())
+            .Returns(new List<UniverseEntity> { new() { Name = "One Piece", Code = "one_piece" } }.BuildMock());
+        CreateUniverseCommand command = new() { Name = "One Piece!" };
+
+        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
+
+        await result.Should().ThrowAsync<ConflictException>();
+        _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [TestMethod]
     public async Task When_CommandIsValid_Then_CreatesUniverse()
     {
         _universeRepository.Setup(repository => repository.GetQuery())
