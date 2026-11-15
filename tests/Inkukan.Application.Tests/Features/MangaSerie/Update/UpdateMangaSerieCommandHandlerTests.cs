@@ -29,9 +29,7 @@ public class UpdateMangaSerieCommandHandlerTests
 
         _mangaSerieRepoMock = new Mock<IMangaSerieRepository>();
         _mangaSerieRepoMock.Setup(repository => repository.GetQuery())
-            .Returns(new List<MangaSerieEntity>().BuildMock());
-        _mangaSerieRepoMock.Setup(repository => repository.GetByIdAsync(_serie.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(_serie);
+            .Returns(new List<MangaSerieEntity> { _serie }.BuildMock());
         _mangaSerieRepoMock.Setup(repository => repository.UpdateAsync(It.IsAny<MangaSerieEntity>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((MangaSerieEntity entity, CancellationToken _) => entity);
 

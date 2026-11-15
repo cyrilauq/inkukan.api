@@ -25,7 +25,9 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
 
         public override async Task<Domain.Entities.MangaSerie?> GetByIdAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken)
         {
-            return await mangaSerieRepository.GetByIdAsync(request.Id, cancellationToken);
+            return await mangaSerieRepository.GetQuery()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(ms => ms.Id == request.Id, cancellationToken);
         }
 
         public override async Task BeforeUpdateAsync(UpdateMangaSerieCommand request, Domain.Entities.MangaSerie enttiy, CancellationToken cancellationToken)
@@ -33,7 +35,6 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
             await base.BeforeUpdateAsync(request, enttiy, cancellationToken);
             if (await universeRepository.GetByIdAsync(request.UniverseId, cancellationToken) == null)
                 throw new EntityNotFoundException($"No Universe with the id [{request.UniverseId}] found");
-            enttiy.Universe = null;
         }
     }
 }
