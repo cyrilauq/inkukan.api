@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Application.Features.MangaSerie.Command.Create
 {
-    public class CreateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<CreateMangaSerieCommand> validator, IMapper mapper) 
+    public class CreateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IBaseRepository<Domain.Entities.Universe> universeRepository, IValidator<CreateMangaSerieCommand> validator, IMapper mapper)
         : IRequestHandler<CreateMangaSerieCommand, MangaSerieDto>, IValidatable<CreateMangaSerieCommand>
     {
         public async Task<bool> EnsureIsValidAsync(CreateMangaSerieCommand value, CancellationToken cancellationToken)
@@ -23,6 +23,7 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Create
         {
             await EnsureIsValidAsync(command, cancellationToken);
             await EnsureTitlesAreFree(command, cancellationToken);
+            await EnsureUniverseExistsAsync(command, cancellationToken);
             Domain.Entities.MangaSerie addedManga = await mangaSerieRepository.CreateAsync(mapper.Map<Domain.Entities.MangaSerie>(command), cancellationToken);
             return mapper.Map<MangaSerieDto>(addedManga);
         }
@@ -37,6 +38,12 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Create
                 .FirstOrDefaultAsync(cancellationToken);
             if (foundMangaSerie != null)
                 throw new ConflictException($"A manga with the title [{command.TitleVO}] or [{command.TitleVF}] already exists");
+        }
+
+        private async Task EnsureUniverseExistsAsync(CreateMangaSerieCommand command, CancellationToken cancellationToken)
+        {
+            if (await universeRepository.GetByIdAsync(command.UniverseId, cancellationToken) == null)
+                throw new EntityNotFoundException($"No Universe with the id [{command.UniverseId}] found");
         }
     }
 }

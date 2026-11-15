@@ -19,6 +19,10 @@ public class BaseDeleteCommandHandler<TEntity, TCommand>(IBaseRepository<TEntity
     public async Task Handle(TCommand request, CancellationToken cancellationToken)
     {
         TEntity entity = await repository.GetByIdAsync(request.Id, cancellationToken) ?? throw new EntityNotFoundException($"No {typeof(TEntity).Name} with the id [{request.Id}] found");
+        await BeforeDeleteAsync(request, entity, cancellationToken);
         await repository.DeleteAsync(entity, cancellationToken);
     }
+
+    public virtual Task BeforeDeleteAsync(TCommand request, TEntity entity, CancellationToken cancellationToken)
+        => Task.CompletedTask;
 }

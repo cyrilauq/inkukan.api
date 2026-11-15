@@ -146,7 +146,6 @@ public static class ConfigureInfrastructure
             .IgnoreQueryFilters()
             .ToListAsync(cancellationToken);
 
-        HashSet<Guid> assignedUniverseIds = [];
         HashSet<Guid> existingUniverseIds = await dbContext.Universes
             .IgnoreQueryFilters()
             .Select(universe => universe.Id)
@@ -154,11 +153,8 @@ public static class ConfigureInfrastructure
 
         foreach (MangaSerie serie in series)
         {
-            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId) && assignedUniverseIds.Add(serie.UniverseId))
-                continue;
-
             if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId))
-                throw new InvalidOperationException($"Universe [{serie.UniverseId}] is assigned to multiple manga series.");
+                continue;
 
             Universe universe = new()
             {
@@ -169,7 +165,6 @@ public static class ConfigureInfrastructure
 
             await dbContext.Universes.AddAsync(universe, cancellationToken);
             serie.UniverseId = universe.Id;
-            assignedUniverseIds.Add(universe.Id);
             existingUniverseIds.Add(universe.Id);
         }
 
