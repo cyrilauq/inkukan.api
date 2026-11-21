@@ -144,18 +144,11 @@ public static class ConfigureInfrastructure
     {
         List<MangaSerie> series = await dbContext.MangaSeries
             .IgnoreQueryFilters()
+            .Where(serie => !dbContext.Universes.IgnoreQueryFilters().Any(universe => universe.Id == serie.UniverseId))
             .ToListAsync(cancellationToken);
-
-        HashSet<Guid> existingUniverseIds = await dbContext.Universes
-            .IgnoreQueryFilters()
-            .Select(universe => universe.Id)
-            .ToHashSetAsync(cancellationToken);
 
         foreach (MangaSerie serie in series)
         {
-            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId))
-                continue;
-
             Universe universe = new()
             {
                 Id = Guid.NewGuid(),
@@ -165,7 +158,6 @@ public static class ConfigureInfrastructure
 
             await dbContext.Universes.AddAsync(universe, cancellationToken);
             serie.UniverseId = universe.Id;
-            existingUniverseIds.Add(universe.Id);
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
