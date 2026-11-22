@@ -17,10 +17,11 @@ public class BaseUpdateCommandHandler<TCommand, TDto, TEntity>(IBaseRepository<T
 
     public async Task<bool> EnsureIsValidAsync(TCommand value, CancellationToken cancellationToken)
     {
-        if (await AlreadyExistsAsync(value, cancellationToken)) throw new ConflictException("Another entity with the same value already exists");
         FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(value, cancellationToken);
-        if (validationResult.IsValid) return true;
-        throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
+        if (!validationResult.IsValid)
+            throw new EntityValidationException("A validation exception occured", validationResult.Errors.Select(e => e.ErrorMessage));
+        if (await AlreadyExistsAsync(value, cancellationToken)) throw new ConflictException("Another entity with the same value already exists");
+        return true;
     }
 
     public async Task<TDto> Handle(TCommand request, CancellationToken cancellationToken)

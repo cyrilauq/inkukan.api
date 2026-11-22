@@ -21,6 +21,8 @@ public class UpdateMangaSerieCommandHandlerTests
     private UpdateMangaSerieCommandHandler _handler = null!;
     private MangaSerieEntity _serie = null!;
 
+    public TestContext TestContext { get; set; } = null!;
+
     [TestInitialize]
     public void Setup()
     {
@@ -30,6 +32,8 @@ public class UpdateMangaSerieCommandHandlerTests
         _mangaSerieRepoMock = new Mock<IMangaSerieRepository>();
         _mangaSerieRepoMock.Setup(repository => repository.GetQuery())
             .Returns(new List<MangaSerieEntity> { _serie }.BuildMock());
+        _mangaSerieRepoMock.Setup(repository => repository.GetByIdWithoutDependenciesAsync(_serie.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(_serie);
         _mangaSerieRepoMock.Setup(repository => repository.UpdateAsync(It.IsAny<MangaSerieEntity>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((MangaSerieEntity entity, CancellationToken _) => entity);
 
@@ -49,7 +53,7 @@ public class UpdateMangaSerieCommandHandlerTests
             .ReturnsAsync(new UniverseEntity { Id = universeId, Name = "Universe", Code = "universe" });
 
         // Act
-        await _handler.Handle(CreateCommand(universeId), CancellationToken.None);
+        await _handler.Handle(CreateCommand(universeId), TestContext.CancellationTokenSource.Token);
 
         // Assert
         _mangaSerieRepoMock.Verify(repository => repository.UpdateAsync(It.Is<MangaSerieEntity>(serie => serie.UniverseId == universeId), It.IsAny<CancellationToken>()), Times.Once);
@@ -64,7 +68,7 @@ public class UpdateMangaSerieCommandHandlerTests
             .ReturnsAsync((UniverseEntity?)null);
 
         // Act
-        Func<Task> result = async () => await _handler.Handle(CreateCommand(universeId), CancellationToken.None);
+        Func<Task> result = async () => await _handler.Handle(CreateCommand(universeId), TestContext.CancellationTokenSource.Token);
 
         // Assert
         await result.Should()

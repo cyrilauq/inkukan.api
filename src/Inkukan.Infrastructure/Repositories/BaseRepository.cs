@@ -10,10 +10,10 @@ public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContext
     protected IDbContextFactory<ApplicationDbContext> DbContextFactory = dbContextFactory;
     protected ApplicationDbContext DbContext { get => DbContextFactory.CreateDbContext(); }
 
-    public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task<T> CreateAsync(T entity, CancellationToken cancellationToken)
     {
         using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        EntityEntry<T> result = dbContext.Set<T>().Add(entity);
+        EntityEntry<T> result = await dbContext.Set<T>().AddAsync(entity, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
         return result.Entity;
     }
@@ -38,7 +38,7 @@ public class BaseRepository<T>(IDbContextFactory<ApplicationDbContext> dbContext
         return dbContext.Set<T>();
     }
 
-    public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken)
     {
         using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         EntityEntry<T> result = dbContext.Set<T>().Update(entity);

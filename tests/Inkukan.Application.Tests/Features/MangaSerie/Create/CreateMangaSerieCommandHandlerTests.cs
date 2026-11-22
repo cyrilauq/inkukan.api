@@ -20,6 +20,8 @@ public class CreateMangaSerieCommandHandlerTests
     private CreateMangaSerieValidator _validator = null!;
     private CreateMangaSerieCommandHandler _handler = null!;
 
+    public TestContext TestContext { get; set; } = null!;
+
     [TestInitialize]
     public void Setup()
     {
@@ -154,7 +156,7 @@ public class CreateMangaSerieCommandHandlerTests
         };
 
         // Act
-        Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
+        Func<Task> result = async () => await _handler.Handle(command, TestContext.CancellationTokenSource.Token);
 
         // Assert
         await result.Should()
