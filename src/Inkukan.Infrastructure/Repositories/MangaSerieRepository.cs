@@ -3,7 +3,6 @@ using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
 using Inkukan.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Inkukan.Infrastructure.Repositories;
@@ -36,11 +35,18 @@ public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contex
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
-    public override Task<MangaSerie> CreateAsync(MangaSerie entity, CancellationToken cancellationToken)
-        => SaveWithLockedUniverseAsync(entity, (dbContext, serie) => dbContext.MangaSeries.Add(serie), cancellationToken);
+    public override async Task<MangaSerie> CreateAsync(MangaSerie entity, CancellationToken cancellationToken)
+    {
+        await SaveWithLockedUniverseAsync(entity, (dbContext, serie) => dbContext.MangaSeries.Add(serie), cancellationToken);
+        return await GetByIdAsync(entity.Id, cancellationToken) ?? entity;
+    }
 
-    public override Task<MangaSerie> UpdateAsync(MangaSerie entity, CancellationToken cancellationToken)
-        => SaveWithLockedUniverseAsync(entity, (dbContext, serie) => dbContext.MangaSeries.Update(serie), cancellationToken);
+    public override async Task<MangaSerie> UpdateAsync(MangaSerie entity, CancellationToken cancellationToken)
+    {
+        await SaveWithLockedUniverseAsync(entity, (dbContext, serie) =>
+            dbContext.MangaSeries.Update(serie).Property(s => s.DeletedAt).IsModified = false, cancellationToken);
+        return await GetByIdAsync(entity.Id, cancellationToken) ?? entity;
+    }
 
     /// <summary>
     /// Saves the serie inside a transaction that locks its universe row with <c>FOR SHARE</c>.
@@ -48,7 +54,7 @@ public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contex
     /// If the deletion commits first, the universe is no longer found and an <see cref="EntityNotFoundException"/> is thrown.
     /// This prevents an active serie from being attached to a deleted universe.
     /// </summary>
-    private async Task<MangaSerie> SaveWithLockedUniverseAsync(MangaSerie serie, Func<ApplicationDbContext, MangaSerie, EntityEntry<MangaSerie>> attach, CancellationToken cancellationToken)
+    private async Task SaveWithLockedUniverseAsync(MangaSerie serie, Action<ApplicationDbContext, MangaSerie> attach, CancellationToken cancellationToken)
     {
         await using ApplicationDbContext dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         await using IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -64,9 +70,8 @@ public class MangaSerieRepository(IDbContextFactory<ApplicationDbContext> contex
         if (universes.Count == 0)
             throw new EntityNotFoundException($"No Universe with the id [{serie.UniverseId}] found");
 
-        EntityEntry<MangaSerie> result = attach(dbContext, serie);
+        attach(dbContext, serie);
         await dbContext.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
-        return result.Entity;
     }
 }
