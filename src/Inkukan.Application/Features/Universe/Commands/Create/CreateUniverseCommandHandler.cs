@@ -24,7 +24,8 @@ public partial class CreateUniverseCommandHandler(IBaseRepository<UniverseEntity
     public override async Task<bool> AlreadyExistsAsync(CreateUniverseCommand request, CancellationToken cancellationToken)
     {
         string code = GenerateCode(request.Name ?? string.Empty);
-        return await Repository.GetQuery().AnyAsync(universe => universe.Name.ToLower() == request.Name!.ToLower() || universe.Code == code, cancellationToken);
+        return await Repository.GetQuery().AnyAsync(universe => universe.Name.ToLower() == request.Name!.ToLower(), cancellationToken)
+            || await Repository.GetQuery().IgnoreQueryFilters().AnyAsync(universe => universe.Code == code, cancellationToken);
     }
 
     private static string GenerateCode(string name)

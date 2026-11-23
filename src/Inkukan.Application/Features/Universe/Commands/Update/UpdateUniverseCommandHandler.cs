@@ -22,7 +22,9 @@ public partial class UpdateUniverseCommandHandler(IBaseRepository<UniverseEntity
     {
         string code = GenerateCode(request.Name ?? string.Empty);
         return await Repository.GetQuery()
-            .AnyAsync(universe => (universe.Name.ToLower() == request.Name!.ToLower() || universe.Code == code) && universe.Id != request.Id, cancellationToken);
+                .AnyAsync(universe => universe.Name.ToLower() == request.Name!.ToLower() && universe.Id != request.Id, cancellationToken)
+            || await Repository.GetQuery().IgnoreQueryFilters()
+                .AnyAsync(universe => universe.Code == code && universe.Id != request.Id, cancellationToken);
     }
 
     public override Task BeforeUpdateAsync(UpdateUniverseCommand request, UniverseEntity entity, CancellationToken cancellationToken)
