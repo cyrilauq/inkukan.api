@@ -19,12 +19,20 @@ public partial class UpdateUniverseCommandHandler(IBaseRepository<UniverseEntity
         => Repository.GetByIdAsync(request.Id, cancellationToken);
 
     public override async Task<bool> AlreadyExistsAsync(UpdateUniverseCommand request, CancellationToken cancellationToken)
-        => await Repository.GetQuery()
-            .AnyAsync(universe => universe.Name.ToLower() == request.Name.ToLower() && universe.Id != request.Id, cancellationToken);
+    {
+        string code = GenerateCode(request.Name ?? string.Empty);
+        return await Repository.GetQuery()
+                .AnyAsync(universe => universe.Name.ToLower() == request.Name!.ToLower() && universe.Id != request.Id, cancellationToken)
+            || await Repository.GetQuery().IgnoreQueryFilters()
+                .AnyAsync(universe => universe.Code == code && universe.Id != request.Id, cancellationToken);
+    }
 
     public override Task BeforeUpdateAsync(UpdateUniverseCommand request, UniverseEntity entity, CancellationToken cancellationToken)
     {
-        entity.Code = NonAlphaNumericRegex().Replace(request.Name.ToLowerInvariant().Replace(' ', '_'), "");
+        entity.Code = GenerateCode(request.Name);
         return Task.CompletedTask;
     }
+
+    private static string GenerateCode(string name)
+        => NonAlphaNumericRegex().Replace(name.ToLowerInvariant().Replace(' ', '_'), "");
 }

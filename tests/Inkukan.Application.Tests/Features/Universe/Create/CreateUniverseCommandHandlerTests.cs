@@ -22,6 +22,8 @@ public class CreateUniverseCommandHandlerTests
     private CreateUniverseValidator _validator = null!;
     private CreateUniverseCommandHandler _handler = null!;
 
+    public TestContext TestContext { get; set; } = null!;
+
     [TestInitialize]
     public void Setup()
     {
@@ -56,6 +58,32 @@ public class CreateUniverseCommandHandlerTests
         Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
         await result.Should().ThrowAsync<ConflictException>();
+    }
+
+    [TestMethod]
+    public async Task When_GeneratedCodeIsAlreadyTaken_Then_ThrowsConflictException()
+    {
+        _universeRepository.Setup(repository => repository.GetQuery())
+            .Returns(new List<UniverseEntity> { new() { Name = "One Piece", Code = "one_piece" } }.BuildMock());
+        CreateUniverseCommand command = new() { Name = "One Piece!" };
+
+        Func<Task> result = async () => await _handler.Handle(command, TestContext.CancellationTokenSource.Token);
+
+        await result.Should().ThrowAsync<ConflictException>();
+        _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task When_GeneratedCodeIsHeldBySoftDeletedUniverse_Then_ThrowsConflictException()
+    {
+        _universeRepository.Setup(repository => repository.GetQuery())
+            .Returns(new List<UniverseEntity> { new() { Name = "One Piece", Code = "one_piece", DeletedAt = DateTimeOffset.UtcNow } }.BuildMock());
+        CreateUniverseCommand command = new() { Name = "One Piece" };
+
+        Func<Task> result = async () => await _handler.Handle(command, TestContext.CancellationTokenSource.Token);
+
+        await result.Should().ThrowAsync<ConflictException>();
+        _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]

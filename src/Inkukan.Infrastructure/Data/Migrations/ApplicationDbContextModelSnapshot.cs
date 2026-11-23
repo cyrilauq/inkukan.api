@@ -416,6 +416,7 @@ namespace InkShelf.Infrastructure.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedAt")

@@ -43,7 +43,8 @@ public static class ConfigureInfrastructure
             .AddScoped<IBaseRepository<SerieVolume>, SerieVolumeRepository>()
             .AddScoped<IBaseRepository<MangaType>, TypeRepository>()
             .AddScoped<IBaseRepository<MangaCollection>, CollectionRepository>()
-            .AddScoped<IBaseRepository<Universe>, BaseRepository<Universe>>()
+            .AddScoped<IUniverseRepository, UniverseRepository>()
+            .AddScoped<IBaseRepository<Universe>, UniverseRepository>()
             .AddScoped<IBaseRepository<UserListItem>, BaseRepository<UserListItem>>()
             .AddScoped<IBaseRepository<User>, BaseRepository<User>>()
             .AddScoped<IBlobStorage, VercelBlobStorage>();
@@ -144,22 +145,11 @@ public static class ConfigureInfrastructure
     {
         List<MangaSerie> series = await dbContext.MangaSeries
             .IgnoreQueryFilters()
+            .Where(serie => !dbContext.Universes.IgnoreQueryFilters().Any(universe => universe.Id == serie.UniverseId))
             .ToListAsync(cancellationToken);
-
-        HashSet<Guid> assignedUniverseIds = [];
-        HashSet<Guid> existingUniverseIds = await dbContext.Universes
-            .IgnoreQueryFilters()
-            .Select(universe => universe.Id)
-            .ToHashSetAsync(cancellationToken);
 
         foreach (MangaSerie serie in series)
         {
-            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId) && assignedUniverseIds.Add(serie.UniverseId))
-                continue;
-
-            if (serie.UniverseId != Guid.Empty && existingUniverseIds.Contains(serie.UniverseId))
-                throw new InvalidOperationException($"Universe [{serie.UniverseId}] is assigned to multiple manga series.");
-
             Universe universe = new()
             {
                 Id = Guid.NewGuid(),
@@ -169,8 +159,6 @@ public static class ConfigureInfrastructure
 
             await dbContext.Universes.AddAsync(universe, cancellationToken);
             serie.UniverseId = universe.Id;
-            assignedUniverseIds.Add(universe.Id);
-            existingUniverseIds.Add(universe.Id);
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);

@@ -84,7 +84,8 @@ public class AddToUserCollectionCommandHandlerTests
 
     public static IEnumerable<object[]> Get_When_CommandIsNotValid_Then_ThrowsException_Data()
     {
-        yield return [ new AddToUserCollectionCommand() { UserId = Guid.Empty, ListType = UserListType.Collection, SerieVolumeId = Guid.NewGuid() } ];
-        yield return [ new AddToUserCollectionCommand() { UserId = Guid.NewGuid(), ListType = UserListType.Collection, SerieVolumeId = Guid.Empty } ];
+        Guid guid = Guid.Parse("C170BFC6-6065-4BC0-9BFE-F835CEA7A1FE");
+        yield return [ new AddToUserCollectionCommand() { UserId = Guid.Empty, ListType = UserListType.Collection, SerieVolumeId = guid } ];
+        yield return [ new AddToUserCollectionCommand() { UserId = guid, ListType = UserListType.Collection, SerieVolumeId = Guid.Empty } ];
     }
 }

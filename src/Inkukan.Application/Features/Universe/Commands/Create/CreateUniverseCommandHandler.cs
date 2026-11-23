@@ -18,9 +18,16 @@ public partial class CreateUniverseCommandHandler(IBaseRepository<UniverseEntity
     public override async Task BeforeCreateAsync(CreateUniverseCommand request, UniverseEntity enttiy, CancellationToken cancellationToken)
     {
         await base.BeforeCreateAsync(request, enttiy, cancellationToken);
-        enttiy.Code = NonAlphaNumericRegex().Replace(request.Name.ToLowerInvariant().Replace(' ', '_'), "");
+        enttiy.Code = GenerateCode(request.Name);
     }
 
     public override async Task<bool> AlreadyExistsAsync(CreateUniverseCommand request, CancellationToken cancellationToken)
-        => await Repository.GetQuery().AnyAsync(universe => universe.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+    {
+        string code = GenerateCode(request.Name ?? string.Empty);
+        return await Repository.GetQuery().AnyAsync(universe => universe.Name.ToLower() == request.Name!.ToLower(), cancellationToken)
+            || await Repository.GetQuery().IgnoreQueryFilters().AnyAsync(universe => universe.Code == code, cancellationToken);
+    }
+
+    private static string GenerateCode(string name)
+        => NonAlphaNumericRegex().Replace(name.ToLowerInvariant().Replace(' ', '_'), "");
 }

@@ -21,6 +21,8 @@ public class UpdateUniverseCommandHandlerTests
     private UpdateUniverseCommandHandler _handler = null!;
     private List<UniverseEntity> _universes = null!;
 
+    public TestContext TestContext { get; set; } = null!;
+
     [TestInitialize]
     public void Setup()
     {
@@ -73,6 +75,31 @@ public class UpdateUniverseCommandHandlerTests
         Func<Task> result = async () => await _handler.Handle(command, CancellationToken.None);
 
         await result.Should().ThrowAsync<ConflictException>();
+    }
+
+    [TestMethod]
+    public async Task When_GeneratedCodeIsAlreadyTaken_Then_ThrowsConflictException()
+    {
+        UniverseEntity existingUniverse = _universes[0];
+        _universes.Add(new UniverseEntity { Id = Guid.NewGuid(), Name = "One Piece", Code = "one_piece" });
+        UpdateUniverseCommand command = new() { Id = existingUniverse.Id, Name = "One Piece!" };
+
+        Func<Task> result = async () => await _handler.Handle(command, TestContext.CancellationTokenSource.Token);
+
+        await result.Should().ThrowAsync<ConflictException>();
+        _universeRepository.Verify(repository => repository.UpdateAsync(It.IsAny<UniverseEntity>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task When_OwnGeneratedCodeIsUnchanged_Then_UpdatesUniverse()
+    {
+        UniverseEntity existingUniverse = _universes[0];
+        UpdateUniverseCommand command = new() { Id = existingUniverse.Id, Name = "Original!" };
+
+        await _handler.Handle(command, TestContext.CancellationTokenSource.Token);
+
+        existingUniverse.Code.Should().Be("original");
+        _universeRepository.Verify(repository => repository.UpdateAsync(existingUniverse, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]

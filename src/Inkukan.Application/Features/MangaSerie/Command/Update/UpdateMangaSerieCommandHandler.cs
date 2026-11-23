@@ -2,12 +2,13 @@
 using FluentValidation;
 using Inkukan.Application.Dtos;
 using Inkukan.Application.Features.Abstractions;
+using Inkukan.Domain.Exceptions;
 using Inkukan.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inkukan.Application.Features.MangaSerie.Command.Update
 {
-    public class UpdateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IValidator<UpdateMangaSerieCommand> validator, IMapper mapper) 
+    public class UpdateMangaSerieCommandHandler(IMangaSerieRepository mangaSerieRepository, IBaseRepository<Domain.Entities.Universe> universeRepository, IValidator<UpdateMangaSerieCommand> validator, IMapper mapper)
         : BaseUpdateCommandHandler<UpdateMangaSerieCommand, MangaSerieDto, Domain.Entities.MangaSerie>(mangaSerieRepository, validator, mapper)
     {
         public override async Task<bool> AlreadyExistsAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken)
@@ -24,13 +25,14 @@ namespace Inkukan.Application.Features.MangaSerie.Command.Update
 
         public override async Task<Domain.Entities.MangaSerie?> GetByIdAsync(UpdateMangaSerieCommand request, CancellationToken cancellationToken)
         {
-            return await mangaSerieRepository.GetByIdAsync(request.Id, cancellationToken);
+            return await mangaSerieRepository.GetByIdWithoutDependenciesAsync(request.Id, cancellationToken);
         }
 
         public override async Task BeforeUpdateAsync(UpdateMangaSerieCommand request, Domain.Entities.MangaSerie enttiy, CancellationToken cancellationToken)
         {
             await base.BeforeUpdateAsync(request, enttiy, cancellationToken);
-            enttiy.Universe = null;
+            if (await universeRepository.GetByIdAsync(request.UniverseId, cancellationToken) == null)
+                throw new EntityNotFoundException($"No Universe with the id [{request.UniverseId}] found");
         }
     }
 }

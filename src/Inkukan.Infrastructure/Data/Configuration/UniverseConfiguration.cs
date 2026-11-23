@@ -8,7 +8,6 @@ public class UniverseConfiguration : IEntityTypeConfiguration<Universe>
 {
     public void Configure(EntityTypeBuilder<Universe> builder)
     {
-        builder.HasKey(universe => universe.Code);
         builder.HasIndex(universe => universe.Code).IsUnique();
         builder.Property(universe => universe.Name).IsRequired();
         builder.Property(universe => universe.Code).IsRequired();
